@@ -26,6 +26,20 @@
   {% endblock %}
 
   {% block messages %}
+  <div class="toast-row">
+    <div class="toast-container py-3 px-2">
+        {% for message in messages %}
+        <div class="toast" role="alert" aria-live="assertive" data-delay="6000">
+            <div class="toast-header">
+                {{message.tags}}
+            </div>
+            <div class="toast-body">
+                {{message}}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+  </div>
   {% endblock %}
 
   {% block content %}
