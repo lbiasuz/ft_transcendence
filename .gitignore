@@ -11,3 +11,4 @@ media
 htmlcov
 .ruff_cache
 .env
+.vscode/
