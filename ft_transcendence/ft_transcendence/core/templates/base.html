@@ -1,0 +1,127 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+  <link rel="icon" href="{% static 'images/favicon.svg' %}">
+  <link rel="stylesheet" href="{% static 'base.css'%}">
+  {% block css %}
+  {% endblock %}
+  <script src="https://kit.fontawesome.com/b5cbd66e26.js" crossorigin="anonymous"></script>
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Transcendence</title>
+</head>
+
+<body>
+  {% block navigation %}
+  <!-- Rookie Navbar -->
+  <nav id="main-nav" class="navbar navbar-fixed-top navbar-expand-lg navbar-light bg-light py-0 px-4">
+    <a href="{% url 'account:main' %}" class="navbar-brand" tooltip title='Dashboard'>
+      <img src="{% static 'images/rookie_color_BG_light.png' %}" height="55em" alt="">
+    </a>
+
+    <!-- Search bar -->
+    <form class="form-inline " action="\search" method="GET">
+      <div class="form-group search-bar d-flex mb-0">
+        <input class="d-none d-sm-block" type="text" name="q" value="{{request.GET.q}}">
+        <div class="input-group-append text-right">
+          <button class="btn m-0 p-0" type="submit"><span class="fa fa-search text-muted"></span></button>
+        </div>
+      </div>
+    </form>
+
+    <div class="spacer"></div>
+
+    <!-- User related navigation -->
+    <div class="navbar-nav align-items-center ">
+
+      <!-- Active team-championship buttons -->
+      {% for champ in active_user_champs %}
+      <div class="nav-item d-none d-lg-block">
+        <a class="btn btn-light button-orange round py-0 px-4 mx-1" href="{% url 'championship:champ' champ.slug %}"
+          class="nav-link">{{champ}}</a>
+      </div>
+      {% endfor %}
+
+      <!-- Teams the user participate -->
+      {% for m in user_memberships %}
+      <div class="nav-item d-none d-lg-block">
+        <a href="{% url 'team:detail' m.team.slug %}" class="nav-link">
+          {% if m.team.logo %}
+          <img src="{{m.team.logo.url}}" height="40" width="40" alt="{{ m.team }}" class="shield shield-sm" tooltip
+            title="{{m.team}}">
+          {% else %}
+          <div class="shield shield-sm text-center">{{m.team.name|make_list|first}}</div>
+          {% endif %}
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- User menu dropdown -->
+    {% if user.is_authenticated %}
+    <div class="dropdown">
+      <a class="nav-link dropdown-toggle-split" id="user-sett-drop" role="button" data-toggle="dropdown"
+        aria-haspopup="true" aria-expanded="false">
+        {% if user.profile.avatar %}
+        <img src="{{user.profile.avatar.url}}" height="50" width="50" class="rounded-circle" alt="">
+        {% else %} <i class="fa fa-user-circle fa-3x"></i>
+        {% endif %}
+      </a>
+      <div class="dropdown-menu dropdown-menu-right" aria-labelledby="user-sett-drop">
+        <a class="dropdown-item" href="{% url 'account:profile' request.user.profile.slug %}"> Perfil</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="{% url 'account:logout' %}">Sair</a>
+      </div>
+    </div>
+    {% else %}
+    <div>
+      <a href="{% url 'account:login' %}" role='button' class="px-5 button-round btn btn-outline-dark mr-3 border-2 "> Login </a>
+      <a href="{% url 'account:signup'%}" role='button' class="px-5 button-round btn button-orange text-nowrap"> Registre-se </a>
+    </div>
+    {% endif %}
+  </nav>
+  <div id="navbar-height-spacer"></div>
+  {% endblock %}
+
+  {% block messages %}
+  {% endblock %}
+
+  {% block content %}
+  {% endblock %}
+
+  <a href="https://wa.me/5554991555675" target="_blank" class="btn btn-success button-round wpp-button" tooltip title="Ficou com alguma dúvida? Nos envie uma mensagem..."><i class="fab fa-whatsapp fa-2x"></i></a>
+
+  <!-- Bootrstrap Imports -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XNWVFRHK8B"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-XNWVFRHK8B');
+  </script>
+  <!-- Bootstrap components activation -->
+  <script>
+    $(document).ready(function () {
+      $('.toast').toast('show');
+    });
+    $(function () {
+      $('[tooltip]').tooltip()
+    })
+  </script>
+  <!-- Custom animations -->
+  <script src="{% static 'js/custom-animations.js' %}"></script>
+  {% block scripts %}
+  {% endblock %}
+</body>
+
+</html>

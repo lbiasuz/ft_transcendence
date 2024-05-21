@@ -9,6 +9,13 @@ readme = "README.md"
 python = "^3.10"
 Django = "^4.2.0"
 coverage = "^7.5.0"
+ipython = "^8.24.0"
+python-decouple = "^3.8"
+psycopg2-binary = "^2.9.9"
+django-jazzmin = "^3.0.0"
+loguru = "^0.7.2"
+django-prometheus = "^2.3.1"
+dj-database-url = "^2.1.0"
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.4.2"

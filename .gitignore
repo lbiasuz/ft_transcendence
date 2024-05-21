@@ -10,3 +10,4 @@ media
 .coverage
 htmlcov
 .ruff_cache
+.env
