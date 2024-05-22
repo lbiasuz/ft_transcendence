@@ -135,6 +135,8 @@ STATIC_ROOT = config("STATIC_ROOT", default=os.path.join(BASE_DIR, "staticfiles"
 
 MEDIA_URL = config("MEDIA_URL", default="/media/")
 
+LOCALE_PATHS = ["locale/"]
+
 DEFAULT_FILE_STORAGE = config(
     "DEFAULT_FILE_STORAGE", default="django.core.files.storage.FileSystemStorage"
 )

@@ -1,5 +1,4 @@
 from pathlib import Path
-from ft_transcendence.settings import *
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
