@@ -16,6 +16,7 @@ django-jazzmin = "^3.0.0"
 loguru = "^0.7.2"
 django-prometheus = "^2.3.1"
 dj-database-url = "^2.1.0"
+pillow = "^10.3.0"
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.4.2"
