@@ -1,17 +1,12 @@
-FROM mcr.microsoft.com/vscode/devcontainers/python:3.10
+FROM python:3.10.14-bookworm
 
-ENV PYTHONUNBUFFERED 1
+EXPOSE 8000/tcp
+EXPOSE 8000/udp
 
-# [Optional] If your requirements rarely change, uncomment this section to add them to the image.
-# COPY requirements.txt /tmp/pip-tmp/
-# RUN pip3 --disable-pip-version-check --no-cache-dir install -r /tmp/pip-tmp/requirements.txt \
-#    && rm -rf /tmp/pip-tmp
-
-RUN python -m pip install Django==4.2 && pip install psycopg2-binary
-
-# [Optional] Uncomment this section to install additional OS packages.
-# RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
-#     && apt-get -y install --no-install-recommends <your-package-list-here>
-
-
-
+COPY ./ ./
+RUN ls -ls
+RUN pip install poetry && python -m pip install Django==4.2 && pip install psycopg2-binary && poetry install
+RUN ls -ls
+RUN poetry run python ft_transcendence/manage.py migrate
+RUN poetry run python ft_transcendence/manage.py collectstatic --noinput
+CMD ["poetry run python ft_transcendence/manage.py runserver"]
