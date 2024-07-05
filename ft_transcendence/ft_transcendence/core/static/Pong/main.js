@@ -68,14 +68,14 @@ controller2.addAction('ArrowDown', moveDownAction);
 
 //ball
 const ball = new GameObject('ball', vec(200, 512));
-const ballShape = new ShapeCircle('cyan', 20);
-// const ballSprite = new Sprite('./assets/sprites/ball2.png');
+// const ballShape = new ShapeCircle('cyan', 20);
+const ballSprite = new Sprite('../static/Pong/assets/sprites/ball2.png');
 const ballVelocity = new Velocity(315, 500, true);
 const ballCollider = new ColliderCircle(20);
 const ballColliderEffect = new CollisionEffectBounce();
 ball.addComponent(ballVelocity);
-ball.addComponent(ballShape);
-// ball.addComponent(ballSprite);
+// ball.addComponent(ballShape);
+ball.addComponent(ballSprite);
 ball.addComponent(ballCollider);
 ball.addComponent(ballColliderEffect);
 game.addGameObject(ball);
