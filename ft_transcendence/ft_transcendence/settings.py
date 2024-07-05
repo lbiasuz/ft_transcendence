@@ -15,12 +15,6 @@ from pathlib import Path
 from decouple import config, Csv
 from dj_database_url import parse as dburl
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
-
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config("SECRET_KEY")
@@ -29,6 +23,29 @@ SECRET_KEY = config("SECRET_KEY")
 DEBUG = config("DEBUG", default=False, cast=bool)
 
 ALLOWED_HOSTS = config("ALLOWED_HOSTS", default=[], cast=Csv())
+
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/4.2/howto/static-files/
+STATIC_URL = "static/"
+
+STATIC_ROOT = config("STATIC_ROOT", default=os.path.join(BASE_DIR, "staticfiles"))
+
+MEDIA_URL = config("MEDIA_URL", default="media/")
+
+DEFAULT_FILE_STORAGE = config(
+    "DEFAULT_FILE_STORAGE", default="django.core.files.storage.FileSystemStorage"
+)
+
+if DEFAULT_FILE_STORAGE == "django.core.files.storage.FileSystemStorage":
+    MEDIA_ROOT = config("MEDIA_ROOT", default=os.path.join(BASE_DIR, "media"))
+
+
+# Quick-start development settings - unsuitable for production
+# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
+
 
 # Application definition
 
@@ -39,9 +56,10 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "rest_framework",
+    "django_prometheus",
     "ft_transcendence.account",
     "ft_transcendence.core",
-    "django_prometheus",
 ]
 
 MIDDLEWARE = [
@@ -76,10 +94,10 @@ TEMPLATES = [
 WSGI_APPLICATION = "ft_transcendence.wsgi.application"
 
 
-# Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 default_dburl = "sqlite:///" + os.path.join(BASE_DIR, "db.sqlite3")
+
 DATABASES = {
     "default": config("DATABASE_URL", default=default_dburl, cast=dburl),
 }
@@ -95,6 +113,9 @@ DATABASES = {
 #     }
 # }
 
+
+# https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -126,30 +147,20 @@ USE_I18N = True
 
 USE_TZ = True
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.2/howto/static-files/
-
-STATIC_URL = "/static/"
-
-STATIC_ROOT = config("STATIC_ROOT", default=os.path.join(BASE_DIR, "staticfiles"))
-
-MEDIA_URL = config("MEDIA_URL", default="/media/")
-
 LOCALE_PATHS = ["locale/"]
 
-DEFAULT_FILE_STORAGE = config(
-    "DEFAULT_FILE_STORAGE", default="django.core.files.storage.FileSystemStorage"
-)
+#Installed apps settings
 
-if DEFAULT_FILE_STORAGE == "django.core.files.storage.FileSystemStorage":
-    MEDIA_ROOT = config("MEDIA_ROOT", default=os.path.join(BASE_DIR, "media"))
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
-
-DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
+# Django-Jazzmin settings for admin panel
 JAZZMIN_SETTINGS = {
     "site_title": "Transcendence",
     "site_header": "Transcendence",
+}
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
 }
