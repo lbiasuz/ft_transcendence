@@ -25,3 +25,5 @@ Button = document.getElementById("tournaments-tab2");
 Button.addEventListener("click", handleButtonTournamentsClick);
 Button = document.getElementById("play-tab2");
 Button.addEventListener("click", handleButtonPlayClick);
+Button = document.getElementById("exit-tab2");
+Button.addEventListener("click", handleButtonExitClick);

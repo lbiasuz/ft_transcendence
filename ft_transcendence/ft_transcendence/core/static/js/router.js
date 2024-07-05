@@ -25,3 +25,10 @@ function  handleButtonPlayClick() {
   itemElement.textContent = "/PLAY";
   contentElement.appendChild(itemElement);
 }
+
+function  handleButtonExitClick() {
+  contentElement.innerHTML = ''; // Clear previous content
+  const itemElement = document.createElement('h1');
+  itemElement.textContent = "/EXIT";
+  contentElement.appendChild(itemElement);
+}
