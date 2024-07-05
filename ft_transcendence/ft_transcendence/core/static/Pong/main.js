@@ -1,23 +1,23 @@
-import Game from '../Pong/Game/Game.js';
-import { vec } from "../Pong/Vector/Vector2.js";
-import Input from '../Pong/Game/modules/Input.js';
-import Canvas from '../Pong/Game/modules/Canvas.js';
-import Moviment from '../Pong/Game/modules/Moviment.js';
-import Collision from '../Pong/Game/modules/Collision.js';
-import GameObject from '../Pong/GameObject/GameObject.js';
+import Game from './Game/Game.js';
+import { vec } from "./Vector/Vector2.js";
+import Input from './Game/modules/Input.js';
+import Canvas from './Game/modules/Canvas.js';
+import Moviment from './Game/modules/Moviment.js';
+import Collision from './Game/modules/Collision.js';
+import GameObject from './GameObject/GameObject.js';
 import ColliderRectangle from 
-'../Pong/GameObject/components/Collider/ColliderRectangle.js';
-import Sprite from '../Pong/GameObject/components/Sprite/Sprite.js';
+'./GameObject/components/Collider/ColliderRectangle.js';
+import Sprite from './GameObject/components/Sprite/Sprite.js';
 import CollisionEffectBlock from 
-'../Pong/GameObject/components/CollisionEffect/CollisionEffectBlock.js';
+'./GameObject/components/CollisionEffect/CollisionEffectBlock.js';
 import CollisionEffectBounce from 
-'../Pong/GameObject/components/CollisionEffect/CollisionEffectBounce.js';
-import Velocity from '../Pong/GameObject/components/Velocity/Velocity.js';
-import ActionMove from '../Pong/GameObject/components/Action/ActionMove.js';
-import ShapeCircle from '../Pong/GameObject/components/Shape/ShapeCircle.js';
-import ShapeRect from '../Pong/GameObject/components/Shape/ShapeRectangle.js';
-import Controller from '../Pong/GameObject/components/Controller/Controller.js';
-import ColliderCircle from '../Pong/GameObject/components/Collider/ColliderCircle.js';
+'./GameObject/components/CollisionEffect/CollisionEffectBounce.js';
+import Velocity from './GameObject/components/Velocity/Velocity.js';
+import ActionMove from './GameObject/components/Action/ActionMove.js';
+import ShapeCircle from './GameObject/components/Shape/ShapeCircle.js';
+import ShapeRect from './GameObject/components/Shape/ShapeRectangle.js';
+import Controller from './GameObject/components/Controller/Controller.js';
+import ColliderCircle from './GameObject/components/Collider/ColliderCircle.js';
 
 //		Game Instance		//
 
@@ -68,14 +68,14 @@ controller2.addAction('ArrowDown', moveDownAction);
 
 //ball
 const ball = new GameObject('ball', vec(200, 512));
-const ballShape = new ShapeCircle('cyan', 20);
-// const ballSprite = new Sprite('./assets/sprites/ball2.png');
+// const ballShape = new ShapeCircle('cyan', 20);
+const ballSprite = new Sprite('../static/Pong/assets/sprites/ball2.png');
 const ballVelocity = new Velocity(315, 500, true);
 const ballCollider = new ColliderCircle(20);
 const ballColliderEffect = new CollisionEffectBounce();
 ball.addComponent(ballVelocity);
-ball.addComponent(ballShape);
-// ball.addComponent(ballSprite);
+// ball.addComponent(ballShape);
+ball.addComponent(ballSprite);
 ball.addComponent(ballCollider);
 ball.addComponent(ballColliderEffect);
 game.addGameObject(ball);
