@@ -32,7 +32,7 @@ function  handleButtonPlayClick() {
   itemElement.setAttribute('id', 'canvas');
   contentElement.appendChild(itemElement);
   itemElement = document.createElement('script');
-  itemElement.setAttribute('src', '../static/js/main.js');
+  itemElement.setAttribute('src', '../static/Pong/main.js');
   itemElement.setAttribute('type', 'module');
   contentElement.appendChild(itemElement);
 }
