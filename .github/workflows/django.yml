@@ -27,5 +27,5 @@ jobs:
         poetry run ruff check
     - name: Run Tests
       run: |
-        poetry run python ft_transchendence/manage.py test
+        poetry run python ft_transcendence/manage.py test
 
