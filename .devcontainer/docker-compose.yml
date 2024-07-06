@@ -284,15 +284,20 @@ services:
     build:
       context: ../
       dockerfile: .devcontainer/Dockerfile
+    environment:
+      - SECRET_KEY=${SECRET_KEY}
+      - ALLOWED_HOSTS=${ALLOWED_HOSTS}
+      - EMAIL_BACKEND=${EMAIL_BACKEND}
+      - EMAIL_HOST=${EMAIL_HOST}
+      - EMAIL_PORT=${EMAIL_PORT}
+      - EMAIL_USE_TLS=${EMAIL_USE_TLS}
+      - EMAIL_HOST_USER=${EMAIL_HOST_USER}
+      - EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD}
+      - DEFAULT_FROM_EMAIL=${DEFAULT_FROM_EMAIL}
+      - SERVER_EMAIL=${SERVER_EMAIL}
+      - DEBUG=${DEBUG}
     ports:
       - 8000:8000
-    volumes:
-      - "/var/lib/docker/containers:/var/lib/docker/containers:ro"
-      - "/var/run/docker.sock:/var/run/docker.sock:ro"
-      - "/sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro"
-      - "/proc:/hostfs/proc:ro"
-      - "/:/hostfs:ro"
-      - ../..:/workspaces:cached
 
   db:
     image: postgres:latest

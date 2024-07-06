@@ -43,58 +43,59 @@ INSTALLED_APPS = [
     "ft_transcendence.core",
     "django_prometheus",
 
-    "django_elasticsearch_dsl",
-    "django_elasticsearch_dsl_drf",
-    "elasticapm.contrib.django",
+    # "django_elasticsearch_dsl",
+    # "django_elasticsearch_dsl_drf",
+    # "elasticapm.contrib.django",
 ]
 
 # Elasticsearch
 ELASTICSEARCH_DSL = {
-    "default": {"hosts": "elasticsearch:9200"},
+    "default": {"hosts": "https://es01:9200"},
 }
 ELASTIC_APM = {
     'SERVICE_NAME': 'my-service-name',
-    'SECRET_TOKEN': 'eyJ2ZXIiOiI4LjE0LjAiLCJhZHIiOlsiMTkyLjE2OC4zMi4yOjkyMDAiXSwiZmdyIjoiYjg0NTg0YjY0YWNkODk1NzcwNThkODc0ZjAxZWUzMTZmZWMxNzI3NWNkYjhkNGFjOGYyMGQ4ZGQwZTQ1ZTMxOSIsImtleSI6InBpNElnSkFCamVmYnAyV0NJWXJuOlh4NW1WVEszVGltMGVBSl9kQ0ZCS0EifQ==',
-    'SERVER_URL': 'http://localhost:8200',
+    'SECRET_TOKEN': 'AAAAAAAAAAAAAAAAAAAAA',
+    'SERVER_URL': 'https://es01:9200',
     'ENVIRONMENT': 'my-environment',
 }
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'formatters': {
-        'simple': {
-            'format': 'velname)s %(message)s'
-        },
-    },
-    'handlers': {
-        'console': {
-            'level': 'INFO',
-            'class': 'logging.StreamHandler',
-            'formatter': 'simple'
-        },
-        'logstash': {
-            'level': 'WARNING',
-            'class': 'logstash.TCPLogstashHandler',
-            'host': 'localhost',
-            'port': 5959, # Default value: 5959
-            'version': 1, # Version of logstash event schema. Default value: 0 (for backward compatibility of the library)
-            'message_type': 'django',  # 'type' field in logstash message. Default value: 'logstash'.
-            'fqdn': False, # Fully qualified domain name. Default value: false.
-            'tags': ['django.request'], # list of tags. Default: None.
-        },
-    },
-    'loggers': {
-        'django.request': {
-            'handlers': ['logstash'],
-            'level': 'WARNING',
-            'propagate': True,
-        },
-        'django': {
-            'handlers': ['console'],
-            'propagate': True,
-        },
-    }
-}
+
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'formatters': {
+#         'simple': {
+#             'format': 'velname)s %(message)s'
+#         },
+#     },
+#     'handlers': {
+#         'console': {
+#             'level': 'INFO',
+#             'class': 'logging.StreamHandler',
+#             'formatter': 'simple'
+#         },
+#         'logstash': {
+#             'level': 'WARNING',
+#             'class': 'logstash.TCPLogstashHandler',
+#             'host': 'localhost',
+#             'port': 5959, # Default value: 5959
+#             'version': 1, # Version of logstash event schema. Default value: 0 (for backward compatibility of the library)
+#             'message_type': 'django',  # 'type' field in logstash message. Default value: 'logstash'.
+#             'fqdn': False, # Fully qualified domain name. Default value: false.
+#             'tags': ['django.request'], # list of tags. Default: None.
+#         },
+#     },
+#     'loggers': {
+#         'django.request': {
+#             'handlers': ['logstash'],
+#             'level': 'WARNING',
+#             'propagate': True,
+#         },
+#         'django': {
+#             'handlers': ['console'],
+#             'propagate': True,
+#         },
+#     }
+# }
 
 MIDDLEWARE = [
     "django_prometheus.middleware.PrometheusBeforeMiddleware",
@@ -105,7 +106,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "elasticapm.contrib.django.middleware.TracingMiddleware",
+    # "elasticapm.contrib.django.middleware.TracingMiddleware",
 ]
 
 ROOT_URLCONF = "ft_transcendence.urls"

@@ -1,12 +1,8 @@
-FROM python:3.10.14-bookworm
+FROM python:3.12-slim
 
-EXPOSE 8000/tcp
-EXPOSE 8000/udp
+EXPOSE 8000
 
 COPY ./ ./
-RUN ls -ls
-RUN pip install poetry && python -m pip install Django==4.2 && pip install psycopg2-binary && poetry install
-RUN ls -ls
-RUN poetry run python ft_transcendence/manage.py migrate
-RUN poetry run python ft_transcendence/manage.py collectstatic --noinput
-CMD ["poetry run python ft_transcendence/manage.py runserver"]
+RUN pip install requests psycopg2-binary && pip install -r .devcontainer/requirements.txt
+COPY .devcontainer/entrypoint.sh /usr/local/bin/entrypoint.sh
+CMD ["python ft_transcendence/manage.py runserver"]
