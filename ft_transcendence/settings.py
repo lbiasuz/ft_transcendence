@@ -33,10 +33,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 STATIC_URL = 'static/'
 
 STATICFILES_DIRS = [
-    ('static', os.path.join(BASE_DIR, 'ft_transcendence', 'static')), 
+    ('', os.path.join(BASE_DIR, '/static')), 
+    ('pong', 'static/Pong'), 
 ]
-
-STATIC_ROOT = config("STATIC_ROOT", default=os.path.join(BASE_DIR, "static"))
+print(BASE_DIR)
+STATIC_ROOT = config("STATIC_ROOT", default=os.path.join(BASE_DIR, "ft_transcendence/static"))
 
 MEDIA_URL = config("MEDIA_URL", default="media/")
 
