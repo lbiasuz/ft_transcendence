@@ -17,6 +17,8 @@ volumes:
     driver: local
   logappdata:
     driver: local
+  prometheus_data:
+    driver: local
 
 networks:
   ft_transcendence:
@@ -353,3 +355,29 @@ services:
     ports:
       - 8080:80
     restart: on-failure
+
+  prometheus:
+    image: prom/prometheus
+    restart: on-failure
+    volumes:
+      - prometheus_data:/prometheus
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - 9090:9090
+    networks:
+      - ft_transcendence
+
+  grafana:
+    image: grafana/grafana
+    environment:
+      GF_INSTALL_PLUGINS: "grafana-clock-panel,grafana-simple-json-datasource"
+    restart: on-failure
+    volumes:
+      - ./grafana/dashboard.yaml:/etc/grafana/provisioning/dashboards/main.yaml
+      - ./grafana/dashboards:/var/lib/grafana/dashboards
+    ports:
+      - 3000:3000
+    depends_on:
+      - prometheus
+    networks:
+      - ft_transcendence

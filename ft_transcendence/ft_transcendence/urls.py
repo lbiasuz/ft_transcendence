@@ -26,5 +26,5 @@ urlpatterns = [
 	path('logout/', auth_views.LogoutView.as_view(), name='logout'),
 	path('signup/', UserSingUpView.as_view(), name='signup'),
 	path('', HomeView.as_view(), name='home'),
-	path("hjh/", include("django_prometheus.urls"), name="django-prometheus"),
+	path("p/", include("django_prometheus.urls"), name="django-prometheus"),
 ]
