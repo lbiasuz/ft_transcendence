@@ -15,6 +15,8 @@ from pathlib import Path
 from decouple import config, Csv
 from dj_database_url import parse as dburl
 
+from ft_transcendence.logger import CustomisedJSONFormatter
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -42,60 +44,35 @@ INSTALLED_APPS = [
     "ft_transcendence.account",
     "ft_transcendence.core",
     "django_prometheus",
-
-    # "django_elasticsearch_dsl",
-    # "django_elasticsearch_dsl_drf",
-    # "elasticapm.contrib.django",
 ]
 
-# Elasticsearch
-ELASTICSEARCH_DSL = {
-    "default": {"hosts": "https://es01:9200"},
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'simple': {
+            'format': '[%(asctime)s] %(levelname)s|%(name)s|%(message)s',
+            'datefmt': '%Y-%m-%d %H:%M:%S',
+        },
+        "json": {
+            '()': CustomisedJSONFormatter,
+        },
+    },
+    'handlers': {
+        'applogfile': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': Path(BASE_DIR).resolve().joinpath('logs', 'app.log'),
+            'maxBytes': 1024 * 1024 * 15,  # 15MB
+            'backupCount': 10,
+            'formatter': 'json',
+        },
+    },
+    'root': {
+        'handlers': ['applogfile'],
+        'level': 'DEBUG',
+    }
 }
-ELASTIC_APM = {
-    'SERVICE_NAME': 'my-service-name',
-    'SECRET_TOKEN': 'AAAAAAAAAAAAAAAAAAAAA',
-    'SERVER_URL': 'https://es01:9200',
-    'ENVIRONMENT': 'my-environment',
-}
-
-# LOGGING = {
-#     'version': 1,
-#     'disable_existing_loggers': False,
-#     'formatters': {
-#         'simple': {
-#             'format': 'velname)s %(message)s'
-#         },
-#     },
-#     'handlers': {
-#         'console': {
-#             'level': 'INFO',
-#             'class': 'logging.StreamHandler',
-#             'formatter': 'simple'
-#         },
-#         'logstash': {
-#             'level': 'WARNING',
-#             'class': 'logstash.TCPLogstashHandler',
-#             'host': 'localhost',
-#             'port': 5959, # Default value: 5959
-#             'version': 1, # Version of logstash event schema. Default value: 0 (for backward compatibility of the library)
-#             'message_type': 'django',  # 'type' field in logstash message. Default value: 'logstash'.
-#             'fqdn': False, # Fully qualified domain name. Default value: false.
-#             'tags': ['django.request'], # list of tags. Default: None.
-#         },
-#     },
-#     'loggers': {
-#         'django.request': {
-#             'handlers': ['logstash'],
-#             'level': 'WARNING',
-#             'propagate': True,
-#         },
-#         'django': {
-#             'handlers': ['console'],
-#             'propagate': True,
-#         },
-#     }
-# }
 
 MIDDLEWARE = [
     "django_prometheus.middleware.PrometheusBeforeMiddleware",
@@ -106,7 +83,6 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    # "elasticapm.contrib.django.middleware.TracingMiddleware",
 ]
 
 ROOT_URLCONF = "ft_transcendence.urls"
@@ -133,21 +109,16 @@ WSGI_APPLICATION = "ft_transcendence.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-default_dburl = "sqlite:///" + os.path.join(BASE_DIR, "db.sqlite3")
 DATABASES = {
-    "default": config("DATABASE_URL", default=default_dburl, cast=dburl),
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": config("POSTGRES_DB"),
+        "USER": config("POSTGRES_USER"),
+        "PASSWORD": config("POSTGRES_PASSWORD"),
+        "HOST": config("POSTGRES_HOST"),
+        "PORT": config("POSTGRES_PORT"),
+    }
 }
-
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.postgresql",
-#         "NAME": "postgres",
-#         "USER": "postgres",
-#         "PASSWORD": "postgres",
-#         "HOST": "127.0.0.1",
-#         "PORT": "5432",
-#     }
-# }
 
 
 # Password validation

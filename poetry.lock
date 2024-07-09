@@ -445,6 +445,16 @@ qa = ["flake8 (==5.0.4)", "mypy (==0.971)", "types-setuptools (==67.2.0.1)"]
 testing = ["Django", "attrs", "colorama", "docopt", "pytest (<7.0.0)"]
 
 [[package]]
+name = "json-log-formatter"
+version = "1.0"
+description = "JSON log formatter"
+optional = false
+python-versions = ">=3.6"
+files = [
+    {file = "JSON-log-formatter-1.0.tar.gz", hash = "sha256:fda3f943a2cddc4c8b0f06d57db5c53a903a1d4b6fc62416339d109e8c482ef7"},
+]
+
+[[package]]
 name = "loguru"
 version = "0.7.2"
 description = "Python logging made (stupidly) simple"
@@ -1017,4 +1027,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "8d24d91b1a16d90aa1636e39cf7d9857aa5707ac6a4989665901a4caa1b69033"
+content-hash = "645fb4aa7e19008651c94e4716f3c27c4dde3194913155ca4c5abb584e528522"

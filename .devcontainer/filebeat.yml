@@ -1,13 +1,17 @@
 filebeat.inputs:
-- type: filestream
-  id: default-filestream
+- type: log
+  enabled: true
   paths:
-    - ingest_data/*.log
+    - app/*.log
+  fields:
+    level: info
+    event.dataset: ft_transcendence
+  fields_under_root: true
 
-filebeat.autodiscover:
-  providers:
-    - type: docker
-      hints.enabled: true
+#filebeat.autodiscover:
+#  providers:
+#    - type: docker
+#      hints.enabled: true
 
 processors:
 - add_docker_metadata: ~
