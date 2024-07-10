@@ -44,7 +44,15 @@ INSTALLED_APPS = [
     "ft_transcendence.account",
     "ft_transcendence.core",
     "django_prometheus",
+    "elasticapm.contrib.django",
 ]
+
+ELASTIC_APM = {
+    'SERVICE_NAME': 'transcendence',
+    'SERVER_URL': 'http://apm-server:8200',
+    'ENVIRONMENT': config('ENVIRONMENT', default='development'),
+    'DEBUG': True,
+}
 
 LOGGING = {
     'version': 1,
@@ -57,6 +65,9 @@ LOGGING = {
         "json": {
             '()': CustomisedJSONFormatter,
         },
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+        },
     },
     'handlers': {
         'applogfile': {
@@ -67,6 +78,32 @@ LOGGING = {
             'backupCount': 10,
             'formatter': 'json',
         },
+        'elasticapm': {
+            'level': 'WARNING',
+            'class': 'elasticapm.contrib.django.handlers.LoggingHandler',
+        },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose'
+        }
+    },
+    'loggers': {
+        'django.db.backends': {
+            'level': 'ERROR',
+            'handlers': ['console'],
+            'propagate': False,
+        },
+        'ft_transcendence': {
+            'level': 'WARNING',
+            'handlers': ['elasticapm', 'applogfile'],
+            'propagate': False,
+        },
+        'elasticapm.errors': {
+            'level': 'ERROR',
+            'handlers': ['console'],
+            'propagate': False,
+        },
     },
     'root': {
         'handlers': ['applogfile'],
@@ -76,6 +113,8 @@ LOGGING = {
 
 MIDDLEWARE = [
     "django_prometheus.middleware.PrometheusBeforeMiddleware",
+    'elasticapm.contrib.django.middleware.TracingMiddleware',
+    "elasticapm.contrib.django.middleware.Catch404Middleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -98,6 +137,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "elasticapm.contrib.django.context_processors.rum_tracing",
             ],
         },
     },
@@ -115,8 +155,8 @@ DATABASES = {
         "NAME": config("POSTGRES_DB"),
         "USER": config("POSTGRES_USER"),
         "PASSWORD": config("POSTGRES_PASSWORD"),
-        "HOST": config("POSTGRES_HOST"),
-        "PORT": config("POSTGRES_PORT"),
+        "HOST": 'db',
+        "PORT": '5432',
     }
 }
 

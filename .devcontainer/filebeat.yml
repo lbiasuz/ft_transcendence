@@ -5,13 +5,8 @@ filebeat.inputs:
     - app/*.log
   fields:
     level: info
-    event.dataset: ft_transcendence
+    event.dataset: transcendence
   fields_under_root: true
-
-#filebeat.autodiscover:
-#  providers:
-#    - type: docker
-#      hints.enabled: true
 
 processors:
 - add_docker_metadata: ~
@@ -26,5 +21,4 @@ output.elasticsearch:
   username: ${ELASTIC_USER}
   password: ${ELASTIC_PASSWORD}
   ssl:
-    enabled: true
-    certificate_authorities: ${CA_CERT}
+    enabled: false

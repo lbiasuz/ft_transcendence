@@ -1,0 +1,23 @@
+output.elasticsearch:
+  hosts: ["http://es01:9200"]
+  username: "heartbeat_internal"
+  password: ${ELASTIC_PASSWORD}
+
+heartbeat.run_from:
+  id: Geo
+  geo:
+    name: nyc-dc1-rack2
+    location: 40.7128, -74.0060
+    continent_name: North America
+    country_iso_code: US
+    region_name: New York
+    region_iso_code: NY
+    city_name: New York
+
+heartbeat.monitors:
+  - type: http
+    schedule: '@every 5s'
+    urls: ["http://localhost:8000"]
+    service.name: apm-service-name
+    id: transcendance
+    name: Transcendance
