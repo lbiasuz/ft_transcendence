@@ -15,7 +15,6 @@ from pathlib import Path
 from decouple import config, Csv
 from dj_database_url import parse as dburl
 
-from ft_transcendence.logger import CustomisedJSONFormatter
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config("SECRET_KEY", default='')
@@ -34,10 +33,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 STATIC_URL = 'static/'
 
 STATICFILES_DIRS = [
-    ('static', os.path.join(BASE_DIR, 'ft_transcendence', 'static')), 
+    ('', os.path.join(BASE_DIR, '/static')), 
+    ('pong', 'static/Pong'), 
 ]
-
-STATIC_ROOT = config("STATIC_ROOT", default=os.path.join(BASE_DIR, "static"))
+print(BASE_DIR)
+STATIC_ROOT = config("STATIC_ROOT", default=os.path.join(BASE_DIR, "ft_transcendence/static"))
 
 MEDIA_URL = config("MEDIA_URL", default="media/")
 
@@ -66,78 +66,10 @@ INSTALLED_APPS = [
     "django_prometheus",
     "ft_transcendence.account",
     "ft_transcendence.core",
-    "django_prometheus",
-    "elasticapm.contrib.django",
 ]
-
-ELASTIC_APM = {
-    'SERVICE_NAME': 'transcendence',
-    'SERVER_URL': 'http://apm-server:8200',
-    'ENVIRONMENT': config('ENVIRONMENT', default='development'),
-    'DEBUG': True,
-}
-
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'formatters': {
-        'simple': {
-            'format': '[%(asctime)s] %(levelname)s|%(name)s|%(message)s',
-            'datefmt': '%Y-%m-%d %H:%M:%S',
-        },
-        "json": {
-            '()': CustomisedJSONFormatter,
-        },
-        'verbose': {
-            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
-        },
-    },
-    'handlers': {
-        'applogfile': {
-            'level': 'DEBUG',
-            'class': 'logging.handlers.RotatingFileHandler',
-            'filename': Path(BASE_DIR).resolve().joinpath('logs', 'app.log'),
-            'maxBytes': 1024 * 1024 * 15,  # 15MB
-            'backupCount': 10,
-            'formatter': 'json',
-        },
-        'elasticapm': {
-            'level': 'WARNING',
-            'class': 'elasticapm.contrib.django.handlers.LoggingHandler',
-        },
-        'console': {
-            'level': 'DEBUG',
-            'class': 'logging.StreamHandler',
-            'formatter': 'verbose'
-        }
-    },
-    'loggers': {
-        'django.db.backends': {
-            'level': 'ERROR',
-            'handlers': ['console'],
-            'propagate': False,
-        },
-        'ft_transcendence': {
-            'level': 'WARNING',
-            'handlers': ['elasticapm', 'applogfile'],
-            'propagate': False,
-        },
-        'elasticapm.errors': {
-            'level': 'ERROR',
-            'handlers': ['console'],
-            'propagate': False,
-        },
-    },
-    'root': {
-        'handlers': ['applogfile'],
-        'level': 'DEBUG',
-    }
-}
 
 MIDDLEWARE = [
     "django_prometheus.middleware.PrometheusBeforeMiddleware",
-    'elasticapm.contrib.django.middleware.TracingMiddleware',
-    "elasticapm.contrib.django.middleware.Catch404Middleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -160,7 +92,6 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                "elasticapm.contrib.django.context_processors.rum_tracing",
             ],
         },
     },
@@ -171,16 +102,22 @@ WSGI_APPLICATION = "ft_transcendence.wsgi.application"
 
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+default_dburl = "sqlite:///" + os.path.join(BASE_DIR, "db.sqlite3")
+
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": config("POSTGRES_DB"),
-        "USER": config("POSTGRES_USER"),
-        "PASSWORD": config("POSTGRES_PASSWORD"),
-        "HOST": 'db',
-        "PORT": '5432',
-    }
+    "default": config("DATABASE_URL", default=default_dburl, cast=dburl),
 }
+
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql",
+#         "NAME": "postgres",
+#         "USER": "postgres",
+#         "PASSWORD": "postgres",
+#         "HOST": "127.0.0.1",
+#         "PORT": "5432",
+#     }
+# }
 
 
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

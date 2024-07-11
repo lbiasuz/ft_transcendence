@@ -14,17 +14,16 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf import settings
 from django.contrib import admin
 from django.urls import include, path
-from django.contrib.auth import views as auth_views
-from ft_transcendence.account.views import UserSingUpView
+from django.conf.urls.static import static
+
 from ft_transcendence.core.views import HomeView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-	path('login/', auth_views.LoginView.as_view(), name='login'),
-	path('logout/', auth_views.LogoutView.as_view(), name='logout'),
-	path('signup/', UserSingUpView.as_view(), name='signup'),
 	path('', HomeView.as_view(), name='home'),
 	path("p/", include("django_prometheus.urls"), name="django-prometheus"),
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
