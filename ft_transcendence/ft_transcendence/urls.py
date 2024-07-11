@@ -24,6 +24,6 @@ from ft_transcendence.core.views import HomeView
 urlpatterns = [
     path('admin/', admin.site.urls),
 	path('', HomeView.as_view(), name='home'),
-    path("logs/", include("django_prometheus.urls"), name="django-prometheus"),
+	path("p/", include("django_prometheus.urls"), name="django-prometheus"),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

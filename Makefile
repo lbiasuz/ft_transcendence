@@ -41,10 +41,10 @@ build:
 	docker-compose build
 
 up:
-	docker-compose up -d
+	docker-compose -f .devcontainer/docker-compose.yml up --build -d
 
 down:
-	docker-compose down --volumes
+	docker-compose -f .devcontainer/docker-compose.yml down --rmi all -v
 
 logs:
-	docker-compose logs -f
+	@docker-compose logs -f

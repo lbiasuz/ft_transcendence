@@ -1,17 +1,18 @@
-FROM mcr.microsoft.com/vscode/devcontainers/python:3.10
+FROM python:3.12-slim
 
-ENV PYTHONUNBUFFERED 1
+USER root
 
-# [Optional] If your requirements rarely change, uncomment this section to add them to the image.
-# COPY requirements.txt /tmp/pip-tmp/
-# RUN pip3 --disable-pip-version-check --no-cache-dir install -r /tmp/pip-tmp/requirements.txt \
-#    && rm -rf /tmp/pip-tmp
+ADD . /app/
 
-RUN python -m pip install Django==4.2 && pip install psycopg2-binary
+WORKDIR /app/ft_transcendence
 
-# [Optional] Uncomment this section to install additional OS packages.
-# RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
-#     && apt-get -y install --no-install-recommends <your-package-list-here>
+RUN apt update && apt install make
+RUN pip install poetry
 
+ENV PATH="${PATH}:/root/.poetry/bin:$HOME/.poetry/bin/poetry"
 
+RUN poetry install
 
+EXPOSE 8000
+
+CMD ["poetry", "run", "python", "manage.py", "runserver", "0.0.0.0:8000"]

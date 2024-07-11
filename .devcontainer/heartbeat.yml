@@ -1,0 +1,12 @@
+output.elasticsearch:
+  hosts: ["http://es01:9200"]
+  username: "elastic"
+  password: ${ELASTIC_PASSWORD}
+
+heartbeat.monitors:
+  - type: http
+    schedule: '@every 5s'
+    urls: ["http://app:8000"]
+    service.name: transcendance
+    id: transcendance
+    name: Transcendance

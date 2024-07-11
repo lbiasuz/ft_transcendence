@@ -1,36 +1,279 @@
-version: '3.8'
+volumes:
+  esdata01:
+    driver: local
+  kibanadata:
+    driver: local
+  metricbeatdata01:
+    driver: local
+  filebeatdata01:
+    driver: local
+  logstashdata01:
+    driver: local
+  postgres-data:
+    driver: local
+  logappdata:
+    driver: local
+  prometheus_data:
+    driver: local
+
+networks:
+  ft_transcendence:
+    driver: bridge
 
 services:
+
+  es01:
+    image: docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION}
+    labels:
+      co.elastic.logs/module: elasticsearch
+    networks:
+      - ft_transcendence
+    volumes:
+      - esdata01:/usr/share/elasticsearch/data
+    ports:
+      - ${ES_PORT}:9200
+    environment:
+      - node.name=es01
+      - cluster.name=es-docker-cluster
+      - discovery.type=single-node
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+      - ELASTIC_USERNAME=elastic
+      - xpack.license.self_generated.type=${LICENSE}
+      - xpack.security.enabled=true
+    mem_limit: ${ES_MEM_LIMIT}
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:9200" ]
+
+  kibana:
+    depends_on:
+      es01:
+        condition: service_started
+    image: docker.elastic.co/kibana/kibana:${STACK_VERSION}
+    labels:
+      co.elastic.logs/module: kibana
+    networks:
+      - ft_transcendence
+    volumes:
+      - kibanadata:/usr/share/kibana/data
+      - ./kibana.yml:/usr/share/kibana/config/kibana.yml:ro
+    ports:
+      - ${KIBANA_PORT}:5601
+    environment:
+      - SERVERNAME=kibana
+      - ELASTICSEARCH_HOSTS=http://es01:9200
+      - ELASTICSEARCH_USERNAME=elastic
+      - ELASTICSEARCH_PASSWORD=${ELASTIC_PASSWORD}
+      - XPACK_SECURITY_ENCRYPTIONKEY=${ENCRYPTION_KEY}
+      - XPACK_ENCRYPTEDSAVEDOBJECTS_ENCRYPTIONKEY=${ENCRYPTION_KEY}
+      - XPACK_REPORTING_ENCRYPTIONKEY=${ENCRYPTION_KEY}
+      - XPACK_REPORTING_KIBANASERVER_HOSTNAME=localhost
+      - ELASTIC_APM_SECRET_TOKEN=${ELASTIC_APM_SECRET_TOKEN}
+    mem_limit: ${KB_MEM_LIMIT}
+
+  metricbeat01:
+    depends_on:
+      es01:
+        condition: service_started
+      kibana:
+        condition: service_started
+    image: docker.elastic.co/beats/metricbeat:${STACK_VERSION}
+    user: root
+    networks:
+      - ft_transcendence
+    volumes:
+      - metricbeatdata01:/usr/share/metricbeat/data
+      - "./metricbeat.yml:/usr/share/metricbeat/metricbeat.yml:ro"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "/sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro"
+      - "/proc:/hostfs/proc:ro"
+      - "/:/hostfs:ro"
+    environment:
+      - ELASTIC_USER=elastic
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+      - ELASTIC_HOSTS=http://es01:9200
+      - KIBANA_HOSTS=http://kibana:5601
+      - LOGSTASH_HOSTS=http://logstash01:9600
+    command:
+      -strict.perms=false
+
+  filebeat01:
+    depends_on:
+      es01:
+        condition: service_started
+    image: docker.elastic.co/beats/filebeat:${STACK_VERSION}
+    user: root
+    networks:
+      - ft_transcendence
+    volumes:
+      - logappdata:/usr/share/filebeat/app/
+      - filebeatdata01:/usr/share/filebeat/data
+      - "./filebeat_ingest_data/:/usr/share/filebeat/ingest_data/"
+      - "./filebeat.yml:/usr/share/filebeat/filebeat.yml:ro"
+      - "/var/lib/docker/containers:/var/lib/docker/containers:ro"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    environment:
+      - ELASTIC_USER=elastic
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+      - ELASTIC_HOSTS=http://es01:9200
+      - KIBANA_HOSTS=http://kibana:5601
+      - LOGSTASH_HOSTS=http://logstash01:9600
+    command:
+      -strict.perms=false
+
+  logstash01:
+    depends_on:
+      es01:
+        condition: service_started
+      kibana:
+        condition: service_started
+    image: docker.elastic.co/logstash/logstash:${STACK_VERSION}
+    labels:
+      co.elastic.logs/module: logstash
+    user: root
+    networks:
+      - ft_transcendence
+    volumes:
+      - logstashdata01:/usr/share/logstash/data
+      - "./logstash_ingest_data/:/usr/share/logstash/ingest_data/"
+      - "./logstash.conf:/usr/share/logstash/pipeline/logstash.conf:ro"
+    environment:
+      - xpack.monitoring.enabled=false
+      - ELASTIC_USER=elastic
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+      - ELASTIC_HOSTS=http://es01:9200
+
+  apm-server:
+    depends_on:
+      kibana:
+        condition: service_started
+      es01:
+        condition: service_started
+    image: docker.elastic.co/apm/apm-server:${STACK_VERSION}
+    ports:
+      - 8200:8200
+    networks:
+      - ft_transcendence
+    user: root
+    command: >
+      apm-server -e
+        -E apm-server.rum.enabled=true
+        -E output.elasticsearch.password=${ELASTIC_PASSWORD}
+        -E output.elasticsearch.username=elastic
+        -E setup.kibana.host=http://kibana:5601
+        -E setup.template.settings.index.number_of_replicas=0
+        -E apm-server.kibana.enabled=true
+        -E apm-server.kibana.host=http://kibana:5601
+        -E apm-server.auth.anonymous.enabled=true
+        -E apm-server.rum.enabled=true
+        -E output.elasticsearch.hosts=["http://es01:9200"]
+    healthcheck:
+      interval: 10s
+      retries: 12
+      test: curl --write-out 'HTTP %{http_code}' --fail --silent --output /dev/null http://localhost:8200/
+
+  heartbeat:
+    depends_on:
+      kibana:
+        condition: service_started
+      es01:
+        condition: service_started
+    image: docker.elastic.co/beats/heartbeat:${STACK_VERSION}
+    user: root
+    volumes:
+      - ./heartbeat.yml:/usr/share/heartbeat/heartbeat.yml:ro
+    environment:
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+    networks:
+      - ft_transcendence
+    command:
+      -strict.perms=false
+
   app:
     build:
-      context: ..
+      context: ../
       dockerfile: .devcontainer/Dockerfile
-
     volumes:
-      - ../..:/workspaces:cached
-
-    # Overrides default command so things don't shut down after the process ends.
-    command: sleep infinity
-
-    # Runs app on the same network as the database container, allows "forwardPorts" in devcontainer.json function.
-    network_mode: service:db
-
-    # Use "forwardPorts" in **devcontainer.json** to forward an app port locally.
-    # (Adding the "ports" property to this file will not forward from a Codespace.)
+      - logappdata:/app/ft_transcendence/logs
+    networks:
+      - ft_transcendence
+    environment:
+      - SECRET_KEY=${SECRET_KEY}
+      - ALLOWED_HOSTS=${ALLOWED_HOSTS}
+      - EMAIL_BACKEND=${EMAIL_BACKEND}
+      - EMAIL_HOST=${EMAIL_HOST}
+      - EMAIL_PORT=${EMAIL_PORT}
+      - EMAIL_USE_TLS=${EMAIL_USE_TLS}
+      - EMAIL_HOST_USER=${EMAIL_HOST_USER}
+      - EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD}
+      - DEFAULT_FROM_EMAIL=${DEFAULT_FROM_EMAIL}
+      - SERVER_EMAIL=${SERVER_EMAIL}
+      - DEBUG=${DEBUG}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}
+    ports:
+      - 8000:8000
 
   db:
-    image: postgres:latest
-    restart: unless-stopped
+    image: postgres:15
+    container_name: postgres
+    restart: on-failure
+    networks:
+      - ft_transcendence
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}" ]
+    ports:
+      - 5432:5432
     volumes:
       - postgres-data:/var/lib/postgresql/data
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_DB: postgres
-      POSTGRES_PASSWORD: postgres
-      PGPORT: 5432
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
 
-    # Add "forwardPorts": ["5432"] to **devcontainer.json** to forward PostgreSQL locally.
-    # (Adding the "ports" property to this file will not forward from a Codespace.)
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin4
+    networks:
+      - ft_transcendence
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${POSTGRES_PASSWORD}
+    ports:
+      - 8080:80
+    restart: on-failure
 
-volumes:
-  postgres-data:
+  prometheus:
+    image: prom/prometheus
+    restart: on-failure
+    volumes:
+      - prometheus_data:/prometheus
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - 9090:9090
+    networks:
+      - ft_transcendence
+
+  grafana:
+    image: grafana/grafana:latest
+    environment:
+      - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-simple-json-datasource
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+      - ELASTIC_USER=elastic
+      - POSTGRES_USER=${POSTGRES_USER}
+    restart: on-failure
+    volumes:
+      - ./grafana/dashboard.yaml:/etc/grafana/provisioning/dashboards/main.yaml
+      - ./grafana/dashboards:/var/lib/grafana/dashboards
+      - ./grafana/automatic.yaml:/etc/grafana/provisioning/datasources/automatic.yaml
+    ports:
+      - 3000:3000
+    depends_on:
+      - prometheus
+    networks:
+      - ft_transcendence
