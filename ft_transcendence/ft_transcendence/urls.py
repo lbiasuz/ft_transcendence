@@ -19,11 +19,18 @@ from django.contrib import admin
 from django.urls import include, path
 from django.conf.urls.static import static
 
-from ft_transcendence.core.views import HomeView
+from rest_framework import router
+
+from ft_transcendence.core.views import AuthView, HomeView
+from ft_transcendence.account.views import UserView
+
+core_router = router.Router()
+core_router.register('/user/', UserView.as_view())
 
 urlpatterns = [
     path('admin/', admin.site.urls),
 	path('', HomeView.as_view(), name='home'),
+    path('sso/', AuthView.as_view(), name='sso'),
 	path("p/", include("django_prometheus.urls"), name="django-prometheus"),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

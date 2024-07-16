@@ -33,8 +33,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 STATIC_URL = 'static/'
 
 STATICFILES_DIRS = [
-    ('', os.path.join(BASE_DIR, '/static')), 
-    ('pong', 'static/Pong'), 
+    ('', os.path.join(BASE_DIR, '/static')),
+    ('pong', 'static/Pong'),
 ]
 print(BASE_DIR)
 STATIC_ROOT = config("STATIC_ROOT", default=os.path.join(BASE_DIR, "ft_transcendence/static"))
@@ -170,3 +170,6 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ]
 }
+
+CLIENT_ID = config("INTRA_CLIENT_ID")
+CLIENT_SECRET = config("INTRA_CLIENT_SECRET")

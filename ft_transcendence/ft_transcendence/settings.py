@@ -34,7 +34,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 STATIC_URL = 'static/'
 
 STATICFILES_DIRS = [
-    ('static', os.path.join(BASE_DIR, 'ft_transcendence', 'static')), 
+    ('static', os.path.join(BASE_DIR, 'ft_transcendence', 'static')),
 ]
 
 STATIC_ROOT = config("STATIC_ROOT", default=os.path.join(BASE_DIR, "static"))
@@ -64,10 +64,9 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "django_prometheus",
+    "elasticapm.contrib.django",
     "ft_transcendence.account",
     "ft_transcendence.core",
-    "django_prometheus",
-    "elasticapm.contrib.django",
 ]
 
 ELASTIC_APM = {
@@ -145,6 +144,11 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+]
+
+AUTHENTICATION_BACKENDS = [
+    'rest_framework.authentication.SessionAuthentication',
+    'ft_transcendence.core.authentication.Intra42Authentication',
 ]
 
 ROOT_URLCONF = "ft_transcendence.urls"
@@ -231,5 +235,9 @@ REST_FRAMEWORK = {
     # or allow read-only access for unauthenticated users.
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+        'ft_transcendence.core.authentication.Intra42Authentication',
     ]
 }
