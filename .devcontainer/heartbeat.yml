@@ -3,6 +3,9 @@ output.elasticsearch:
   username: "elastic"
   password: ${ELASTIC_PASSWORD}
 
+http:
+  enabled: true
+
 heartbeat.monitors:
   - type: http
     schedule: '@every 5s'

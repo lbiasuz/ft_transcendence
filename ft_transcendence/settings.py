@@ -170,6 +170,3 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ]
 }
-
-CLIENT_ID = config("INTRA_CLIENT_ID")
-CLIENT_SECRET = config("INTRA_CLIENT_SECRET")

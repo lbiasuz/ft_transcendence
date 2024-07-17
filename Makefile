@@ -38,13 +38,14 @@ exit:
 	exit
 
 build:
-	docker-compose build
+	@docker-compose -f .devcontainer/docker-compose build
 
 up:
-	docker-compose -f .devcontainer/docker-compose.yml up --build -d
+	docker-compose -f .devcontainer/docker-compose.yml build
+	docker-compose -f .devcontainer/docker-compose.yml up -d
 
 down:
 	docker-compose -f .devcontainer/docker-compose.yml down --rmi all -v
 
 logs:
-	@docker-compose logs -f
+	@docker-compose logs -f .devcontainer/docker-compose.yml
