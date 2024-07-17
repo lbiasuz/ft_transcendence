@@ -22,7 +22,7 @@ runserver:
 
 migrations:
 	poetry run python ft_transcendence/manage.py makemigrations
-	
+
 migrate:
 	poetry run python ft_transcendence/manage.py migrate
 
@@ -44,8 +44,22 @@ up:
 	docker-compose -f .devcontainer/docker-compose.yml build
 	docker-compose -f .devcontainer/docker-compose.yml up -d
 
+up:
+	docker compose -f .devcontainer/docker-compose.yml up -d
+
+stop:
+	docker compose -f .devcontainer/docker-compose.yml stop
+
 down:
-	docker-compose -f .devcontainer/docker-compose.yml down --rmi all -v
+	docker compose -f .devcontainer/docker-compose.yml down
+
+rmi:
+	docker compose -f .devcontainer/docker-compose.yml down --rmi all -v
+
+ps:
+	docker compose -f .devcontainer/docker-compose.yml ps
+
+restart: down up
 
 logs:
 	@docker-compose logs -f .devcontainer/docker-compose.yml
