@@ -13,3 +13,4 @@ htmlcov
 .env
 .vscode/
 .DS_Store
+.idea

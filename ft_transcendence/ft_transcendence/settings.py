@@ -13,9 +13,10 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 import os
 from pathlib import Path
 from decouple import config, Csv
-from dj_database_url import parse as dburl
 
 from ft_transcendence.logger import CustomisedJSONFormatter
+
+ENV = config('ENV', default='dev')
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config("SECRET_KEY", default='')
@@ -76,6 +77,7 @@ ELASTIC_APM = {
     'DEBUG': True,
 }
 
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -92,23 +94,11 @@ LOGGING = {
         },
     },
     'handlers': {
-        'applogfile': {
-            'level': 'DEBUG',
-            'class': 'logging.handlers.RotatingFileHandler',
-            'filename': Path(BASE_DIR).resolve().joinpath('logs', 'app.log'),
-            'maxBytes': 1024 * 1024 * 15,  # 15MB
-            'backupCount': 10,
-            'formatter': 'json',
-        },
-        'elasticapm': {
-            'level': 'WARNING',
-            'class': 'elasticapm.contrib.django.handlers.LoggingHandler',
-        },
         'console': {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
             'formatter': 'verbose'
-        }
+        },
     },
     'loggers': {
         'django.db.backends': {
@@ -116,6 +106,26 @@ LOGGING = {
             'handlers': ['console'],
             'propagate': False,
         },
+    },
+}
+
+if ENV != 'dev':
+    LOGGING["handlers"].update({
+            "applogfile": {
+                "level": "DEBUG",
+                "class": "logging.handlers.RotatingFileHandler",
+                "filename": Path(BASE_DIR).resolve().joinpath("logs", "app.log"),
+                "maxBytes": 1024 * 1024 * 15,  # 15MB
+                "backupCount": 10,
+                "formatter": "json",
+            },
+            "elasticapm": {
+                "level": "WARNING",
+                "class": "elasticapm.contrib.django.handlers.LoggingHandler",
+            },
+        }
+    )
+    LOGGING["loggers"].update({
         'ft_transcendence': {
             'level': 'WARNING',
             'handlers': ['elasticapm', 'applogfile'],
@@ -126,12 +136,14 @@ LOGGING = {
             'handlers': ['console'],
             'propagate': False,
         },
-    },
-    'root': {
-        'handlers': ['applogfile'],
-        'level': 'DEBUG',
-    }
-}
+    })
+    LOGGING.update({
+        'root': {
+            'handlers': ['applogfile'],
+            'level': 'DEBUG',
+        }
+    })
+
 
 MIDDLEWARE = [
     "django_prometheus.middleware.PrometheusBeforeMiddleware",
@@ -181,7 +193,7 @@ DATABASES = {
         "NAME": config("POSTGRES_DB"),
         "USER": config("POSTGRES_USER"),
         "PASSWORD": config("POSTGRES_PASSWORD"),
-        "HOST": 'db',
+        "HOST": 'localhost' if ENV == 'dev' else 'db',
         "PORT": '5432',
     }
 }
@@ -241,3 +253,6 @@ REST_FRAMEWORK = {
         'ft_transcendence.core.authentication.Intra42Authentication',
     ]
 }
+
+CLIENT_ID = config("INTRA_CLIENT_ID", default='')
+CLIENT_SECRET = config("INTRA_CLIENT_SECRET", default='')

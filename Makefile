@@ -1,4 +1,8 @@
 # Description: Makefile for Django project
+
+DOCKER_CMD = docker-compose
+COMPOSE_FILE = .devcontainer/docker-compose-dev.yml
+
 setup:
 	pipx install poetry
 
@@ -38,28 +42,25 @@ exit:
 	exit
 
 build:
-	@docker-compose -f .devcontainer/docker-compose build
+	$(DOCKER_CMD) -f $(COMPOSE_FILE) build
 
 up:
-	docker-compose -f .devcontainer/docker-compose.yml build
-	docker-compose -f .devcontainer/docker-compose.yml up -d
-
-up:
-	docker compose -f .devcontainer/docker-compose.yml up -d
+	$(DOCKER_CMD) -f $(COMPOSE_FILE) build
+	$(DOCKER_CMD) -f $(COMPOSE_FILE) up -d
 
 stop:
-	docker compose -f .devcontainer/docker-compose.yml stop
+	$(DOCKER_CMD) -f $(COMPOSE_FILE) stop
 
 down:
-	docker compose -f .devcontainer/docker-compose.yml down
+	$(DOCKER_CMD) -f $(COMPOSE_FILE) down
 
 rmi:
-	docker compose -f .devcontainer/docker-compose.yml down --rmi all -v
+	$(DOCKER_CMD) -f $(COMPOSE_FILE) down --rmi all -v
 
 ps:
-	docker compose -f .devcontainer/docker-compose.yml ps
+	$(DOCKER_CMD) -f $(COMPOSE_FILE) ps
 
 restart: down up
 
 logs:
-	@docker-compose logs -f .devcontainer/docker-compose.yml
+	$(DOCKER_CMD) -f $(COMPOSE_FILE) logs

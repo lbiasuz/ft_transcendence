@@ -24,8 +24,8 @@ from rest_framework import routers
 from ft_transcendence.core.views import AuthView, HomeView
 from ft_transcendence.account.views import UserView
 
-core_router = routers.SimpleRouter()
-core_router.register('user', UserView.as_view())
+# core_router = routers.SimpleRouter()
+# core_router.register('user', UserView.as_view())
 
 urlpatterns = [
     path('admin/', admin.site.urls),

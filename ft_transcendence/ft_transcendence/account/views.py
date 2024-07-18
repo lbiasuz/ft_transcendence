@@ -8,5 +8,5 @@ class UserView(APIView):
   authentication_classes = [SessionAuthentication]
   permission_classes = [IsAuthenticated]
 
-  def get(self, request, *args, **kwargs):
-    return ("")
+  # def get(self, request, *args, **kwargs):
+  #   return ("")
