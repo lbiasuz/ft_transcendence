@@ -31,11 +31,11 @@ migrate:
 	poetry run python ft_transcendence/manage.py migrate
 
 coverage:
-	poetry run coverage run --source='.' ft_transcendence/manage.py test
+	poetry run coverage run --source='.' ft_transcendence/manage.py test ft_transcendence
 	poetry run coverage report
 
 coverage-html:
-	poetry run coverage run --source='.' ft_transcendence/manage.py test
+	poetry run coverage run --source='.' ft_transcendence/manage.py test ft_transcendence
 	poetry run coverage html
 
 exit:

@@ -74,7 +74,7 @@ ELASTIC_APM = {
     'SERVICE_NAME': 'transcendence',
     'SERVER_URL': 'http://apm-server:8200',
     'ENVIRONMENT': config('ENVIRONMENT', default='development'),
-    'DEBUG': True,
+    'DEBUG': False,
 }
 
 
@@ -160,7 +160,6 @@ MIDDLEWARE = [
 
 AUTHENTICATION_BACKENDS = [
     'rest_framework.authentication.SessionAuthentication',
-    'ft_transcendence.core.authentication.Intra42Authentication',
 ]
 
 ROOT_URLCONF = "ft_transcendence.urls"
@@ -243,14 +242,11 @@ JAZZMIN_SETTINGS = {
 }
 
 REST_FRAMEWORK = {
-    # Use Django's standard `django.contrib.auth` permissions,
-    # or allow read-only access for unauthenticated users.
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+        'rest_framework.permissions.IsAuthenticated',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication',
-        'ft_transcendence.core.authentication.Intra42Authentication',
     ]
 }
 
