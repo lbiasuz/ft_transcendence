@@ -54,8 +54,14 @@ class AuthView(HomeView):
                         user.set_unusable_password()
                         user.save()
 
+                        user.profile.avatar = user_data["image"]["link"]
+                        user.profile.full_name = user_data["usual_full_name"]
+                        user.profile.save()
+
+                    # user.profile.phone = user_data["phone"]
+
                     login(request, user)
-                    
+
                     return HttpResponseRedirect(reverse('home'))
                 else:
                     logger.error(f"Failed to get user data: {user_resp.content}")

@@ -1,6 +1,6 @@
 # Description: Makefile for Django project
 
-DOCKER_CMD = docker-compose
+DOCKER_CMD = docker compose
 COMPOSE_FILE = .devcontainer/docker-compose-dev.yml
 
 setup:

@@ -12,9 +12,13 @@ class Profile(AbstractBaseModel):
     )
 
     avatar = models.ImageField(verbose_name=_("Avatar"), upload_to="avatars/", null=True, blank=True)
+
+    full_name = models.CharField(verbose_name=_("Nome completo"), max_lenght=100, null=True, blank=True)
+
     matches = models.IntegerField(default=0)
     matches_won = models.IntegerField(default=0)
 
+    # phone = models.CharField(verbose_name=_("Telefone:"), max_lenght=15, null=True, blank=True)
     # friends = models.ManyToManyField('self', blank=True)
     # friend_requests = models.ManyToManyField('self', blank=True)
 
