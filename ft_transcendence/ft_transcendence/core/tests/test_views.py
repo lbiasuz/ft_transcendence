@@ -21,7 +21,17 @@ class AuthViewTestCase(TestCase):
         return_value=create_mock_response(200, {"access_token": "mock_token"}),
     )
     @patch(
-        "requests.get", return_value=create_mock_response(200, {"login": "mock_user"})
+        "requests.get",
+        return_value=create_mock_response(
+            200,
+            {
+                "login": "mock_user",
+                "email": "mock_email",
+                "image": {"link": "mock_link"},
+                "phone": "mock_phone",
+                "usual_full_name": "mock_full_name",
+            },
+        ),
     )
     @patch("ft_transcendence.core.views.login", return_value=None)
     def test_auth_view_success(self, post_mock, get_mock, login_mock):

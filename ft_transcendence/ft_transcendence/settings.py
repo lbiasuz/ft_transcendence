@@ -159,7 +159,7 @@ MIDDLEWARE = [
 ]
 
 AUTHENTICATION_BACKENDS = [
-    'rest_framework.authentication.SessionAuthentication',
+    "django.contrib.auth.backends.ModelBackend"
 ]
 
 ROOT_URLCONF = "ft_transcendence.urls"

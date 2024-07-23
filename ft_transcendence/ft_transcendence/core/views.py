@@ -37,7 +37,7 @@ class AuthView(HomeView):
                     "grant_type": "authorization_code",
                     "client_id": CLIENT_ID,
                     "client_secret": CLIENT_SECRET,
-                    "code":code,
+                    "code": code,
                     "redirect_uri": 'http://localhost:8000/sso',
                 },
             )
@@ -47,18 +47,25 @@ class AuthView(HomeView):
                     "https://api.intra.42.fr/v2/me",
                     headers={"Authorization": f"Bearer {token}"},
                 )
-                if user_resp.status_code == 200:
+                if user_resp.ok:
                     user_data = user_resp.json()
                     user, created = User.objects.get_or_create(username=user_data['login'])
                     if created:
                         user.set_unusable_password()
+                        user.email = user_data['email']
                         user.save()
 
-                        user.profile.avatar = user_data["image"]["link"]
-                        user.profile.full_name = user_data["usual_full_name"]
-                        user.profile.save()
+                        if user_data["image"]["link"]:     
+                            photo_resp = requests.get(user_data["image"]["link"])
+                            if photo_resp.ok:
+                                user.profile.avatar.save(f"{user_data['login']}.jpg", photo_resp.content)
 
-                    # user.profile.phone = user_data["phone"]
+                        user.profile.url = user_data["url"]
+                    
+                        # user.profile.full_name = user_data["usual_full_name"]
+                        # user.profile.phone = user_data["phone"]
+                        
+                    user.profile.save()
 
                     login(request, user)
 
