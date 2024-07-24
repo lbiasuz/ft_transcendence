@@ -1,17 +1,16 @@
 FROM python:3.12-slim
 
 USER root
-
-ADD . /app/
-
-WORKDIR /app/ft_transcendence
-
-RUN apt update && apt install make
 RUN pip install poetry
-
 ENV PATH="${PATH}:/root/.poetry/bin:$HOME/.poetry/bin/poetry"
 
+WORKDIR /app
+COPY pyproject.toml /app/
+COPY poetry.lock /app/
 RUN poetry install
+
+ADD . /app/
+WORKDIR /app/ft_transcendence
 
 EXPOSE 8000
 

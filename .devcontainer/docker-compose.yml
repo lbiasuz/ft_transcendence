@@ -191,11 +191,20 @@ services:
       - ft_transcendence
     command:
       -strict.perms=false
+    healthcheck:
+      interval: 10s
+      retries: 12
+      test: ["CMD", "curl", "-XGET", "-f", "http://localhost:5066/stats"]
 
   app:
     build:
       context: ../
       dockerfile: .devcontainer/Dockerfile
+    depends_on:
+      heartbeat:
+        condition: service_healthy
+      db:
+        condition: service_healthy
     volumes:
       - logappdata:/app/ft_transcendence/logs
     networks:

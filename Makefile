@@ -1,4 +1,8 @@
 # Description: Makefile for Django project
+
+DOCKER_CMD = docker compose
+COMPOSE_FILE = .devcontainer/docker-compose-dev.yml
+
 setup:
 	pipx install poetry
 
@@ -22,29 +26,41 @@ runserver:
 
 migrations:
 	poetry run python ft_transcendence/manage.py makemigrations
-	
+
 migrate:
 	poetry run python ft_transcendence/manage.py migrate
 
 coverage:
-	poetry run coverage run --source='.' ft_transcendence/manage.py test
+	poetry run coverage run --source='.' ft_transcendence/manage.py test ft_transcendence
 	poetry run coverage report
 
 coverage-html:
-	poetry run coverage run --source='.' ft_transcendence/manage.py test
+	poetry run coverage run --source='.' ft_transcendence/manage.py test ft_transcendence
 	poetry run coverage html
 
 exit:
 	exit
 
 build:
-	docker-compose build
+	$(DOCKER_CMD) -f $(COMPOSE_FILE) build
 
 up:
-	docker-compose -f .devcontainer/docker-compose.yml up --build -d
+	$(DOCKER_CMD) -f $(COMPOSE_FILE) build
+	$(DOCKER_CMD) -f $(COMPOSE_FILE) up -d
+
+stop:
+	$(DOCKER_CMD) -f $(COMPOSE_FILE) stop
 
 down:
-	docker-compose -f .devcontainer/docker-compose.yml down --rmi all -v
+	$(DOCKER_CMD) -f $(COMPOSE_FILE) down
+
+rmi:
+	$(DOCKER_CMD) -f $(COMPOSE_FILE) down --rmi all -v
+
+ps:
+	$(DOCKER_CMD) -f $(COMPOSE_FILE) ps
+
+restart: down up
 
 logs:
-	@docker-compose logs -f
+	$(DOCKER_CMD) -f $(COMPOSE_FILE) logs
