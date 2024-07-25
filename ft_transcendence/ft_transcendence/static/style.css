@@ -1,0 +1,233 @@
+:root {
+
+    font-size: 13px;
+    font-family: "Rubik", sans-serif;
+
+    /* Game White Colors */
+    --game-white-color-base: #FBF9D3;
+    --game-white-color-muted: #64645E;
+
+    /* Game Dark Colors */
+    --game-dark-color-deep: #1A1817;
+    --game-dark-color-base: #201E1C;
+    --game-dark-color-action: #3D3630;
+    --game-dark-color-hover: #6A6058;
+
+    /* Default Config */
+    --bs-body-bg: var(--game-dark-color-base);
+    --bs-body-color: var(--game-white-color-base);
+    * {
+        color: var(--game-white-color-base);
+        border-radius: 4px;
+    }
+
+}
+
+
+body {
+    background-image: url("img/bg-transparent-particles.gif");
+    background-size: 350px;
+}
+
+.game {
+    height: 100% !important;
+    width: 100% !important;
+    /* background-color: rgba(28, 32, 28, 0.7); */
+}
+
+footer {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+
+/* Logo */
+.logo {
+    text-transform: uppercase;
+    font-size: 3.3rem;
+    font-weight: 600;
+}
+
+/* Titles */
+
+h1, h2 {
+    padding-top: .5rem;
+    padding-bottom: .5rem;
+    text-transform: uppercase;
+}
+
+h1 {
+    font-size: 1.5rem;
+    background-color: var(--game-dark-color-deep);
+}
+
+h2 {
+    font-size: 1rem;
+}
+
+/* Buttons */
+.btn {
+    width: 16.5rem;
+    height: 3.5rem;
+    text-transform: uppercase;
+    font-weight: 500;
+}
+.btn-game-input {
+    --bs-btn-bg: var(--game-dark-color-action);
+    --bs-btn-border-color: var(--game-dark-color-action);
+    --bs-btn-hover-bg: var(--game-dark-color-hover);
+    --bs-btn-hover-border-color: var(--game-dark-color-hover);
+    --bs-btn-active-bg: var(--game-dark-color-hover);
+    --bs-btn-active-border-color: var(--game-dark-color-hover);
+}
+
+/* Game Setup Buttons Group */
+
+.game-setup span {
+    font-size: 1rem;
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-right: 1rem;
+}
+
+.btn-group-options .btn-option, 
+.btn-color-selection .btn-option{     
+    color: var(--game-white-color-muted);
+    background-color: var(--game-dark-color-action);
+    border: none;
+}
+
+.btn-group-options .btn-option {
+    width: 5rem;
+}
+.btn-group-options .btn-option:hover,
+.btn-group-options .btn-option:active {
+    background-color: var(--game-dark-color-hover);
+    color: var(--game-white-color-base);
+}
+.btn-group-options .btn-option.active {
+    border: none;
+    color: var(--game-white-color-base);
+}
+
+.btn-color-selection .btn-option {
+    width: 5rem;
+    border-radius: 4px !important;
+    cursor: initial;
+}
+.btn-color-selection .btn-arrow {
+    width: 1.5rem;
+    padding-left: .5rem;
+    padding-right: .5rem;
+    cursor: pointer;
+}
+.btn-color-selection .btn-color {
+    width: 4rem;
+}
+.btn-color-selection .btn-color > span{
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    background-color: red;
+}
+.btn-color-selection .btn-color:active {
+    background-color: var(--game-dark-color-action);
+}
+.btn-color-selection .btn-arrow:hover,
+.btn-color-selection .btn-arrow:active {
+    background-color: var(--game-dark-color-hover);
+    color: var(--game-white-color-base);
+}
+.btn-color-selection .btn-arrow:first-child {
+    margin-right: .5rem;
+}
+.btn-color-selection .btn-arrow:last-child {
+    margin-left: .5rem !important;
+}
+
+/* Navbar User */
+.nav-user img {
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 50%;
+    margin-right: 1rem;
+}
+.nav-user a {
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+/* Inputs */
+input[type=text] {
+    /* width: 16.5rem; */
+    height: 3.5rem;
+    text-align: center;
+    font-weight: 500;
+    font-size: 1rem;
+    border: none;
+    outline: none;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    background-color: var(--game-dark-color-deep);
+}
+
+input[type=text]::placeholder {
+    text-transform: uppercase;
+    font-weight: 500;
+}
+
+/* Navbar Languages */
+.nav-languages {
+    margin-left: 2rem;
+    padding-top: .3rem;
+}
+.nav-languages.dropdown img, 
+.nav-languages .dropdown-menu img  {
+    width: 2rem;
+    height: 2rem;
+    vertical-align: middle;
+}
+
+.nav-languages .dropdown-menu img {
+    opacity: .65;
+}
+.nav-languages .dropdown-item:hover img,
+.nav-languages .dropdown-item:active img {
+    opacity: 1;
+}
+
+.nav-languages .dropdown-menu {
+    background: none;
+    border: none;
+}
+
+.nav-languages .dropdown-item {
+    padding: 0.1rem;
+    max-width: 3rem;
+    background: none;
+}
+
+footer {
+    padding: 1rem;
+    background-color: var(--game-dark-color-deep);
+}
+
+.authors span {
+    display: inline-block;
+    color: var(--game-white-color-muted);
+    padding-top: .5rem;
+    padding-bottom: .5rem;
+}
+.authors ul li {
+    text-transform: uppercase;
+    display: inline-block;
+}
+.authors ul li::after {
+    content: " - ";
+    padding-left: .5rem;
+    padding-right: .5rem;
+    color: var(--game-dark-color-hover);
+}
+.authors ul li:last-of-type::after {
+    content: "";
+}

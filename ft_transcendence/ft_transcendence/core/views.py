@@ -1,8 +1,9 @@
 import logging
 import requests
+from django.shortcuts import redirect
 
 from django.urls import reverse
-from django.http import HttpResponseRedirect, HttpResponseBadRequest
+from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.views.generic import TemplateView
 from django.contrib.auth import login
 from django.contrib.auth.models import User
@@ -14,7 +15,8 @@ logger = logging.getLogger(__name__)
 class HomeView(TemplateView):
     template_name = "index.html"
 
-class AuthView(HomeView):
+
+class AuthView(TemplateView):
     """
     View for handling authentication.
 
@@ -30,6 +32,8 @@ class AuthView(HomeView):
     """
 
     def get(self, request, *args, **kwargs):
+        logger.info("iniciando autenticacion")
+        request.COOKIES.get('sessionid', None)
         if code := request.GET.get('code', None):
             token_resp = requests.post(
                 "https://api.intra.42.fr/oauth/token",
@@ -55,16 +59,16 @@ class AuthView(HomeView):
                         user.email = user_data['email']
                         user.save()
 
-                        if user_data["image"]["link"]:     
+                        if user_data["image"]["link"]:
                             photo_resp = requests.get(user_data["image"]["link"])
                             if photo_resp.ok:
                                 user.profile.avatar.save(f"{user_data['login']}.jpg", photo_resp.content)
 
                         user.profile.url = user_data["url"]
-                    
+
                         # user.profile.full_name = user_data["usual_full_name"]
                         # user.profile.phone = user_data["phone"]
-                        
+
                     user.profile.save()
 
                     login(request, user)
@@ -75,4 +79,4 @@ class AuthView(HomeView):
             else:
                 logger.error(f"Failed to get token: {token_resp.content}")
 
-        return HttpResponseBadRequest("Failed to authenticate")
+        return HttpResponseForbidden("Failed to authenticate")
