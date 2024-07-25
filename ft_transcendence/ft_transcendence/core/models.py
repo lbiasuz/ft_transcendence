@@ -48,3 +48,4 @@ class AbstractBaseModel(ExportModelOperationsMixin("dataset"), models.Model):
         return str(self.pk)
 
 post_soft_delete = dispatch.Signal(['instance', 'using'])
+
