@@ -7,14 +7,13 @@ from ft_transcendence.core.models import AbstractBaseModel
 class Match(AbstractBaseModel):
 	game = models.CharField(
 		verbose_name="Game",
-		choices=[("pong", "Pong"), ("brick", "Brick")], 
+		choices=[("pong", "Pong"), ("brick", "Brick")],
 		max_length=10
 	)
 	state = models.CharField(
 		verbose_name="State",
 		choices=[
 			("created", "Created"),
-			("ongoing", "On-going"),
 			("ended", "Ended"),
 			("canceled", "Canceled"),
 		],
@@ -33,11 +32,15 @@ class Match(AbstractBaseModel):
 	)
 	scoreboard = models.JSONField(
 		verbose_name="Scoreboard",
-		default=dict
+		default=dict,
+		null=True,
+		blank=True
 	)
 	modifiers = models.JSONField(
 		verbose_name="Modifiers",
-		default=dict
+		default=dict,
+		null=True,
+		blank=True
 	)
 	started_at = models.DateTimeField(
 		verbose_name="Started at",
@@ -53,6 +56,11 @@ class Match(AbstractBaseModel):
 		"self",
 		verbose_name="Next match",
 		on_delete=models.SET_NULL,
+		null=True,
+		blank=True
+	)
+	tournament_uuid = models.UUIDField(
+		verbose_name="Id Tournament",
 		null=True,
 		blank=True
 	)

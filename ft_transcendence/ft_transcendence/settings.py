@@ -67,6 +67,7 @@ INSTALLED_APPS = [
     "django_prometheus",
     "elasticapm.contrib.django",
     "ft_transcendence.account",
+    "ft_transcendence.game",
     "ft_transcendence.core",
 ]
 
@@ -244,6 +245,7 @@ JAZZMIN_SETTINGS = {
 }
 
 REST_FRAMEWORK = {
+    'DATETIME_FORMAT': "%Y-%m-%dT%H:%M:%S.%fZ",
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
     ],
