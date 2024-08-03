@@ -1,0 +1,467 @@
+:root {
+
+    font-size: 14px;
+    font-family: "Rubik", sans-serif;
+
+    /* Game White Colors */
+    --game-white-color-base: #FBF9D3;
+    --game-white-color-muted: #64645E;
+
+    /* Game Dark Colors */
+    --game-dark-color-deep: #1A1817;
+    --game-dark-color-base: #201E1C;
+    --game-dark-color-action: #3D3630;
+    --game-dark-color-hover: #6A6058;
+
+    /* Default Config */
+    --bs-body-bg: var(--game-dark-color-base);
+    --bs-body-color: var(--game-white-color-base);
+    * {
+        color: var(--game-white-color-base);
+        border-radius: 4px;
+    }
+
+}
+
+body {
+    background-image: url("../img/bg-transparent-particles.gif");
+    background-size: 350px;
+}
+
+#app {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.cursor-lang {
+    cursor: cell;
+}
+
+/* Logo */
+.logo {
+    text-transform: uppercase;
+    font-size: 3.3rem;
+    font-weight: 600;
+}
+.logo-login {
+    margin-top: 10em;
+}
+
+.spacer {
+    margin-top: 1em;
+    display: block;
+    height: 1em;
+    margin-bottom: 1em;
+}
+
+.center {
+    margin-left: auto!important;
+    margin-right: auto!important;
+}
+
+.with-spacer-top {
+    margin-top: 1.5em;
+}
+
+.with-spacer-bottom {
+    margin-bottom: 1.5em;
+}
+
+/* Titles */
+
+h1, h2 {
+    padding-top: .5rem;
+    padding-bottom: .5rem;
+    text-transform: uppercase;
+}
+
+h1 {
+    font-size: 1.5rem;
+    background-color: var(--game-dark-color-deep);
+}
+
+h2 {
+    font-size: 1rem;
+}
+
+/* Buttons */
+.btn {
+    width: 16.5rem;
+    height: 3.5rem;
+    text-transform: uppercase;
+    font-weight: 500;
+}
+.btn-game-action {
+    --bs-btn-bg: var(--game-dark-color-action);
+    --bs-btn-border-color: var(--game-dark-color-action);
+    --bs-btn-hover-bg: var(--game-dark-color-hover);
+    --bs-btn-hover-border-color: var(--game-dark-color-hover);
+    --bs-btn-active-bg: var(--game-dark-color-hover);
+    --bs-btn-active-border-color: var(--game-dark-color-hover);
+}
+
+.btn-game-action.muted {
+    --bs-btn-bg: var(--game-dark-color-base);
+    --bs-btn-border-color: var(--game-dark-color-base);
+    --bs-btn-hover-bg: var(--game-dark-color-hover);
+    --bs-btn-hover-border-color: var(--game-dark-color-hover);
+    --bs-btn-active-bg: var(--game-dark-color-hover);
+    --bs-btn-active-border-color: var(--game-dark-color-hover);
+}
+
+.btn-login {
+    margin-top: 8em;
+    margin-bottom: 8em;
+}
+
+.player-setup {
+    margin-bottom: .3em;
+}
+
+/* Game Setup Buttons Group */
+
+.game-setup {
+    margin-top: 5em;
+    margin-bottom: 5em;
+}
+
+.game-setup span {
+    font-size: 1rem;
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-right: 1rem;
+}
+
+.btn-group-options .btn-option,
+.btn-color-selection .btn-option{
+    color: var(--game-white-color-muted);
+    background-color: var(--game-dark-color-action);
+    border: none;
+}
+
+.btn-group-options .btn-option {
+    width: 5rem;
+}
+.btn-group-options .btn-option:hover,
+.btn-group-options .btn-option:active {
+    background-color: var(--game-dark-color-hover);
+    color: var(--game-white-color-base);
+}
+.btn-group-options .btn-option.active {
+    border: none;
+    color: var(--game-white-color-base);
+}
+
+.btn-color-selection .btn-option {
+    width: 5rem;
+    border-radius: 4px !important;
+    cursor: initial;
+}
+.btn-color-selection .btn-arrow {
+    width: 1.5rem;
+    padding-left: .5rem;
+    padding-right: .5rem;
+    cursor: pointer;
+}
+.btn-color-selection .btn-color {
+    width: 4rem;
+    padding: 5px;
+}
+.btn-color-selection .btn-color > span{
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+}
+
+.score-limit > span {
+    display: block;
+    margin-bottom: 1em;
+}
+
+.player-setup > span {
+    position: absolute;
+    margin-left: -8rem;
+    text-align: right;
+    padding-right: 1em;
+    width: 8em;
+    margin-top: 1em;
+    display: inline-block;
+}
+
+.player-setup .btn-remove {
+    position: absolute;
+    width: 2.5em;
+    height: 2.5em;
+    margin-top: .5em;
+    background-color: #A5482B;
+    filter: none;
+    outline: none !important;
+    border: none !important;
+    background-image: url("../img/close.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.player-setup .btn-remove:active,
+.player-setup .btn-remove:hover {
+    outline: none !important;
+    border: none !important;
+    background-color: #D15D38;
+}
+
+.color-blue {
+    color: #4ABDE1;
+}
+.color-green {
+    color: #33CE71;
+}
+.color-yellow {
+    color: #E1D927;
+}
+.color-red {
+    color: #F15B39;
+}
+.color-purple {
+    color: #C44EFB;
+}
+
+.btn-color.color-blue > span {
+    background: radial-gradient(50% 50% at 50% 50%, #75EBFB 0%, #2BA3C9 100%);
+}
+.btn-color.color-green > span {
+    background: radial-gradient(50% 50% at 50% 50%, #B8FB75 0%, #20C161 100%);
+}
+.btn-color.color-yellow > span {
+    background: radial-gradient(50% 50% at 50% 50%, #FFF8B5 0%, #C6BE0C 100%);
+}
+.btn-color.color-red > span{
+    background: radial-gradient(50% 50% at 50% 50%, #FF8C68 0%, #C94021 100%);
+}
+.btn-color.color-purple > span {
+    background: radial-gradient(50% 50% at 50% 50%, #CD66FE 0%, #7F21C9 100%);
+}
+
+.btn-color-selection .btn-color:active {
+    background-color: var(--game-dark-color-action);
+}
+.btn-color-selection .btn-arrow:hover,
+.btn-color-selection .btn-arrow:active {
+    background-color: var(--game-dark-color-hover);
+    color: var(--game-white-color-base);
+}
+.btn-color-selection .btn-arrow:first-child {
+    margin-right: .5rem;
+}
+.btn-color-selection .btn-arrow:last-child {
+    margin-left: .5rem !important;
+}
+
+/* Pong Game Score */
+.pong-player-score {
+    padding-top: .3em;
+    padding-bottom: .3em;
+    margin-top: .3em;
+    font-size: 2em;
+    font-weight: 500;
+}
+
+.pong-player-score .player,
+.pong-player-score .timer {
+    display: inline-block;
+}
+
+.pong-player-score .player {
+    width: 18em;
+}
+
+.pong-player-score .player .name{
+    margin-right: 1em;
+}
+
+.pong-player-score  .timer{
+    margin-left: 0.4em;
+}
+
+/* Tournament Match List */
+.match-list {
+    max-width: 30em;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 1.5em;
+    font-weight: 500;
+}
+.match-list .list-title {
+    text-transform: uppercase;
+}
+
+.match-list  span {
+    width: 10em;
+    display: inline-block;
+    line-height: 3em;
+}
+
+.match-list .sep {
+    width: 4em;
+    text-transform: uppercase;
+}
+.match-list .list-item .sep {
+    /* color: #98977E; */
+    color: var(--game-white-color-muted);
+}
+
+.match-list .list-item.next {
+    /* background-color: #414037; */
+    background-color: var(--game-dark-color-deep);
+    /* background-color: var(--game-dark-color-action); */
+}
+
+
+/* Pong Final Score */
+
+.pong-final-score .config-information span {
+    text-transform: uppercase;
+    font-weight: 500;
+}
+
+.pong-final-score .config-information {
+    margin-top: 3em;
+}
+
+.pong-final-score .config-information > span:first-of-type {
+    margin-right: 3em;
+}
+
+.pong-final-score .players-score {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 2em;
+    max-width: 40em;
+}
+
+.pong-final-score .players-score .player-winner {
+    background-color: var(--game-dark-color-deep);
+}
+
+.pong-final-score .players-score .player-winner .winner-flag {
+    display: inline-block;
+    position: absolute;
+    margin-top: 1em;
+    margin-left: -2em;
+    width: 2.5em;
+    height: 2.5em;
+    background: url("../img/winner.svg");
+}
+
+.pong-final-score .players-score span {
+    min-width: 10em;
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    font-weight: 500;
+    display: inline-block;
+    line-height: 3em;
+}
+
+.pong-final-score .players-score span:first-of-type,
+.pong-final-score .score-title span:first-of-type  {
+    min-width: 1em !important;
+}
+
+
+/* Navbar User */
+.nav-user img {
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 50%;
+    margin-right: 1rem;
+}
+.nav-user a {
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+/* Inputs */
+input[type=text] {
+    /* width: 16.5rem; */
+    height: 3.5rem;
+    text-align: center;
+    font-weight: 500;
+    font-size: 1rem;
+    border: none;
+    outline: none;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    background-color: var(--game-dark-color-deep);
+}
+
+input[type=text]::placeholder {
+    text-transform: uppercase;
+    font-weight: 500;
+}
+
+/* Navbar Languages */
+.nav-languages {
+    margin-left: 2rem;
+    padding-top: .3rem;
+}
+.nav-languages.dropdown img,
+.nav-languages .dropdown-menu img  {
+    width: 2rem;
+    height: 2rem;
+    vertical-align: middle;
+}
+
+.nav-languages .dropdown-menu img {
+    opacity: .65;
+}
+.nav-languages .dropdown-item:hover img,
+.nav-languages .dropdown-item:active img {
+    opacity: 1;
+}
+
+.nav-languages .dropdown-menu {
+    background: none;
+    border: none;
+}
+
+.nav-languages .dropdown-item {
+    padding: 0.1rem;
+    max-width: 3rem;
+    background: none;
+}
+
+footer {
+    padding: 1rem;
+	margin-top: auto;
+}
+
+.authors span {
+    display: inline-block;
+	color: var(--game-white-color-base);
+    padding-top: .5rem;
+    padding-bottom: .5rem;
+}
+.authors ul li {
+    text-transform: uppercase;
+    display: inline-block;
+}
+.authors ul li::after {
+    content: " - ";
+    padding-left: .5rem;
+    padding-right: .5rem;
+    color: var(--game-dark-color-hover);
+}
+.authors ul li:last-of-type::after {
+    content: "";
+}
+
+canvas 
+{
+	-webkit-box-shadow: inset 0px 0px 600px 150px rgba(32, 30, 28,.8);
+	-moz-box-shadow: inset 0px 0px 600px 150px rgba(32, 30, 28,.8);
+	box-shadow: inset 0px 0px 600px 150px rgba(32, 30, 28,.8);
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
