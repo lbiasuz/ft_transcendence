@@ -5,6 +5,8 @@ import FooterComponent from "../components/FooterComponent.js";
 import ButtonActionComponent from "../components/ButtonActionComponent.js";
 import Router from "../Router.js";
 import Lang from "../lang/Lang.js";
+import Context from "../Context.js";
+import NavbarAvatarComponent from "../components/NavbarAvatarComponent.js";
 
 export default class PongGameModeView extends View {
 
@@ -18,6 +20,9 @@ export default class PongGameModeView extends View {
         menu.withLogo();
 
 		const languages = new NavbarLanguageComponent();
+		const avatar = new NavbarAvatarComponent(Context.getItem("user")?.username);
+
+        menu.addItem(avatar.DOM());
 		menu.addItem(languages.DOM());
 
         const title = document.createElement("div");

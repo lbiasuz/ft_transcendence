@@ -44,6 +44,5 @@ urlpatterns = [
         name="match",
     ),
     path("p/", include("django_prometheus.urls"), name="django-prometheus"),
-    path("", HomeView.as_view(), {'resource': ''}, name="home"),
-    path('<path:resource>', HomeView.as_view())
+    path("", HomeView.as_view(), name="home"),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

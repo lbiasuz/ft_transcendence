@@ -1,6 +1,5 @@
 import logging
 import requests
-from django.shortcuts import redirect
 
 from django.urls import reverse
 from django.http import HttpResponseRedirect, HttpResponseForbidden, HttpResponse

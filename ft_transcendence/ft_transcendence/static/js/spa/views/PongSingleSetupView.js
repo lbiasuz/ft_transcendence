@@ -8,6 +8,8 @@ import ButtonActionComponent from "../components/ButtonActionComponent.js";
 import Router from "../Router.js";
 import Lang from "../lang/Lang.js";
 import { Config } from "../../config.js";
+import NavbarAvatarComponent from "../components/NavbarAvatarComponent.js";
+import Context from "../Context.js";
 
 export default class PongSingleSetupView extends View {
 
@@ -21,6 +23,9 @@ export default class PongSingleSetupView extends View {
         menu.withLogo();
 
 		const languages = new NavbarLanguageComponent();
+        const avatar = new NavbarAvatarComponent(Context.getItem("user")?.username);
+
+        menu.addItem(avatar.DOM());
 		menu.addItem(languages.DOM());
 
         const title = document.createElement("h1");

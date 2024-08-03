@@ -1,14 +1,28 @@
 import { Config } from "../config.js";
+import Auth from "./Auth.js";
+import Context from "./Context.js";
 
 export default class Router {
 
     static #routes = []
     static #currentView;
     static notFoundView;
+    static authView;
+    static authMiddleware;
  
     static #clearTarget() {
-        document.querySelector(Config.viewsTarget).childNodes.forEach(e => e.remove());
+        // document.querySelector(Config.viewsTarget).childNodes.forEach(e => e.remove());
         document.querySelector(Config.viewsTarget).innerHTML = "";
+    }
+
+
+    static #addSpinner() {
+        document.querySelector(Config.viewsTarget).innerHTML = `
+        <main>
+            <div class="spinner-grow mx-auto" role="status">
+            </div>
+        </main>
+    `;
     }
 
     static start() {
@@ -36,7 +50,15 @@ export default class Router {
         this.#router(viewData);
     }
 
-    static #router(viewData) {
+    static async #router(viewData) {
+
+        // this.#addSpinner();
+
+        if (this.authMiddleware && ! await this.authMiddleware()) {
+            const view = new this.authView();
+            this.#clearTarget();
+            return view.render();
+        }
 
         this.#clearTarget();
 

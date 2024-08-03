@@ -1,10 +1,12 @@
 import { Config } from "../../config.js";
 import ButtonActionComponent from "../components/ButtonActionComponent.js";
 import FooterComponent from "../components/FooterComponent.js";
+import NavbarAvatarComponent from "../components/NavbarAvatarComponent.js";
 import NavbarLanguageComponent from "../components/NavbarLanguageComponent.js";
 import NavbarMenuComponent from "../components/NavbarMenuComponent.js";
 import PlayerSetupComponent from "../components/PlayerSetupComponent.js";
 import ScoreLimitComponent from "../components/ScoreLimitComponent.js";
+import Context from "../Context.js";
 import Lang from "../lang/Lang.js";
 import Router from "../Router.js";
 import View from "./View.js";
@@ -25,6 +27,9 @@ export default class PongTournamentSetupView extends View {
         menu.withLogo();
 
 		const languages = new NavbarLanguageComponent();
+        const avatar = new NavbarAvatarComponent(Context.getItem("user")?.username);
+
+        menu.addItem(avatar.DOM());
 		menu.addItem(languages.DOM());
 
         const footer = new FooterComponent();
