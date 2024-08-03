@@ -20,10 +20,11 @@ from django.urls import include, path
 from django.conf.urls.static import static
 
 from ft_transcendence.account.views import UserView
-from ft_transcendence.core.views import AuthView, HomeView
+from ft_transcendence.core.views import AuthView, HomeView, PingView
 from ft_transcendence.game.views import MatchViewSet
 
 urlpatterns = [
+    path("ping/", PingView.as_view(), name="ping"),
     path("admin/", admin.site.urls),
     path("sso/", AuthView.as_view(), name="sso"),
     path("user/", UserView.as_view(), name="user"),

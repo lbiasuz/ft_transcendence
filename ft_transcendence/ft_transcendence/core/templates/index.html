@@ -1,3 +1,4 @@
+{% load static %}
 <!doctype html>
 <html lang="en" data-bs-theme="dark">
   <head>
@@ -6,103 +7,13 @@
     <title>Transcendence</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
-      {% load static %}
-    <link href="{% static 'static/style.css' %}" rel="stylesheet">
+    <link href="{% static '/static/css/style.css' %}" rel="stylesheet">
+    <link rel="icon" href="{% static '/static/img/Transcendence_logov3@8x.png' %}">
   </head>
 
-  <body>
-    <div class="game">
-
-        <div class="container">
-            <nav class="navbar navbar-expand-lg">
-                <div class="container-fluid">
-                    <a href="#" class="navbar-brand logo">PONG</a>
-                    <div>
-                        <ul class="navbar-nav  me-auto mb-2 mb-lg-0">
-                            <li class="nav-item nav-user">
-                                <img src="{% static  'static/img/avatar.jpeg' %}" alt="">
-                                <a href="">Gasouza</a>
-                            </li>
-                            <li class="nav-item dropdown nav-languages">
-                                <a href="#" class="nav-link dropdown-toggle"  role="button"  data-bs-toggle="dropdown" aria-expanded="false">
-                                    <img src="{% static  'static/img/flag-eng.png' %}" alt="">
-                                </a>
-                                <ul class="dropdown-menu text-center">
-                                    <li><a href="#" class="dropdown-item"><img src="{% static  'static/img/flag-eng.png' %}" alt=""></a></li>
-                                    <li><a href="#" class="dropdown-item"><img src="{% static  'static/img/flag-por.png' %}" alt=""></a></li>
-                                    <li><a href="#" class="dropdown-item"><img src="{% static  'static/img/flag-esp.png' %}" alt=""></a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>
-
-            <main class="text-center">
-                <div>
-                    <span class="logo">pong</span>
-                </div>
-                <div><h1>title</h1></div>
-                <div><h2>sub title</h2></div>
-                <br>
-                <div>
-                    <a href="https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-1dd9d45ef1c149a78fef71817909fa177a95d50977b6c05cd5218f77dbffaf25&redirect_uri=http%3A%2F%2Flocalhost%3A8000%2Fsso&response_type=code" type="button" class="btn btn-game-input">42 login</a>
-                </div>
-                <br>
-                <div class="game-setup">
-                    <div class="score-limit">
-                        <span>Score Limit</span>
-                        <div class="btn-group btn-group-options">
-                            <button type="button" class="btn btn-option active">10</button>
-                            <button type="button" class="btn btn-option">15</button>
-                            <button type="button" class="btn btn-option">20</button>
-                            <button type="button" class="btn btn-option">35</button>
-                        </div>
-                    </div>
-                    <br>
-                    <div class="player-setup">
-                        <span>player 1</span>
-                        <div class="btn-group btn-color-selection">
-                            <button type="button" class="btn btn-option btn-arrow"><</button>
-                            <button type="button" class="btn btn-option btn-color">
-                                <span></span>
-                            </button>
-                            <button type="button" class="btn btn-option btn-arrow">></button>
-                        </div>
-                        <input type="text" name="" id="" placeholder="name">
-                    </div>
-                    <div class="player-setup">
-                        <span>player 2</span>
-                        <div class="btn-group btn-color-selection">
-                            <button type="button" class="btn btn-option btn-arrow"><</button>
-                            <button type="button" class="btn btn-option btn-color">
-                                <span></span>
-                            </button>
-                            <button type="button" class="btn btn-option btn-arrow">></button>
-                        </div>
-                        <input type="text" name="" id="" placeholder="name">
-                    </div>
-                    <br>
-                    <button class="btn btn-game-input">play</button>
-                </div>
-            </main>
-
-            <footer class="text-center">
-                    <div class="authors">
-                        <span>Developed by:</span>
-                        <ul>
-                            <li>Bruno Luiz</li>
-                            <li>Gabriel Souza</li>
-                            <li>Leonardo Biasuz</li>
-                            <li>Otávio Burato</li>
-                            <li>Renato Miranda</li>
-                        </ul>
-                    </div>
-            </footer>
-        </div>
-    </div>
+  <body class="container" id="app">
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-    <script src="{% static  'static/js/index.js' %}"></script>
+    <script type="module" src="{% static '/static/js/index.js' %}"></script>
   </body>
 </html>

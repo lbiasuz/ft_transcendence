@@ -3,10 +3,13 @@ import requests
 from django.shortcuts import redirect
 
 from django.urls import reverse
-from django.http import HttpResponseRedirect, HttpResponseForbidden
+from django.http import HttpResponseRedirect, HttpResponseForbidden, HttpResponse
 from django.views.generic import TemplateView
 from django.contrib.auth import login
 from django.contrib.auth.models import User
+from rest_framework.authentication import SessionAuthentication
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.views import APIView
 
 from ft_transcendence.settings import CLIENT_ID, CLIENT_SECRET
 
@@ -14,6 +17,13 @@ logger = logging.getLogger(__name__)
 
 class HomeView(TemplateView):
     template_name = "index.html"
+
+class PingView(APIView):
+    authentication_classes = [SessionAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        return HttpResponse("OK")
 
 
 class AuthView(TemplateView):
