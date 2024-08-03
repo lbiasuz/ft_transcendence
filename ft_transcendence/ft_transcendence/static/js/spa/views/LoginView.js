@@ -5,6 +5,7 @@ import NavbarMenuComponent from "../components/NavbarMenuComponent.js";
 import Router from "../Router.js";
 import View from "./View.js";
 import Lang from "../lang/Lang.js";
+import NavbarAvatarComponent from "../components/NavbarAvatarComponent.js";
 
 export default class HomeView extends View {
 
@@ -33,8 +34,11 @@ export default class HomeView extends View {
 		const footer = new FooterComponent();
 
 		const menu = new NavbarMenuComponent();
-
 		const languages = new NavbarLanguageComponent();
+		const avatar = new NavbarAvatarComponent("Gabriel");
+
+
+		menu.addItem(avatar.DOM());
 		menu.addItem(languages.DOM());
 
 		main.append(logo);

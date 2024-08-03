@@ -1,5 +1,5 @@
 import Router from "./spa/Router.js";
-import HomeView from "./spa/views/HomeView.js"
+import LoginView from "./spa/views/LoginView.js"
 import PongFinalScoreView from "./spa/views/PongFinalScoreView.js";
 import PongGameModeView from "./spa/views/PongGameModeView.js";
 import PongGameView from "./spa/views/PongGameView.js";
@@ -7,7 +7,7 @@ import PongSingleSetupView from "./spa/views/PongSingleSetupView.js";
 import PongTournamentMatchListView from "./spa/views/PongTournamentMatchListView.js";
 import PongTournamentSetupView from "./spa/views/PongTournamentSetupView.js";
 
-Router.addRoute("/", HomeView);
+Router.addRoute("/", LoginView);
 Router.addRoute("/pong-mode", PongGameModeView);
 Router.addRoute("/pong-single", PongSingleSetupView);
 Router.addRoute("/pong", PongGameView);
