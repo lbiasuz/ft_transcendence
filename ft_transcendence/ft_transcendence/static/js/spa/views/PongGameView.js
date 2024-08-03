@@ -51,7 +51,6 @@ export default class PongGameView extends View {
 		menu.addItem(languages.DOM());
 
         const main = document.createElement("main");
-		main.classList.add("text-center");
 
         const playerScore = document.createElement("div");
         playerScore.classList.add("pong-player-score");

@@ -12,6 +12,21 @@ export default class PongFinalScoreView extends View {
 
         super("Final Score");
 
+        // const viewData = {
+        //     maxScore: 5,
+        //     duration: "01:05",
+        //     firstPlace: {
+        //         name: "Gabriel",
+        //         score: 5,
+        //         color: "red"
+        //     },
+        //     secondPlace: {
+        //         name: "Bruno",
+        //         score: 10,
+        //         color: "blue"
+        //     }
+        // }
+
         const menu = new NavbarMenuComponent();
         menu.withLogo();
 
@@ -22,8 +37,6 @@ export default class PongFinalScoreView extends View {
         base.classList.add("pong-final-score", "align-self-center");
 
         base.innerHTML = `
-            <h1></h1>
-
             <div class="config-information">
                 <span id="duration"></span>
                 <span id="score-limit"></span>
@@ -49,7 +62,10 @@ export default class PongFinalScoreView extends View {
         `;
 
         // Titles
-        base.querySelector("h1").textContent = Lang.text("Final Score");
+        const title = document.createElement("h1");
+        title.classList.add("mb-5");
+        title.textContent =  Lang.text("Final Score");
+
         base.querySelector("#playerTitle").textContent = Lang.text("Player");
         base.querySelector("#scoreTitle").textContent = Lang.text("Score");
 
@@ -68,6 +84,8 @@ export default class PongFinalScoreView extends View {
         base.querySelector("#secondPlaceScore").textContent = viewData.secondPlace.score;
 
         const playAgainButton = new ButtonActionComponent(Lang.text("Play Again"));
+        playAgainButton.addClass("mt-5");
+
         playAgainButton.action(() => {
 
             const gameConfig = {
@@ -86,13 +104,10 @@ export default class PongFinalScoreView extends View {
         })
 
         const main = document.createElement("main");
-        main.classList.add("text-center");
 
+        main.append(title);
         main.append(base);
         main.append(playAgainButton.DOM());
-        main.style = `
-            margin-top: 8em;
-        `;
 
         const footer = new FooterComponent();
 

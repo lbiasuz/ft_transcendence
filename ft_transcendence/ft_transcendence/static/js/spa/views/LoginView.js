@@ -14,14 +14,12 @@ export default class HomeView extends View {
 		super("Home");
 
 		const main = document.createElement("main");
-		main.classList.add("text-center");
 
 		const logo = document.createElement("div")
-		logo.classList.add("logo-login");
-		logo.innerHTML = '<span class="logo">pong</span>';
+		logo.innerHTML = '<span class="logo mb-5 d-inline-block">pong</span>';
 
 		const loginButton = new ButtonActionComponent(Lang.text("login"));
-		loginButton.addClass("btn-login");
+		loginButton.addClass("mb-8");
 
 		loginButton.action(() => {
 			fetch("/ping").then((response) => {

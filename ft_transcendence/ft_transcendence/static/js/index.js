@@ -1,5 +1,6 @@
 import Router from "./spa/Router.js";
 import LoginView from "./spa/views/LoginView.js"
+import NotFoundView from "./spa/views/NotFoundView.js";
 import PongFinalScoreView from "./spa/views/PongFinalScoreView.js";
 import PongGameModeView from "./spa/views/PongGameModeView.js";
 import PongGameView from "./spa/views/PongGameView.js";
@@ -14,5 +15,7 @@ Router.addRoute("/pong", PongGameView);
 Router.addRoute("/pong-final-score", PongFinalScoreView);
 Router.addRoute("/pong-tournament", PongTournamentSetupView);
 Router.addRoute("/pong-tournament-match-list", PongTournamentMatchListView);
+
+Router.addRoute("/404", NotFoundView);
 
 Router.start();
