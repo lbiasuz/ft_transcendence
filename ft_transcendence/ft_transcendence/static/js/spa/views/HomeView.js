@@ -23,6 +23,7 @@ export default class HomeView extends View {
 		loginButton.addClass("btn-login");
 
 		loginButton.action(() => {
+			window.location.href = "https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-6f60df1067aebb00d90db164bd83b278dbf2aacef540c58a5ba333fe86119504&redirect_uri=http%3A%2F%2Flocalhost%3A8000%2Fsso&response_type=code"
 			Router.navegateTo("/pong-mode");
 		});
 

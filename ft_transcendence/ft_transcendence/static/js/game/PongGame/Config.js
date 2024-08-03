@@ -1,5 +1,5 @@
 export const DEFAULT_PONG_CONFIG = {
-    playSound: true,
+    playSound: false,
     canvas: {
         id: "canvas",
         width: 1024,
