@@ -4,6 +4,7 @@ export default class Router {
 
     static #routes = []
     static #currentView;
+    static notFoundView;
  
     static #clearTarget() {
         document.querySelector(Config.viewsTarget).childNodes.forEach(e => e.remove());
@@ -40,13 +41,17 @@ export default class Router {
         this.#clearTarget();
 
         const match = this.#routes.find(({ path }) => path == location.pathname);
-        const route = match || this.#routes[0];
 
         if (this.#currentView) {
             this.#currentView.clear();
         }
 
-        this.#currentView = new route.view(viewData);
+        if (!match) {
+            const view = new this.notFoundView();
+            return view.render();
+        }
+
+        this.#currentView = new match.view(viewData);
         this.#currentView.render();
     }
 

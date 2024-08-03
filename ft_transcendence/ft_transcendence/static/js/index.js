@@ -16,6 +16,6 @@ Router.addRoute("/pong-final-score", PongFinalScoreView);
 Router.addRoute("/pong-tournament", PongTournamentSetupView);
 Router.addRoute("/pong-tournament-match-list", PongTournamentMatchListView);
 
-Router.addRoute("/404", NotFoundView);
+Router.notFoundView = NotFoundView;
 
 Router.start();

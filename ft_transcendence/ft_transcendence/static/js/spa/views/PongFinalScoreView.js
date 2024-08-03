@@ -12,21 +12,6 @@ export default class PongFinalScoreView extends View {
 
         super("Final Score");
 
-        // const viewData = {
-        //     maxScore: 5,
-        //     duration: "01:05",
-        //     firstPlace: {
-        //         name: "Gabriel",
-        //         score: 5,
-        //         color: "red"
-        //     },
-        //     secondPlace: {
-        //         name: "Bruno",
-        //         score: 10,
-        //         color: "blue"
-        //     }
-        // }
-
         const menu = new NavbarMenuComponent();
         menu.withLogo();
 
