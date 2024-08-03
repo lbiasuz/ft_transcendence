@@ -64,6 +64,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
+    "django_filters",
     "django_prometheus",
     "elasticapm.contrib.django",
     "ft_transcendence.account",
