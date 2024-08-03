@@ -195,7 +195,7 @@ DATABASES = {
         "NAME": config("POSTGRES_DB"),
         "USER": config("POSTGRES_USER"),
         "PASSWORD": config("POSTGRES_PASSWORD"),
-        "HOST": 'localhost' if ENV == 'dev' else 'db',
+        "HOST": 'localhost' if DEBUG == 'True' else 'db',
         "PORT": '5432',
     }
 }

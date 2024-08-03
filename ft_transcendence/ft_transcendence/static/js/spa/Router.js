@@ -39,7 +39,7 @@ export default class Router {
 
         this.#clearTarget();
 
-        const match = this.#routes.find(({ path }) => path == location.pathname);
+        const match = this.#routes.find(({ path }) => path === location.pathname);
         const route = match || this.#routes[0];
 
         if (this.#currentView) {
