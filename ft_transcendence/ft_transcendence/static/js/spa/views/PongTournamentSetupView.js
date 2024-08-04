@@ -1,10 +1,12 @@
+import { Config } from "../../config.js";
 import ButtonActionComponent from "../components/ButtonActionComponent.js";
 import FooterComponent from "../components/FooterComponent.js";
+import NavbarAvatarComponent from "../components/NavbarAvatarComponent.js";
 import NavbarLanguageComponent from "../components/NavbarLanguageComponent.js";
 import NavbarMenuComponent from "../components/NavbarMenuComponent.js";
 import PlayerSetupComponent from "../components/PlayerSetupComponent.js";
 import ScoreLimitComponent from "../components/ScoreLimitComponent.js";
-import SpacerComponent from "../components/SpacerComponent.js";
+import Context from "../Context.js";
 import Lang from "../lang/Lang.js";
 import Router from "../Router.js";
 import View from "./View.js";
@@ -16,28 +18,35 @@ export default class PongTournamentSetupView extends View {
     #lastFixedPlayer;
 
     constructor() {
+
         super("Tournament");
 
         const main = document.createElement("main");
-		main.classList.add("text-center");
 
         const menu = new NavbarMenuComponent();
         menu.withLogo();
 
 		const languages = new NavbarLanguageComponent();
+        const avatar = new NavbarAvatarComponent(Context.getItem("user")?.username);
+
+        menu.addItem(avatar.DOM());
 		menu.addItem(languages.DOM());
 
         const footer = new FooterComponent();
 
-        const title = document.createElement("div");
-        title.innerHTML = `<h1>${Lang.text("Tournament")}</h1>`;
+        const title = document.createElement("h1");
+        title.classList.add("mb-5");
+        title.textContent = Lang.text("Tournament");
 
-
-        const scoreLimite = new ScoreLimitComponent([5, 7, 10, 15]);
+        const scoreLimite = new ScoreLimitComponent(Config.matchsScore);
         const playerSetup1 = new PlayerSetupComponent(Lang.text("Player") + " 1");
         const playerSetup2 = new PlayerSetupComponent(Lang.text("Player") + " 2");
         const addPlayerButton = new ButtonActionComponent(Lang.text("Add Player"));
         const startTournamentButton = new ButtonActionComponent(Lang.text("Begin Tournament"));
+
+        scoreLimite.addClass("mb-4");
+        addPlayerButton.addClass("mt-4", "d-block");
+        startTournamentButton.addClass("mt-5");
 
         startTournamentButton.action(() => {
             Router.navegateTo("/pong-tournament-match-list");
@@ -47,11 +56,9 @@ export default class PongTournamentSetupView extends View {
         gameSetup.classList.add("game-setup");
 
         gameSetup.append(scoreLimite.DOM());
-        gameSetup.append((new SpacerComponent).DOM());
         gameSetup.append(playerSetup1.DOM());
         gameSetup.append(playerSetup2.DOM());
         gameSetup.append(addPlayerButton.DOM());
-        gameSetup.append((new SpacerComponent).DOM());
         gameSetup.append(startTournamentButton.DOM());
 
         addPlayerButton.DOM().classList.add("with-spacer-top", "center", "muted")

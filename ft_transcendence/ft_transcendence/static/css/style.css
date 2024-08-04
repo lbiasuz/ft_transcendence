@@ -28,11 +28,11 @@ body {
     background-size: 350px;
 }
 
-#app {
+/* #app {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-}
+} */
 
 .cursor-lang {
     cursor: cell;
@@ -42,10 +42,7 @@ body {
 .logo {
     text-transform: uppercase;
     font-size: 3.3rem;
-    font-weight: 600;
-}
-.logo-login {
-    margin-top: 10em;
+    font-weight: bold;
 }
 
 .spacer {
@@ -71,6 +68,7 @@ body {
 /* Titles */
 
 h1, h2 {
+    text-align: center;
     padding-top: .5rem;
     padding-bottom: .5rem;
     text-transform: uppercase;
@@ -79,6 +77,7 @@ h1, h2 {
 h1 {
     font-size: 1.5rem;
     background-color: var(--game-dark-color-deep);
+    position: relative;
 }
 
 h2 {
@@ -92,6 +91,7 @@ h2 {
     text-transform: uppercase;
     font-weight: 500;
 }
+
 .btn-game-action {
     --bs-btn-bg: var(--game-dark-color-action);
     --bs-btn-border-color: var(--game-dark-color-action);
@@ -99,6 +99,8 @@ h2 {
     --bs-btn-hover-border-color: var(--game-dark-color-hover);
     --bs-btn-active-bg: var(--game-dark-color-hover);
     --bs-btn-active-border-color: var(--game-dark-color-hover);
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .btn-game-action.muted {
@@ -110,21 +112,11 @@ h2 {
     --bs-btn-active-border-color: var(--game-dark-color-hover);
 }
 
-.btn-login {
-    margin-top: 8em;
-    margin-bottom: 8em;
-}
-
 .player-setup {
     margin-bottom: .3em;
 }
 
 /* Game Setup Buttons Group */
-
-.game-setup {
-    margin-top: 5em;
-    margin-bottom: 5em;
-}
 
 .game-setup span {
     font-size: 1rem;
@@ -259,9 +251,6 @@ h2 {
 
 /* Pong Game Score */
 .pong-player-score {
-    padding-top: .3em;
-    padding-bottom: .3em;
-    margin-top: .3em;
     font-size: 2em;
     font-weight: 500;
 }
@@ -324,10 +313,6 @@ h2 {
     font-weight: 500;
 }
 
-.pong-final-score .config-information {
-    margin-top: 3em;
-}
-
 .pong-final-score .config-information > span:first-of-type {
     margin-right: 3em;
 }
@@ -347,7 +332,7 @@ h2 {
     display: inline-block;
     position: absolute;
     margin-top: 1em;
-    margin-left: -2em;
+    margin-left: -2.5em;
     width: 2.5em;
     height: 2.5em;
     background: url("../img/winner.svg");
@@ -362,6 +347,11 @@ h2 {
     line-height: 3em;
 }
 
+.pong-final-score .player {
+    padding-left: 1.5em;
+    padding-right: 1.5em;
+}
+
 .pong-final-score .players-score span:first-of-type,
 .pong-final-score .score-title span:first-of-type  {
     min-width: 1em !important;
@@ -374,12 +364,30 @@ h2 {
     height: 3.5rem;
     border-radius: 50%;
     margin-right: 1rem;
+    margin-top: .3em;
 }
 .nav-user a {
     text-decoration: none;
-    font-size: 1rem;
+    display: inline-block;
+    font-size: 1.2rem !important;
     font-weight: 500;
 }
+.nav-user .dropdown-menu {
+    margin-left: 1.5em;
+    margin-top: .5em;
+    border: none;
+}
+
+.nav-user .dropdown-menu .dropdown-item {
+    text-align: center;
+    line-height: 2.5em;
+    background-color: var(--game-dark-color-action);
+}
+
+.nav-user .dropdown-menu .dropdown-item:hover,
+.nav-user .dropdown-menu .dropdown-item:active {
+    background-color: var(--game-dark-color-hover);
+} 
 
 /* Inputs */
 input[type=text] {
@@ -431,11 +439,6 @@ input[type=text]::placeholder {
     background: none;
 }
 
-footer {
-    padding: 1rem;
-	margin-top: auto;
-}
-
 .authors span {
     display: inline-block;
 	color: var(--game-white-color-base);
@@ -464,4 +467,46 @@ canvas
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: cover;
+    height: 90%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#app {
+    height: 100vh;
+    flex-direction: column;
+    display: flex;
+}
+
+.mb-6 {
+    margin-bottom: 6em;
+}
+
+.mb-7 {
+    margin-bottom: 7em;
+}
+
+.mb-8 {
+    margin-bottom: 8em;
+}
+
+main {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding-bottom: 4em;
+    padding-top: 2em;
+    height: 100%;
+}
+
+.not-found h1 {
+    font-size: 12em;
+    font-weight: bold;
+    background: none;
+}
+
+.not-found span {
+    font-size: 1.5em;
+    font-weight: normal;
 }

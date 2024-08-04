@@ -2,8 +2,10 @@ import { Config } from "../../config.js";
 import { DEFAULT_PONG_CONFIG } from "../../game/PongGame/Config.js";
 import PongGame from "../../game/PongGame/PongGame.js";
 import FooterComponent from "../components/FooterComponent.js";
+import NavbarAvatarComponent from "../components/NavbarAvatarComponent.js";
 import NavbarLanguageComponent from "../components/NavbarLanguageComponent.js";
 import NavbarMenuComponent from "../components/NavbarMenuComponent.js";
+import Context from "../Context.js";
 import Router from "../Router.js";
 import View from "./View.js";
 
@@ -48,10 +50,12 @@ export default class PongGameView extends View {
         menu.withLogo();
 
 		const languages = new NavbarLanguageComponent();
+        const avatar = new NavbarAvatarComponent(Context.getItem("user")?.username);
+
+        menu.addItem(avatar.DOM());
 		menu.addItem(languages.DOM());
 
         const main = document.createElement("main");
-		main.classList.add("text-center");
 
         const playerScore = document.createElement("div");
         playerScore.classList.add("pong-player-score");
