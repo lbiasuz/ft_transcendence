@@ -4,12 +4,12 @@ export default class Game
 	#gameObjectList = [];
 	#lastTimestamp;
 	#loop;
-	#stopped
+	#paused
 
 	constructor() 
 	{
 		this.#lastTimestamp = 0;
-		this.#stopped = false;
+		this.#paused = false;
 
 		let deltaCount = 0;
 		const maxFrameRate = 60;
@@ -18,7 +18,7 @@ export default class Game
 		this.#loop = (timestamp = 0) =>
 		{
 
-			if (this.#stopped) {
+			if (this.#paused) {
 				return;
 			}
 
@@ -48,12 +48,18 @@ export default class Game
 		this.#loop();
 	}
 	
+	pause() {
+		this.#paused = true;
+	}
+
 	stop() {
-		this.#stopped = true;
+		this.#paused = true;
+		window.removeEventListener("keydown", (e) => {});
+		window.removeEventListener("keyup", (e) => {});
 	}
 
 	resume() {
-		this.#stopped = false;
+		this.#paused = false;
 		this.#loop();
 	}
 

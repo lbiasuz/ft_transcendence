@@ -2,10 +2,8 @@ import ButtonActionComponent from "../components/ButtonActionComponent.js";
 import FooterComponent from "../components/FooterComponent.js";
 import NavbarLanguageComponent from "../components/NavbarLanguageComponent.js";
 import NavbarMenuComponent from "../components/NavbarMenuComponent.js";
-import Router from "../Router.js";
 import View from "./View.js";
 import Lang from "../lang/Lang.js";
-import NavbarAvatarComponent from "../components/NavbarAvatarComponent.js";
 
 export default class HomeView extends View {
 
