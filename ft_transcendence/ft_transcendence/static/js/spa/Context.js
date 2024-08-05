@@ -10,4 +10,8 @@ export default class Context {
         return this.#data.set(item, value);
     }
 
+    static deleteItem(item) {
+        this.#data.delete(item);
+    }
+
 }

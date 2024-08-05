@@ -1,19 +1,24 @@
 # Description: Makefile for Django project
+include .env
 
-DOCKER_CMD = docker compose
-COMPOSE_FILE = .devcontainer/docker-compose-dev.yml
+DOCKER_CMD = docker-compose
+
+ifeq ($(DEBUG), True)
+	COMPOSE_FILE = tools/docker-compose-dev.yml
+else
+	COMPOSE_FILE = tools/docker-compose.yml
+endif
+
+all: setup up
 
 setup:
-	pipx install poetry
+	pip install poetry
 
 shell:
 	poetry shell
 
 dependencies:
 	poetry install
-
-code:
-	poetry run code .
 
 ruff:
 	poetry run ruff check .
@@ -38,29 +43,17 @@ coverage-html:
 	poetry run coverage run --source='.' ft_transcendence/manage.py test ft_transcendence
 	poetry run coverage html
 
-exit:
-	exit
-
 build:
-	$(DOCKER_CMD) -f $(COMPOSE_FILE) build
+	$(DOCKER_CMD) --env-file ./.env -f $(COMPOSE_FILE) build
 
 up:
-	$(DOCKER_CMD) -f $(COMPOSE_FILE) build
-	$(DOCKER_CMD) -f $(COMPOSE_FILE) up -d
-
-stop:
-	$(DOCKER_CMD) -f $(COMPOSE_FILE) stop
+	$(DOCKER_CMD) --env-file ./.env -f $(COMPOSE_FILE) build
+	$(DOCKER_CMD) --env-file ./.env -f $(COMPOSE_FILE) up -d
 
 down:
-	$(DOCKER_CMD) -f $(COMPOSE_FILE) down
+	$(DOCKER_CMD) --env-file ./.env -f $(COMPOSE_FILE) down
 
 rmi:
-	$(DOCKER_CMD) -f $(COMPOSE_FILE) down --rmi all -v
-
-ps:
-	$(DOCKER_CMD) -f $(COMPOSE_FILE) ps
+	$(DOCKER_CMD) --env-file ./.env -f $(COMPOSE_FILE) down --rmi all -v
 
 restart: down up
-
-logs:
-	$(DOCKER_CMD) -f $(COMPOSE_FILE) logs

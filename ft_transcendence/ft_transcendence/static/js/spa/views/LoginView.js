@@ -2,10 +2,8 @@ import ButtonActionComponent from "../components/ButtonActionComponent.js";
 import FooterComponent from "../components/FooterComponent.js";
 import NavbarLanguageComponent from "../components/NavbarLanguageComponent.js";
 import NavbarMenuComponent from "../components/NavbarMenuComponent.js";
-import Router from "../Router.js";
 import View from "./View.js";
 import Lang from "../lang/Lang.js";
-import NavbarAvatarComponent from "../components/NavbarAvatarComponent.js";
 
 export default class HomeView extends View {
 
@@ -22,7 +20,7 @@ export default class HomeView extends View {
 		loginButton.addClass("mb-8");
 
 		loginButton.action(() => {
-			const loginUrl = "https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-6f60df1067aebb00d90db164bd83b278dbf2aacef540c58a5ba333fe86119504&redirect_uri=http%3A%2F%2Flocalhost%3A8000%2Fsso&response_type=code"
+			const loginUrl = "http://localhost:8000/intra";
 			window.location.href = loginUrl;
 		});
 

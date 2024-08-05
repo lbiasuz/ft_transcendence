@@ -8,6 +8,14 @@ export default class PlayerSetupComponent extends Component {
     #nameInput;
     #base;
 
+    #nomalizeString(str) {
+        str = str.replace(" ", "_");
+        str = str.replace("__", "_");
+        str = str.trim();
+        str = str.substring(0, 16);
+        return str;
+    }
+
     constructor(playerNumber) {
 
         super();
@@ -27,6 +35,14 @@ export default class PlayerSetupComponent extends Component {
         const playerNameInput = document.createElement("input");
         playerNameInput.type = "text";
         playerNameInput.placeholder = Lang.text("Player Name");
+        playerNameInput.setAttribute("maxlength", 16);
+        playerNameInput.setAttribute("spellcheck", false);
+        playerNameInput.addEventListener("input", () => {
+            playerNameInput.value = this.#nomalizeString(playerNameInput.value);
+        })
+        playerNameInput.addEventListener("keyup", () => {
+            playerNameInput.value = this.#nomalizeString(playerNameInput.value);
+        })
 
         const colorSelector = document.createElement("div");
         colorSelector.classList.add("btn-group", "btn-color-selection");
@@ -124,7 +140,7 @@ export default class PlayerSetupComponent extends Component {
     }
 
     getPlayerName() {
-        return this.#nameInput.value;
+        return this.#nomalizeString(this.#nameInput.value);
     }
 
     getCurrentColor() {
