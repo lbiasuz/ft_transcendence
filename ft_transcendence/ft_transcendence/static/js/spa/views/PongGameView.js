@@ -44,7 +44,6 @@ export default class PongGameView extends View {
         gameConfig.playerTwo.pawnSprite = sprites.get(viewData.playerTwo.color);
 
         this.#gameConfig = gameConfig;
-        console.log(gameConfig);
 
         const menu = new NavbarMenuComponent();
         menu.withLogo();
@@ -177,18 +176,33 @@ export default class PongGameView extends View {
     }
 
     render() {
+
         super.render();
+
+        if (Context.getItem("game")) {
+            Context.getItem("game")?.stop();
+            Context.deleteItem("game");
+            console.log("Game Clearned");
+        }
+
         this.#game = new PongGame(this.#gameConfig);
+        Context.setItem("game", this.#game);
+
         this.#game.onStart(this.#startGameEvent.bind(this));
         this.#game.onScore(this.#scoreEvent.bind(this));
         this.#game.onEndGame(this.#endGameEvent.bind(this));
         this.#game.start();
+
     }
 
     clear() {
+
         super.clear();
-        if (this.#game) {
-            this.#game.stop();
+
+        if (Context.getItem("game")) {
+            Context.getItem("game")?.stop();
+            Context.deleteItem("game");
+            console.log("Game Clearned");
         }
     }
 

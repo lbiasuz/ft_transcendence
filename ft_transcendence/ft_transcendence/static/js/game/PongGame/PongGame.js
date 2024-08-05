@@ -15,6 +15,7 @@ export default class PongGame {
     #onEndGameCallBack
     #startAt
     #endAt
+    #stopped
 
     constructor(config) {
 
@@ -35,6 +36,7 @@ export default class PongGame {
         this.#playerTwoScore = 0;
         this.#rounds = 0;
         this.#config = config;
+        this.#stopped = false;
     }
 
     onStart(callback) {
@@ -82,11 +84,8 @@ export default class PongGame {
             endAt: this.#endAt
         }
 
-        let intervalId = setInterval(() => {
-
+        setTimeout(() => {
             this.#onEndGameCallBack(gameStatus);
-            clearInterval(intervalId);
-
         }, intervalDelay);
     }
 
@@ -99,7 +98,7 @@ export default class PongGame {
         this.#gameObjects.ball.resetPosition();
         this.#gameObjects.ball.resetSpeed();
 
-        this.#gameInstance.stop();
+        this.#gameInstance.pause();
 
         if (this.#playerOneScore >= this.#maxScore || this.#playerTwoScore >= this.#maxScore) {
             this.#endAt = new Date();
@@ -109,32 +108,45 @@ export default class PongGame {
         }
         
         this.#callScoreCallBack();
-        let intervalId = setInterval(() => {
+        
+        setTimeout(() => {
+
+            if (this.#stopped) { 
+                return;
+            }
 
             if (this.#config.playSound) {
                 (new Audio("/static/static/assets/sounds/next-round.mp3")).play();
             }
+
             this.#gameInstance.resume();
-            clearInterval(intervalId);
 
         }, 1000);
 
     }
 
     start() {
+
         this.#gameInstance.run();
         
         if(this.#config.playSound) {
-            this.#gameInstance.stop();
+
+            this.#gameInstance.pause();
             (new Audio("/static/static/assets/sounds/countdown.mp3").play());
 
-            const intervalId = setInterval(() => {
+            setTimeout(() => {
+
+                if (this.#stopped) { 
+                    return;
+                }
+
                 this.#gameInstance.resume();
                 this.#startAt = new Date();
+
                 if (this.#onStartCallBack) {
                     this.#onStartCallBack({startAt: this.#startAt})
                 }
-                clearInterval(intervalId)
+
             }, 4000);
 
             return;
@@ -147,6 +159,7 @@ export default class PongGame {
     }
 
     stop() {
+        this.#stopped = true;
         this.#gameInstance.stop();
     }
 
