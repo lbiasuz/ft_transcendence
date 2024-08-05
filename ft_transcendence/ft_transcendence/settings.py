@@ -49,13 +49,6 @@ DEFAULT_FILE_STORAGE = config(
 if DEFAULT_FILE_STORAGE == "django.core.files.storage.FileSystemStorage":
     MEDIA_ROOT = config("MEDIA_ROOT", default=os.path.join(BASE_DIR, "media"))
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
-
-
-# Application definition
-
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -185,9 +178,6 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "ft_transcendence.wsgi.application"
-
-
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
@@ -196,7 +186,7 @@ DATABASES = {
         "NAME": config("POSTGRES_DB"),
         "USER": config("POSTGRES_USER"),
         "PASSWORD": config("POSTGRES_PASSWORD"),
-        "HOST": 'localhost' if DEBUG == 'True' else 'db',
+        "HOST": 'localhost' if DEBUG else 'db',
         "PORT": '5432',
     }
 }
@@ -222,28 +212,6 @@ AUTH_PASSWORD_VALIDATORS = [
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
-
-
-# Internationalization
-# https://docs.djangoproject.com/en/4.2/topics/i18n/
-
-LANGUAGE_CODE = "en-us"
-
-TIME_ZONE = "UTC"
-
-USE_I18N = True
-
-USE_TZ = True
-
-LOCALE_PATHS = ["locale/"]
-
-#Installed apps settings
-
-# Django-Jazzmin settings for admin panel
-JAZZMIN_SETTINGS = {
-    "site_title": "Transcendence",
-    "site_header": "Transcendence",
-}
 
 REST_FRAMEWORK = {
     'DATETIME_FORMAT': "%Y-%m-%dT%H:%M:%S.%fZ",

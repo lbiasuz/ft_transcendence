@@ -1,7 +1,7 @@
 # Description: Makefile for Django project
 include .env
 
-DOCKER_CMD = docker compose
+DOCKER_CMD = docker-compose
 
 ifeq ($(DEBUG), True)
 	COMPOSE_FILE = tools/docker-compose-dev.yml

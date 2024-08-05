@@ -102,8 +102,9 @@ class IntraRedirectView(RedirectView):
     """
 
     def get(self, request, *args, **kwargs):
+        redirect_url = request.build_absolute_uri(reverse('sso'))[:-1]
         return HttpResponseRedirect(
-            f"https://api.intra.42.fr/oauth/authorize?client_id={CLIENT_ID}&redirect_uri={reverse("sso")}&response_type=code"
+            f"https://api.intra.42.fr/oauth/authorize?client_id={CLIENT_ID}&redirect_uri={redirect_url}&response_type=code"
         )
 
 
