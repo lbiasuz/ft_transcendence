@@ -1,8 +1,6 @@
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.generics import CreateAPIView
 
-from django_filters.rest_framework import DjangoFilterBackend
-
 from ft_transcendence.game.serializers import MatchSerializer, TournamentSerializer
 from ft_transcendence.game.models import Match
 

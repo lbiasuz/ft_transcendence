@@ -89,7 +89,7 @@ class AuthView(TemplateView):
             else:
                 logger.error(f"Failed to get token: {token_resp.content}")
 
-        return HttpResponseForbidden("Failed to authenticate")
+        return HttpResponseRedirect(reverse('home'))
 
 
 class IntraRedirectView(RedirectView):
