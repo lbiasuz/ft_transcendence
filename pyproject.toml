@@ -8,6 +8,7 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.10"
 Django = "^4.2.0"
+Gunicorn = "^22.0.0"
 coverage = "^7.5.0"
 ipython = "^8.24.0"
 python-decouple = "^3.8"
