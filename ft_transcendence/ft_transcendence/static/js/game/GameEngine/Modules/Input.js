@@ -4,14 +4,12 @@ import Controller from "../Components/Controller/Controller.js";
 export default class Input extends GameModule
 {
 	#controlBindList;
-	#busy = false;
 
 	constructor()
 	{
 		super();
 
 		this.#controlBindList = new Map();
-		this.#busy = false;
 	}
 
 	#keyDownEvent()

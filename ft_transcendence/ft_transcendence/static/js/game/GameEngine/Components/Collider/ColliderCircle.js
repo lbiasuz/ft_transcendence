@@ -4,16 +4,14 @@ import { vecSubtr, vecDivide, vecSum, vecScale } from "../../Utils/Vector2.js"
 export default class ColliderCircle extends Collider
 {
 	#radius;
-	#previousOverlap;
-	#currentOverlap;
+	#collisionAngle;
 
-	constructor(radius = 1) 
+	constructor(radius = 1, debugMode = false) 
 	{		
-		super();
+		super(debugMode);
 		
 		this.#radius = radius;
-		this.#previousOverlap = undefined;
-		this.#currentOverlap = undefined;
+		this.#collisionAngle = 90;
 	}
 
 	getRadius() 
@@ -24,6 +22,11 @@ export default class ColliderCircle extends Collider
 	setRadius(radius) 
 	{
 		this.#radius = radius;
+	}
+
+	getCollisionAngle() 
+	{
+		return this.#collisionAngle;
 	}
 
 	getExtremePoint(center, targetCenter) 
@@ -44,36 +47,5 @@ export default class ColliderCircle extends Collider
 													this.#radius));
 
     	return borderPoint;
-	}
-
-	isOverlap(target, point, circleCenter) 
-	{
-		this.#radius;
-
-		const distance = vecSubtr(point,circleCenter);
-		
-		const distanceSquared = distance.x * distance.x + 
-								distance.y * distance.y;
-		
-		const radiusSquared = this.#radius * this.#radius;
-
-		const isOverlaped =  distanceSquared <= radiusSquared;
-
-		if (isOverlaped)
-		{
-			if (this.#currentOverlap)
-			{
-				this.#previousOverlap = this.#currentOverlap;
-			}
-
-			this.#currentOverlap = target;
-		}
-		
-		return isOverlaped;
-	}
-
-	overlapDuplicity()
-	{
-		return this.#previousOverlap === this.#currentOverlap;
 	}
 }	

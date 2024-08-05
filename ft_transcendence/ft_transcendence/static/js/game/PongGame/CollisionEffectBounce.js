@@ -12,7 +12,7 @@ export default class CollisionEffectBouncePong extends CollisionEffectBounce {
 		super();
 		this.#playSound = playSound;
 		this.#increaseSpeed = increaseSpeed;
-		this.#maxSpeed = 5000;
+		this.#maxSpeed = 3000;
 	}
 
 	effect(object, borderPoint, target)
@@ -20,16 +20,15 @@ export default class CollisionEffectBouncePong extends CollisionEffectBounce {
 		if (this.#playSound) {
 			(new Audio("/static/static/assets/sounds/clack.mp3")).play();
 		}
+		
 		if (this.#increaseSpeed) {
 			let speed = object.velocity.getSpeed();
-			speed += 8;
+			speed += 40;
 			if (speed <= this.#maxSpeed) {
 				object.velocity.setSpeed(speed);
 			}
 		}
 		
 		super.effect(object, borderPoint, target)
-
 	}
-
 }

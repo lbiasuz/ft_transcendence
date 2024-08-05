@@ -1,4 +1,18 @@
 export default class Collider
 {
-	constructor() {}
+	#debugMode;
+	constructor(debugMode) 
+	{
+		this.#debugMode = debugMode;
+	}
+
+	getDebugMode()
+	{
+		return this.#debugMode;
+	}
+
+	setDebugMode(debugMode)
+	{
+		this.#debugMode = debugMode;
+	}
 }
