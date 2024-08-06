@@ -45,7 +45,7 @@ export default class PongSingleSetupView extends View {
         const gameSetup = document.createElement("div");
         gameSetup.classList.add("game-setup");
 
-        playButton.action(() => {
+        playButton.action(async () => {
 
             const gameConfig = {
                 maxScore: scoreLimite.getValue(),
@@ -58,6 +58,30 @@ export default class PongSingleSetupView extends View {
                     color: playerSetup2.getCurrentColor()
                 }
             }
+
+            // console.log("Sending request to create match");
+            // await fetch("/match/", {
+            //     method: "POST",
+            //     headers: {
+            //         "Content-Type": "application/json",
+            //         "X-CSRFToken": document.cookie.split('=')[1]
+            //     },
+            //     body: JSON.stringify({
+            //         'game': 'pong', // TODO: set game type from game choice pong/pongx
+            //         'state': 'created',
+            //         'kind': 'single',
+            //         'modifiers': { 'maxScore': gameConfig.maxScore },
+            //         'scoreboard': [{ ...gameConfig.playerOne }, { ...gameConfig.playerTwo }],
+            //     }),
+            //     cookie: document.cookie,
+            //     credentials: "same-origin"
+            // }).then(response => response.json())
+            // .then(data => {
+            //     console.log('Success:', data);
+            // })
+            // .catch((error) => {
+            //     console.error('Error:', error);
+            // });
 
             Router.navegateTo("/pong", gameConfig);
         });

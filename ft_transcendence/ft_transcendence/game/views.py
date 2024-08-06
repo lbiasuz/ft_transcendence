@@ -18,3 +18,8 @@ class MatchViewSet(ModelViewSet):
 
 class TournamentView(CreateAPIView):
   serializer_class = TournamentSerializer
+
+  def create(self, request, *args, **kwargs):
+    response = super().create(request, *args, **kwargs)
+    response.data['tournament_uuid'] = self.get_serializer().data.get('tournament_uuid', '')
+    return response
