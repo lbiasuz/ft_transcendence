@@ -1,7 +1,9 @@
 import ButtonActionComponent from "../components/ButtonActionComponent.js";
 import FooterComponent from "../components/FooterComponent.js";
+import NavbarAvatarComponent from "../components/NavbarAvatarComponent.js";
 import NavbarLanguageComponent from "../components/NavbarLanguageComponent.js";
 import NavbarMenuComponent from "../components/NavbarMenuComponent.js";
+import Context from "../Context.js";
 import Lang from "../lang/Lang.js";
 import Router from "../Router.js";
 import View from "./View.js";
@@ -16,14 +18,15 @@ export default class PongFinalScoreView extends View {
         menu.withLogo();
 
 		const languages = new NavbarLanguageComponent();
+        const avatar = new NavbarAvatarComponent(Context.getItem("user")?.username);
+
+        menu.addItem(avatar.DOM());
 		menu.addItem(languages.DOM());
 
         const base = document.createElement("div");
         base.classList.add("pong-final-score", "align-self-center");
 
         base.innerHTML = `
-            <h1></h1>
-
             <div class="config-information">
                 <span id="duration"></span>
                 <span id="score-limit"></span>
@@ -49,7 +52,10 @@ export default class PongFinalScoreView extends View {
         `;
 
         // Titles
-        base.querySelector("h1").textContent = Lang.text("Final Score");
+        const title = document.createElement("h1");
+        title.classList.add("mb-5");
+        title.textContent =  Lang.text("Final Score");
+
         base.querySelector("#playerTitle").textContent = Lang.text("Player");
         base.querySelector("#scoreTitle").textContent = Lang.text("Score");
 
@@ -68,6 +74,8 @@ export default class PongFinalScoreView extends View {
         base.querySelector("#secondPlaceScore").textContent = viewData.secondPlace.score;
 
         const playAgainButton = new ButtonActionComponent(Lang.text("Play Again"));
+        playAgainButton.addClass("mt-5");
+
         playAgainButton.action(() => {
 
             const gameConfig = {
@@ -86,13 +94,10 @@ export default class PongFinalScoreView extends View {
         })
 
         const main = document.createElement("main");
-        main.classList.add("text-center");
 
+        main.append(title);
         main.append(base);
         main.append(playAgainButton.DOM());
-        main.style = `
-            margin-top: 8em;
-        `;
 
         const footer = new FooterComponent();
 

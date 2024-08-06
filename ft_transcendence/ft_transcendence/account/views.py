@@ -12,13 +12,3 @@ class UserView(APIView):
   def get(self, request, *args, **kwargs):
     serializer = UserSerializer(request.user)
     return Response(serializer.data)
-
-# @api_view(['GET'])
-# @authentication_classes([SessionAuthentication])
-# @permission_classes([IsAuthenticated])
-# @login_required
-# def user_view(request):
-#     if request.method == 'GET':
-#         serializer = UserSerializer(request.user)
-#         return JsonResponse(serializer.data)
-#     if request.method == "POST":

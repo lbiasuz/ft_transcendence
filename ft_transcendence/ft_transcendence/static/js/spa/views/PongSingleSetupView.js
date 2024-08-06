@@ -7,7 +7,9 @@ import PlayerSetupComponent from "../components/PlayerSetupComponent.js";
 import ButtonActionComponent from "../components/ButtonActionComponent.js";
 import Router from "../Router.js";
 import Lang from "../lang/Lang.js";
-import SpacerComponent from "../components/SpacerComponent.js";
+import { Config } from "../../config.js";
+import NavbarAvatarComponent from "../components/NavbarAvatarComponent.js";
+import Context from "../Context.js";
 
 export default class PongSingleSetupView extends View {
 
@@ -16,27 +18,32 @@ export default class PongSingleSetupView extends View {
         super("Pong Game 1 VS 1");
 
         const main = document.createElement("main");
-		main.classList.add("text-center");
 
         const menu = new NavbarMenuComponent();
         menu.withLogo();
 
 		const languages = new NavbarLanguageComponent();
+        const avatar = new NavbarAvatarComponent(Context.getItem("user")?.username);
+
+        menu.addItem(avatar.DOM());
 		menu.addItem(languages.DOM());
 
-        const title = document.createElement("div");
-        title.innerHTML = "<h1>1 VS 1</h1>";
+        const title = document.createElement("h1");
+        title.classList.add("mb-5");
+        title.textContent = "1 VS 1";
 
         const footer = new FooterComponent();
 
-        const scoreLimite = new ScoreLimitComponent([5, 10, 15]);
+        const scoreLimite = new ScoreLimitComponent(Config.matchsScore);
         const playerSetup1 = new PlayerSetupComponent(Lang.text("Player") + " 1");
         const playerSetup2 = new PlayerSetupComponent(Lang.text("Player") + " 2");
         const playButton = new ButtonActionComponent(Lang.text("play"));
 
+        scoreLimite.addClass("mb-4");
+        playButton.addClass("mt-4");
+
         const gameSetup = document.createElement("div");
         gameSetup.classList.add("game-setup");
-
 
         playButton.action(() => {
 
@@ -56,20 +63,15 @@ export default class PongSingleSetupView extends View {
         });
 
         gameSetup.append(scoreLimite.DOM());
-        gameSetup.append((new SpacerComponent()).DOM());
         gameSetup.append(playerSetup1.DOM());
         gameSetup.append(playerSetup2.DOM());
-        gameSetup.append((new SpacerComponent()).DOM());
         gameSetup.append(playButton.DOM());
 
         main.append(title);
         main.append(gameSetup);
 
-        main.style = `
-            padding-top: 4em;
-        `;
-
         this._addElement(menu.DOM());
+        // this._addElement(title);
 		this._addElement(main);
 		this._addElement(footer.DOM())
 

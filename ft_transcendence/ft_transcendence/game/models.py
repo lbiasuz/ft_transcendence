@@ -7,7 +7,7 @@ from ft_transcendence.core.models import AbstractBaseModel
 class Match(AbstractBaseModel):
 	game = models.CharField(
 		verbose_name="Game",
-		choices=[("pong", "Pong"), ("brick", "Brick")],
+		choices=[("pong", "Pong"), ("pongx", "Pong X")],
 		max_length=10
 	)
 	state = models.CharField(

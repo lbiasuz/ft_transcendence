@@ -25,9 +25,9 @@ export default class Canvas extends GameModule
 		this.#canvasHeight = height;
 		this.#gameObjectMap = new Map();
 		this.#canvas = document.getElementById(this.#canvasId);
+		this.#context = this.#canvas.getContext('2d');
 		this.#canvas.width = this.#canvasWidth;
 		this.#canvas.height = this.#canvasHeight;		
-		this.#context = this.#canvas.getContext('2d');
 	}
 
 	start(gameObjectList)

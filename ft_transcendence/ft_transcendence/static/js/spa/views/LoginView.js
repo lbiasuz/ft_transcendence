@@ -2,7 +2,6 @@ import ButtonActionComponent from "../components/ButtonActionComponent.js";
 import FooterComponent from "../components/FooterComponent.js";
 import NavbarLanguageComponent from "../components/NavbarLanguageComponent.js";
 import NavbarMenuComponent from "../components/NavbarMenuComponent.js";
-import Router from "../Router.js";
 import View from "./View.js";
 import Lang from "../lang/Lang.js";
 
@@ -13,14 +12,12 @@ export default class HomeView extends View {
 		super("Home");
 
 		const main = document.createElement("main");
-		main.classList.add("text-center");
 
 		const logo = document.createElement("div")
-		logo.classList.add("logo-login");
-		logo.innerHTML = '<span class="logo">pong</span>';
+		logo.innerHTML = '<span class="logo mb-5 d-inline-block">pong</span>';
 
 		const loginButton = new ButtonActionComponent(Lang.text("login"));
-		loginButton.addClass("btn-login");
+		loginButton.addClass("mb-8");
 
 		loginButton.action(() => {
 			fetch("/ping").then((response) => {
@@ -33,8 +30,8 @@ export default class HomeView extends View {
 		const footer = new FooterComponent();
 
 		const menu = new NavbarMenuComponent();
-
 		const languages = new NavbarLanguageComponent();
+
 		menu.addItem(languages.DOM());
 
 		main.append(logo);

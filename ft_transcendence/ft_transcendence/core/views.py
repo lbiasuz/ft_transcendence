@@ -1,10 +1,9 @@
 import logging
 import requests
-from django.shortcuts import redirect
 
 from django.urls import reverse
 from django.http import HttpResponseRedirect, HttpResponseForbidden, HttpResponse
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, RedirectView
 from django.contrib.auth import login
 from django.contrib.auth.models import User
 from rest_framework.authentication import SessionAuthentication
@@ -17,6 +16,7 @@ logger = logging.getLogger(__name__)
 
 class HomeView(TemplateView):
     template_name = "index.html"
+
 
 class PingView(APIView):
     authentication_classes = [SessionAuthentication]
@@ -90,3 +90,34 @@ class AuthView(TemplateView):
                 logger.error(f"Failed to get token: {token_resp.content}")
 
         return HttpResponseForbidden("Failed to authenticate")
+
+
+class IntraRedirectView(RedirectView):
+    """
+    View for handling intra redirection.
+
+    This view redirects the user to the 42 intra login page.
+
+    Inherits from HomeView.
+    """
+
+    def get(self, request, *args, **kwargs):
+        redirect_url = request.build_absolute_uri(reverse('sso'))[:-1]
+        return HttpResponseRedirect(
+            f"https://api.intra.42.fr/oauth/authorize?client_id={CLIENT_ID}&redirect_uri={redirect_url}&response_type=code"
+        )
+
+
+class LogoutView(APIView):
+    """
+    View for handling logout.
+
+    This view logs out the user and redirects them to the home page.
+
+    Inherits from HomeView.
+    """
+
+    def get(self, request, *args, **kwargs):
+        request.COOKIES.get('sessionid', None)
+        request.user.auth_token.delete()
+        return HttpResponseRedirect(reverse('home'))

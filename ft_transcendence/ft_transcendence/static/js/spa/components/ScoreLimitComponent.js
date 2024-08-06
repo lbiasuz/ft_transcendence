@@ -25,7 +25,6 @@ export default class ScoreLimitComponent extends Component {
 
         for (const option of options) {
 
-
             const element = document.createElement("button");
             optionsGroupDiv.append(element);
 

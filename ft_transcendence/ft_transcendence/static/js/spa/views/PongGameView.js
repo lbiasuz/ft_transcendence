@@ -2,8 +2,10 @@ import { Config } from "../../config.js";
 import { DEFAULT_PONG_CONFIG } from "../../game/PongGame/Config.js";
 import PongGame from "../../game/PongGame/PongGame.js";
 import FooterComponent from "../components/FooterComponent.js";
+import NavbarAvatarComponent from "../components/NavbarAvatarComponent.js";
 import NavbarLanguageComponent from "../components/NavbarLanguageComponent.js";
 import NavbarMenuComponent from "../components/NavbarMenuComponent.js";
+import Context from "../Context.js";
 import Router from "../Router.js";
 import View from "./View.js";
 
@@ -42,16 +44,17 @@ export default class PongGameView extends View {
         gameConfig.playerTwo.pawnSprite = sprites.get(viewData.playerTwo.color);
 
         this.#gameConfig = gameConfig;
-        console.log(gameConfig);
 
         const menu = new NavbarMenuComponent();
         menu.withLogo();
 
 		const languages = new NavbarLanguageComponent();
+        const avatar = new NavbarAvatarComponent(Context.getItem("user")?.username);
+
+        menu.addItem(avatar.DOM());
 		menu.addItem(languages.DOM());
 
         const main = document.createElement("main");
-		main.classList.add("text-center");
 
         const playerScore = document.createElement("div");
         playerScore.classList.add("pong-player-score");
@@ -173,18 +176,33 @@ export default class PongGameView extends View {
     }
 
     render() {
+
         super.render();
+
+        if (Context.getItem("game")) {
+            Context.getItem("game")?.stop();
+            Context.deleteItem("game");
+            console.log("Game Clearned");
+        }
+
         this.#game = new PongGame(this.#gameConfig);
+        Context.setItem("game", this.#game);
+
         this.#game.onStart(this.#startGameEvent.bind(this));
         this.#game.onScore(this.#scoreEvent.bind(this));
         this.#game.onEndGame(this.#endGameEvent.bind(this));
         this.#game.start();
+
     }
 
     clear() {
+
         super.clear();
-        if (this.#game) {
-            this.#game.stop();
+
+        if (Context.getItem("game")) {
+            Context.getItem("game")?.stop();
+            Context.deleteItem("game");
+            console.log("Game Clearned");
         }
     }
 
