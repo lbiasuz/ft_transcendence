@@ -8,6 +8,7 @@ import NavbarMenuComponent from "../components/NavbarMenuComponent.js";
 import Context from "../Context.js";
 import Router from "../Router.js";
 import View from "./View.js";
+import Match from "../Match.js";
 
 export default class PongGameView extends View {
 
@@ -19,6 +20,7 @@ export default class PongGameView extends View {
     #ended
     #duration
     #game
+    #match
 
     constructor(viewData) {
 
@@ -105,6 +107,8 @@ export default class PongGameView extends View {
         this.#playerTwoScore = playerTwoScore;
         this.#timer = timer;
 
+        this.#match = viewData.match;
+
         main.append(playerScore);
         main.append(canvas);
 
@@ -138,7 +142,7 @@ export default class PongGameView extends View {
         return `${formater.format(minutes)}:${formater.format(seconds)}`;
     }
 
-    #endGameEvent() {
+    #endGameEvent(gameStatus) {
         
         this.#ended = true;
         clearInterval(this.#timerIntervalId);
@@ -165,7 +169,16 @@ export default class PongGameView extends View {
             }
         }
 
-        Router.navegateTo("/pong-final-score", finalScoreData);
+        Match.update(this.#match.pk, {
+            state: 'ended',
+            started_at: gameStatus.startAt.toISOString(),
+            ended_at: gameStatus.endAt.toISOString(),
+            scoreboard: players
+        }).then(response => response.json()).then(data => {
+            console.log('Success:', data);
+            finalScoreData.match = data;
+            Router.navegateTo("/pong-final-score", finalScoreData);
+        })
     }
 
     #scoreEvent(score) {

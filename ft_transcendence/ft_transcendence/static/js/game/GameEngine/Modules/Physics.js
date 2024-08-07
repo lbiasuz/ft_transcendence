@@ -139,7 +139,7 @@ export default class Physics extends GameModule
 	{
 		const bordersDistance = vecDistance(borderPoint1, borderPoint2)
 		
-		console.log(bordersDistance);
+		// console.log(bordersDistance);
 
 		if (bordersDistance > this.#precisionDistance)
 		{

@@ -7,6 +7,7 @@ import Context from "../Context.js";
 import Lang from "../lang/Lang.js";
 import Router from "../Router.js";
 import View from "./View.js";
+import Match from "../Match.js";
 
 export default class PongFinalScoreView extends View {
 
@@ -90,7 +91,33 @@ export default class PongFinalScoreView extends View {
                 }
             }
 
-            Router.navegateTo("/pong", gameConfig);
+            Match.create({
+                game: 'pong', // TODO: set game type from game choice pong/pongx
+                state: 'created',
+                kind: 'rematch',
+                modifiers: { 'maxScore': gameConfig.maxScore },
+                scoreboard: [{ ...gameConfig.playerOne }, { ...gameConfig.playerTwo }],
+            }).then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                gameConfig.match = data;
+
+                //TODO: refactor this to not be nested
+                Match.update(viewData.match.pk, {
+                    next_match: gameConfig.match.pk,
+                }).then(response => response.json())
+                .then(data => {
+                    console.log('Success:', data);
+                    Router.navegateTo("/pong", gameConfig);
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+
         })
 
         const main = document.createElement("main");

@@ -25,23 +25,23 @@ export default class PongBuilder {
         const canvasHeight = config.canvas.height;
         const background = () => {
 
-            const prefix = "static/static/background/background-";
+            const prefix = "static/static/assets/background/background-";
             const number = parseInt(Math.random() * 5);
 
             return prefix + number + ".png";
         }
         
-        // Canvas
-        const canvas = new GameEngine.Canvas(canvasId, canvasWidth, canvasHeight);
-        canvas.getDocumentCanvas().style.backgroundImage = `url('${background()}')`;
-        // console.log(canvas.getDocumentCanvas());
-        game.addGameModule(canvas);
-
         // Input
         game.addGameModule(new GameEngine.Input());
 
         //Physics
         game.addGameModule(new GameEngine.Physics());
+
+        // Canvas
+        const canvas = new GameEngine.Canvas(canvasId, canvasWidth, canvasHeight);
+        canvas.getDocumentCanvas().style.backgroundImage = `url('${background()}')`;
+        // console.log(canvas.getDocumentCanvas());
+        game.addGameModule(canvas);
     }
 
     static #createControllers(config)

@@ -17,80 +17,69 @@ export default class Match {
 	//scoreboard;
 	//modifiers;
 	//tournament_uuid;
+	
+	static #matchRoute = "/match/";
+    static #tournamentRoute = "/tournament/"
 
-	list(params) {
-		fetch ("/match/", {
-			method: "GET",
-			headers: {
-				"Content-Type": "application/json",
-				"X-CSRFToken": document.cookie.split('=')[1]
-			},
-			params: params,
-			cookie: document.cookie,
-			credentials: "same-origin"
-		})
-	}
+    static list(params) {
+        return fetch (this.#matchRoute + params, this.#customRequest());
+    }
 
-	detail(pk) {
-		fetch ("/match/" + pk, {
-			method: "GET",
-			headers: {
-				"Content-Type": "application/json",
-				"X-CSRFToken": document.cookie.split('=')[1]
-			},
-			cookie: document.cookie,
-			credentials: "same-origin"
-		})
-	}
+    static detail(pk) {
+        return fetch (this.#matchRoute + pk, this.#baseRequest())
+    }
 
-	create(body) {
-		fetch ("/match/", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-				"X-CSRFToken": document.cookie.split('=')[1]
-			},
-			body: JSON.stringify(body),
-			cookie: document.cookie,
-			credentials: "same-origin"
-		})
-	}
+    static create(body) {
+        return fetch (this.#matchRoute, this.#customRequest({
+            method: "POST",
+            body: JSON.stringify(body)
+        }))
+    }
 
-	update(pk, body) {
-		fetch ("/match/" + pk, {
-			method: "PATCH",
-			headers: {
-				"Content-Type": "application/json",
-				"X-CSRFToken": document.cookie.split('=')[1]
-			},
-			body: JSON.stringify(body),
-			cookie: document.cookie,
-			credentials: "same-origin"
-		})
-	}
+    static update(pk, body) {
+        return fetch (this.#matchRoute + pk, this.#customRequest({
+            method: "PATCH",
+            body: JSON.stringify(body)
+        }))
+    }
 
-	delete(pk) {
-		fetch ("/match/" + pk, {
-			method: "DELETE",
-			headers: {
-				"Content-Type": "application/json",
-				"X-CSRFToken": document.cookie.split('=')[1]
-			},
-			cookie: document.cookie,
-			credentials: "same-origin"
-		})
-	}
+    static delete(pk) {
+        console.log(this.#matchRoute + pk)
+        return fetch (this.#matchRoute + pk, this.#customRequest({
+            method: "DELETE"
+        }))
+    }
 
-	tournament_create(body) {
-		fetch ("/tournament/", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-				"X-CSRFToken": document.cookie.split('=')[1]
-			},
-			body: JSON.stringify(body),
-			cookie: document.cookie,
-			credentials: "same-origin"
-		})
-	}
+    static tournament_create(body) {
+        return fetch (this.#tournamentRoute, this.#customRequest({
+            method: "POST",
+            body: JSON.stringify(body)
+        }))
+    }
+
+    static #customRequest(requestConfig) {
+        const request = { ...this.#baseRequest(), ...requestConfig };
+        return request;
+    }
+
+    static #baseRequest() {
+        const baseRequest = {
+            method: "GET",
+            headers: this.#defaultHeaders(),
+            credentials: "same-origin"
+        }
+        return baseRequest;
+    }
+
+    static #defaultHeaders() {
+        const headers = {
+            "Content-Type": "application/json",
+            "X-CSRFToken": this.#getCsrfToken()
+        }
+        return headers;
+    }
+
+    static #getCsrfToken() {
+        return document.cookie.split('=')[1];
+    }
 }

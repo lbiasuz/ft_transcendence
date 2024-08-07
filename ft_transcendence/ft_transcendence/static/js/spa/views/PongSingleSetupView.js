@@ -10,6 +10,7 @@ import Lang from "../lang/Lang.js";
 import { Config } from "../../config.js";
 import NavbarAvatarComponent from "../components/NavbarAvatarComponent.js";
 import Context from "../Context.js";
+import Match from "../Match.js"
 
 export default class PongSingleSetupView extends View {
 
@@ -59,31 +60,21 @@ export default class PongSingleSetupView extends View {
                 }
             }
 
-            // console.log("Sending request to create match");
-            // await fetch("/match/", {
-            //     method: "POST",
-            //     headers: {
-            //         "Content-Type": "application/json",
-            //         "X-CSRFToken": document.cookie.split('=')[1]
-            //     },
-            //     body: JSON.stringify({
-            //         'game': 'pong', // TODO: set game type from game choice pong/pongx
-            //         'state': 'created',
-            //         'kind': 'single',
-            //         'modifiers': { 'maxScore': gameConfig.maxScore },
-            //         'scoreboard': [{ ...gameConfig.playerOne }, { ...gameConfig.playerTwo }],
-            //     }),
-            //     cookie: document.cookie,
-            //     credentials: "same-origin"
-            // }).then(response => response.json())
-            // .then(data => {
-            //     console.log('Success:', data);
-            // })
-            // .catch((error) => {
-            //     console.error('Error:', error);
-            // });
-
-            Router.navegateTo("/pong", gameConfig);
+            Match.create({
+                game: 'pong', // TODO: set game type from game choice pong/pongx
+                state: 'created',
+                kind: 'single',
+                modifiers: { 'maxScore': gameConfig.maxScore },
+                scoreboard: [{ ...gameConfig.playerOne }, { ...gameConfig.playerTwo }],
+            }).then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                gameConfig.match = data;
+                Router.navegateTo("/pong", gameConfig);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
         });
 
         gameSetup.append(scoreLimite.DOM());

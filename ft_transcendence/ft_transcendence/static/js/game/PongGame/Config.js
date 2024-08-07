@@ -6,7 +6,7 @@ export const DEFAULT_PONG_CONFIG = {
         height: 720
     },
     pawn: {
-        speed: 750,
+        speed: 500,
         width: 20,
         height: 160,
     },
@@ -15,7 +15,7 @@ export const DEFAULT_PONG_CONFIG = {
         horizontalSprite: "/static/static/assets/sprites/border.png"
     },
     ball: {
-        speed: 400,
+        speed: 275,
         sprite: "/static/static/assets/sprites/ball.png",
         width: 40,
         height: 40,

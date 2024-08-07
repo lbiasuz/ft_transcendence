@@ -125,7 +125,7 @@ export default class PongGame {
 
             this.#gameInstance.resume();
 
-        }, 1000);
+        }, 500);
 
     }
 
