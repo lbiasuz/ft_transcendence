@@ -29,6 +29,19 @@ export default class Velocity
 		return this.#constant;
 	}
 
+	getAngleDirection() 
+	{
+		let angleInRadians = Math.atan2(this.#direction.y, this.#direction.x);
+		let angleInDegrees = angleInRadians * (180 / Math.PI);
+		
+		if (angleInDegrees < 0) 
+		{
+			angleInDegrees += 360;
+		}
+		
+		return angleInDegrees;
+	}
+
 	setAngleDirection(degree)
 	{
 		const radians = degree * (Math.PI / 180);

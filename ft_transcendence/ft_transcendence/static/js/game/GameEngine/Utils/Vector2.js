@@ -102,10 +102,24 @@ export function vecStr(vec)
 
 export function vecDebug(vec, radius = 4, color = 'red')
 {
-	const canvas = document.getElementById('canvas');
+	const canvas = document.getElementById('game');
 	const context = canvas.getContext('2d');
 	context.fillStyle = color;
 	context.beginPath();
 	context.arc(vec.x, vec.y, radius, 0, Math.PI * 2);
 	context.fill();
+}
+
+
+export function vecAngle(vector)
+{
+	let angleInRadians = Math.atan2(vector.y, vector.x);
+	let angleInDegrees = angleInRadians * (180 / Math.PI);
+	
+	if (angleInDegrees < 0) 
+	{
+		angleInDegrees += 360;
+	}
+	
+	return angleInDegrees;
 }
