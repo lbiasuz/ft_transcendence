@@ -175,7 +175,6 @@ export default class PongGameView extends View {
             ended_at: gameStatus.endAt.toISOString(),
             scoreboard: players
         }).then(response => response.json()).then(data => {
-            console.log('Success:', data);
             finalScoreData.match = data;
             Router.navegateTo("/pong-final-score", finalScoreData);
         })

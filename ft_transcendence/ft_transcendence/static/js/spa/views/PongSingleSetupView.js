@@ -10,11 +10,9 @@ import Lang from "../lang/Lang.js";
 import { Config } from "../../config.js";
 import NavbarAvatarComponent from "../components/NavbarAvatarComponent.js";
 import Context from "../Context.js";
-<<<<<<< Updated upstream
 import Match from "../Match.js"
-=======
-import Match from "../Match.js";
->>>>>>> Stashed changes
+import ConfirmCancelModalComponen from "../components/ConfirmCancelModalComponent.js";
+import PongGameView from "./PongGameView.js";
 
 export default class PongSingleSetupView extends View {
 
@@ -80,19 +78,8 @@ export default class PongSingleSetupView extends View {
         document.querySelector("body")?.append(toastSuccess);
         document.querySelector("body")?.append(toastError);
 
-        /**
-         * 
-         * <div class="toast align-items-center text-bg-primary border-0" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="d-flex">
-                <div class="toast-body">
-                Hello, world! This is a toast message.
-                </div>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
-            </div>
-         * 
-         * 
-         */
+        // const toast = new bootstrap.Toast(toastSuccess);
+        // toast.show();
 
 
         playButton.action(async () => {
@@ -109,76 +96,23 @@ export default class PongSingleSetupView extends View {
                 }
             }
 
-<<<<<<< Updated upstream
-            Match.create({
-                game: 'pong', // TODO: set game type from game choice pong/pongx
+            await Match.create({
+                game: 'pong',
                 state: 'created',
                 kind: 'single',
                 modifiers: { 'maxScore': gameConfig.maxScore },
                 scoreboard: [{ ...gameConfig.playerOne }, { ...gameConfig.playerTwo }],
-            }).then(response => response.json())
-            .then(data => {
-                console.log('Success:', data);
-                gameConfig.match = data;
-                Router.navegateTo("/pong", gameConfig);
+            })
+            .then(response => response.json())
+            .then(match => {
+                gameConfig.match = match;
+                Router.clearTarget();
+                (new PongGameView(gameConfig)).render();
             })
             .catch((error) => {
                 console.error('Error:', error);
             });
-=======
 
-            // const del = await Match.delete("2").then(response => response.status);
-            // console.log(del);
-
-            const list = await Match.list("?state=created&kind=single").then(response => response.json());
-            console.log(list);
-
-            // await Match.create({
-            //     'game': 'pong', // TODO: set game type from game choice pong/pongx
-            //     'state': 'created',
-            //     'kind': 'single',
-            //     'modifiers': { 'maxScore': gameConfig.maxScore },
-            //     'scoreboard': [{ ...gameConfig.playerOne }, { ...gameConfig.playerTwo }],
-            // })
-            // .then(response => response.json())
-            // .then(() => {
-
-            //     // Router.navegateTo("/pong", gameConfig);
-            //     const toast = new bootstrap.Toast(toastSuccess);
-            //     toast.show();
-
-            // })
-            // .catch(() => {
-            //     const toast = new bootstrap.Toast(toastError);
-            //     toast.show();
-            // });
-
-            // console.log("Sending request to create match");
-            // await fetch("/match/", {
-            //     method: "POST",
-            //     headers: {
-            //         "Content-Type": "application/json",
-            //         "X-CSRFToken": document.cookie.split('=')[1]
-            //     },
-            //     body: JSON.stringify({
-            //         'game': 'pong', // TODO: set game type from game choice pong/pongx
-            //         'state': 'created',
-            //         'kind': 'single',
-            //         'modifiers': { 'maxScore': gameConfig.maxScore },
-            //         'scoreboard': [{ ...gameConfig.playerOne }, { ...gameConfig.playerTwo }],
-            //     }),
-            //     cookie: document.cookie,
-            //     credentials: "same-origin"
-            // }).then(response => response.json())
-            // .then(data => {
-            //     console.log('Success:', data);
-            // })
-            // .catch((error) => {
-            //     console.error('Error:', error);
-            // });
-
-            // Router.navegateTo("/pong", gameConfig);
->>>>>>> Stashed changes
         });
 
         gameSetup.append(scoreLimite.DOM());
@@ -190,9 +124,75 @@ export default class PongSingleSetupView extends View {
         main.append(gameSetup);
 
         this._addElement(menu.DOM());
-        // this._addElement(title);
 		this._addElement(main);
 		this._addElement(footer.DOM())
+
+    }
+
+    render() {
+        super.render();
+        this.#viewCondition();
+    }
+
+    async #viewCondition() {
+        
+        const pendentMatchs = await Match.list("state=created&king=single")
+            .then(response => response.json())
+            .catch(() => { console.log("erro listagem") })
+
+        if (pendentMatchs.length == 0 ) {
+            return;
+        }
+
+        const match = pendentMatchs[0];
+        const playerOne = match.scoreboard[0];
+        const playerTwo = match.scoreboard[1];
+
+        const modalMessage = Lang.text("There is a match that has started but not finished.<br>Do you want to continue this match or start a new one?");
+        const confirmText = Lang.text("Continue Match");
+        const cancelText = Lang.text("Cancel Match");
+        
+        const playerOneText = `<span class="color-${playerOne.color} me-2">${playerOne.name}</span>`;
+        const playerTwoText = `<span class="color-${playerTwo.color} ms-2">${playerTwo.name}</span>`;
+
+        const modalText = modalMessage + `<br><br>${playerOneText} vs ${playerTwoText}<br>`;
+
+        const modal = new ConfirmCancelModalComponen(modalText, cancelText, confirmText);
+
+        modal.onCancel(async () => {
+
+            await Match.update(match.pk, {
+                state: "canceled"
+            })
+            .then(() => {
+                modal.hide();
+            })
+
+        });
+
+        modal.onConfirm(() => {
+            
+            const gameConfig = {
+                match: match,
+                maxScore: match.modifiers.maxScore,
+                playerOne: {
+                    name: playerOne.name,
+                    color: playerOne.color
+                },
+                playerTwo: {
+                    name: playerTwo.name,
+                    color: playerTwo.color
+                }
+            }
+
+            modal.hide();
+
+            Router.clearTarget();
+            (new PongGameView(gameConfig)).render();
+
+        });
+
+        modal.show();
 
     }
 
