@@ -198,6 +198,17 @@ services:
       retries: 12
       test: ["CMD", "curl", "-XGET", "-f", "http://localhost:5066/stats"]
 
+  app-setup:
+    build:
+      context: ..
+      dockerfile: ./tools/Dockerfile
+    depends_on:
+      db:
+        condition: service_healthy
+    command: poetry run python manage.py migrate
+    networks:
+      - ft_transcendence
+
   app:
     build:
       context: ..
