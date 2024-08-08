@@ -10,7 +10,11 @@ import Lang from "../lang/Lang.js";
 import { Config } from "../../config.js";
 import NavbarAvatarComponent from "../components/NavbarAvatarComponent.js";
 import Context from "../Context.js";
+<<<<<<< Updated upstream
 import Match from "../Match.js"
+=======
+import Match from "../Match.js";
+>>>>>>> Stashed changes
 
 export default class PongSingleSetupView extends View {
 
@@ -46,6 +50,51 @@ export default class PongSingleSetupView extends View {
         const gameSetup = document.createElement("div");
         gameSetup.classList.add("game-setup");
 
+
+
+        const toastSuccess = document.createElement("div");
+        toastSuccess.classList.add("toast", "align-items-center", "border-0", "position-fixed", "bottom-0", "end-0", "success");
+        toastSuccess.role = "alert";
+        toastSuccess.innerHTML = `
+            <div class="d-flex">
+                <div class="toast-body">
+                Partida criada com sucesso em seu histórico.
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        `;
+
+        const toastError = document.createElement("div");
+        toastError.classList.add("toast", "align-items-center", "border-0", "position-fixed", "bottom-0", "end-0", "success");
+        toastError.role = "alert";
+        toastError.innerHTML = `
+            <div class="d-flex">
+                <div class="toast-body">
+                Error ao criar partida em seu histórico.
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        `;
+
+
+        document.querySelector("body")?.append(toastSuccess);
+        document.querySelector("body")?.append(toastError);
+
+        /**
+         * 
+         * <div class="toast align-items-center text-bg-primary border-0" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                Hello, world! This is a toast message.
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            </div>
+         * 
+         * 
+         */
+
+
         playButton.action(async () => {
 
             const gameConfig = {
@@ -60,6 +109,7 @@ export default class PongSingleSetupView extends View {
                 }
             }
 
+<<<<<<< Updated upstream
             Match.create({
                 game: 'pong', // TODO: set game type from game choice pong/pongx
                 state: 'created',
@@ -75,6 +125,60 @@ export default class PongSingleSetupView extends View {
             .catch((error) => {
                 console.error('Error:', error);
             });
+=======
+
+            // const del = await Match.delete("2").then(response => response.status);
+            // console.log(del);
+
+            const list = await Match.list("?state=created&kind=single").then(response => response.json());
+            console.log(list);
+
+            // await Match.create({
+            //     'game': 'pong', // TODO: set game type from game choice pong/pongx
+            //     'state': 'created',
+            //     'kind': 'single',
+            //     'modifiers': { 'maxScore': gameConfig.maxScore },
+            //     'scoreboard': [{ ...gameConfig.playerOne }, { ...gameConfig.playerTwo }],
+            // })
+            // .then(response => response.json())
+            // .then(() => {
+
+            //     // Router.navegateTo("/pong", gameConfig);
+            //     const toast = new bootstrap.Toast(toastSuccess);
+            //     toast.show();
+
+            // })
+            // .catch(() => {
+            //     const toast = new bootstrap.Toast(toastError);
+            //     toast.show();
+            // });
+
+            // console.log("Sending request to create match");
+            // await fetch("/match/", {
+            //     method: "POST",
+            //     headers: {
+            //         "Content-Type": "application/json",
+            //         "X-CSRFToken": document.cookie.split('=')[1]
+            //     },
+            //     body: JSON.stringify({
+            //         'game': 'pong', // TODO: set game type from game choice pong/pongx
+            //         'state': 'created',
+            //         'kind': 'single',
+            //         'modifiers': { 'maxScore': gameConfig.maxScore },
+            //         'scoreboard': [{ ...gameConfig.playerOne }, { ...gameConfig.playerTwo }],
+            //     }),
+            //     cookie: document.cookie,
+            //     credentials: "same-origin"
+            // }).then(response => response.json())
+            // .then(data => {
+            //     console.log('Success:', data);
+            // })
+            // .catch((error) => {
+            //     console.error('Error:', error);
+            // });
+
+            // Router.navegateTo("/pong", gameConfig);
+>>>>>>> Stashed changes
         });
 
         gameSetup.append(scoreLimite.DOM());

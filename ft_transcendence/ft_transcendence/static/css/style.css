@@ -510,3 +510,24 @@ main {
     font-size: 1.5em;
     font-weight: normal;
 }
+
+.toast {
+    margin-right: 3em;
+    margin-bottom: 5em !important;
+    padding: 1em;
+    font-size: 1em;
+    border-radius: 4px;
+    opacity: 1 !important;
+}
+
+.spinner-border {
+    border-radius: 50%;
+}
+
+.toast.success {
+    background: #3B815A;
+}
+
+.toast.error {
+    background: #994416;
+}
