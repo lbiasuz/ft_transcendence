@@ -13,6 +13,9 @@
     --game-dark-color-action: #3D3630;
     --game-dark-color-hover: #6A6058;
 
+    --game-green-color-action: #3B815A;
+    --game-green-color-hover: #52A677;
+
     /* Default Config */
     --bs-body-bg: var(--game-dark-color-base);
     --bs-body-color: var(--game-white-color-base);
@@ -530,4 +533,26 @@ main {
 
 .toast.error {
     background: #994416;
+}
+
+.modal-content {
+    font-size: 1.2em;
+    font-weight: 500;
+    text-align: center;
+    padding-top: .5em;
+    padding-bottom: .5em;
+    background: var(--game-dark-color-action);
+}
+
+.modal-content, .modal-footer {
+    border: none !important;
+}
+
+.btn-confirm {
+    background: var(--game-green-color-action);
+}
+
+.btn-confirm:hover,
+.btn-confirm:active {
+    background: var(--game-green-color-hover);
 }
