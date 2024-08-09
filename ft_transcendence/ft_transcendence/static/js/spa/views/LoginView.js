@@ -20,8 +20,11 @@ export default class HomeView extends View {
 		loginButton.addClass("mb-8");
 
 		loginButton.action(() => {
-			const loginUrl = "http://localhost:8000/intra";
-			window.location.href = loginUrl;
+			fetch("/ping").then((response) => {
+				let href = "/intra"
+				if (response.status !== 200) window.location.href = href
+				else Router.navegateTo("/pong-mode");
+			})
 		});
 
 		const footer = new FooterComponent();
