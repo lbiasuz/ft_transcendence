@@ -7,7 +7,7 @@ from ft_transcendence.game.models import Match
 class MatchViewSet(ModelViewSet):
   serializer_class = MatchSerializer
   queryset = Match.objects.all()
-  filterset_fields = ['game', 'state', 'kind']
+  filterset_fields = ['game', 'state', 'kind', 'tournament_uuid']
   search_fields = ['uuid', 'session', 'tournament_uuid', 'next_match']
 
   def perform_destroy(self, instance: Match):
@@ -18,8 +18,3 @@ class MatchViewSet(ModelViewSet):
 
 class TournamentView(CreateAPIView):
   serializer_class = TournamentSerializer
-
-  def create(self, request, *args, **kwargs):
-    response = super().create(request, *args, **kwargs)
-    response.data['tournament_uuid'] = self.get_serializer().data.get('tournament_uuid', '')
-    return response
