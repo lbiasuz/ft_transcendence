@@ -14,11 +14,11 @@ import Match from "../Match.js"
 import ConfirmCancelModalComponen from "../components/ConfirmCancelModalComponent.js";
 import PongGameView from "./PongGameView.js";
 
-export default class PongSingleSetupView extends View {
+export default class PongTeamSetupView extends View {
 
 	constructor() {
 
-        super("Pong Game 1 VS 1");
+        super("Pong Game Team VS Team");
 
         const main = document.createElement("main");
 
@@ -33,13 +33,13 @@ export default class PongSingleSetupView extends View {
 
         const title = document.createElement("h1");
         title.classList.add("mb-5");
-        title.textContent = "1 VS 1";
+        title.textContent = Lang.text("Team vs Team");
 
         const footer = new FooterComponent();
 
         const scoreLimite = new ScoreLimitComponent(Config.matchsScore);
-        const playerSetup1 = new PlayerSetupComponent(Lang.text("Player") + " 1");
-        const playerSetup2 = new PlayerSetupComponent(Lang.text("Player") + " 2");
+        const teamSetup1 = new PlayerSetupComponent(Lang.text("Team") + " 1", Lang.text("Team Name"));
+        const teamSetup2 = new PlayerSetupComponent(Lang.text("Team") + " 2", Lang.text("Team Name"));
         const playButton = new ButtonActionComponent(Lang.text("play"));
 
         scoreLimite.addClass("mb-4");
@@ -49,55 +49,22 @@ export default class PongSingleSetupView extends View {
         gameSetup.classList.add("game-setup");
 
 
-
-        const toastSuccess = document.createElement("div");
-        toastSuccess.classList.add("toast", "align-items-center", "border-0", "position-fixed", "bottom-0", "end-0", "success");
-        toastSuccess.role = "alert";
-        toastSuccess.innerHTML = `
-            <div class="d-flex">
-                <div class="toast-body">
-                Partida criada com sucesso em seu histórico.
-                </div>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
-        `;
-
-        const toastError = document.createElement("div");
-        toastError.classList.add("toast", "align-items-center", "border-0", "position-fixed", "bottom-0", "end-0", "success");
-        toastError.role = "alert";
-        toastError.innerHTML = `
-            <div class="d-flex">
-                <div class="toast-body">
-                Error ao criar partida em seu histórico.
-                </div>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
-        `;
-
-
-        document.querySelector("body")?.append(toastSuccess);
-        document.querySelector("body")?.append(toastError);
-
-        // const toast = new bootstrap.Toast(toastSuccess);
-        // toast.show();
-
-
         playButton.action(async () => {
 
             const gameConfig = {
                 maxScore: scoreLimite.getValue(),
                 playerOne: {
-                    name: playerSetup1.getPlayerName() || "Player 1",
-                    color: playerSetup1.getCurrentColor()
+                    name: teamSetup1.getPlayerName() || "Team 1",
+                    color: teamSetup1.getCurrentColor()
                 },
                 playerTwo: {
-                    name: playerSetup2.getPlayerName() || "Player 2",
-                    color: playerSetup2.getCurrentColor()
+                    name: teamSetup2.getPlayerName() || "Team 2",
+                    color: teamSetup2.getCurrentColor()
                 }
             }
 
             await Match.create({
-                game: 'pong',
+                game: 'pongx',
                 state: 'created',
                 kind: 'single',
                 modifiers: { 'maxScore': gameConfig.maxScore },
@@ -116,8 +83,8 @@ export default class PongSingleSetupView extends View {
         });
 
         gameSetup.append(scoreLimite.DOM());
-        gameSetup.append(playerSetup1.DOM());
-        gameSetup.append(playerSetup2.DOM());
+        gameSetup.append(teamSetup1.DOM());
+        gameSetup.append(teamSetup2.DOM());
         gameSetup.append(playButton.DOM());
 
         main.append(title);
@@ -136,7 +103,7 @@ export default class PongSingleSetupView extends View {
 
     async #viewCondition() {
         
-        const pendentMatchs = await Match.list("game=pong&state=created&king=single")
+        const pendentMatchs = await Match.list("game=pongx&state=created&king=single")
             .then(response => response.json())
             .catch(() => { console.log("erro listagem") })
 
@@ -145,17 +112,17 @@ export default class PongSingleSetupView extends View {
         }
 
         const match = pendentMatchs[0];
-        const playerOne = match.scoreboard[0];
-        const playerTwo = match.scoreboard[1];
+        const teamOne = match.scoreboard[0];
+        const teamTwo = match.scoreboard[1];
 
         const modalMessage = Lang.text("There is a match that has started but not finished.<br>Do you want to continue this match or start a new one?");
         const confirmText = Lang.text("Continue Match");
         const cancelText = Lang.text("Cancel Match");
         
-        const playerOneText = `<span class="color-${playerOne.color} me-2">${playerOne.name}</span>`;
-        const playerTwoText = `<span class="color-${playerTwo.color} ms-2">${playerTwo.name}</span>`;
+        const teamOneText = `<span class="color-${teamOne.color} me-2">${teamOne.name}</span>`;
+        const teamTwoText = `<span class="color-${teamTwo.color} ms-2">${teamTwo.name}</span>`;
 
-        const modalText = modalMessage + `<br><br>${playerOneText} vs ${playerTwoText}<br>`;
+        const modalText = modalMessage + `<br><br>${teamOneText} vs ${teamTwoText}<br>`;
 
         const modal = new ConfirmCancelModalComponen(modalText, cancelText, confirmText);
 
@@ -176,19 +143,19 @@ export default class PongSingleSetupView extends View {
                 match: match,
                 maxScore: match.modifiers.maxScore,
                 playerOne: {
-                    name: playerOne.name,
-                    color: playerOne.color
+                    name: teamOne.name,
+                    color: teamOne.color
                 },
                 playerTwo: {
-                    name: playerTwo.name,
-                    color: playerTwo.color
+                    name: teamTwo.name,
+                    color: teamTwo.color
                 }
             }
 
             modal.hide();
 
-            Router.clearTarget();
-            (new PongGameView(gameConfig)).render();
+            // Router.clearTarget();
+            // (new PongGameView(gameConfig)).render();
 
         });
 

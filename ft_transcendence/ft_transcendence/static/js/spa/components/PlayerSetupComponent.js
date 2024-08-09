@@ -16,7 +16,7 @@ export default class PlayerSetupComponent extends Component {
         return str;
     }
 
-    constructor(playerNumber) {
+    constructor(label, placeHolder = "Player Name") {
 
         super();
         this.#colorClasses = new Map();
@@ -30,11 +30,11 @@ export default class PlayerSetupComponent extends Component {
         baseDiv.classList.add("player-setup");
 
         const title = document.createElement("span");
-        title.textContent = playerNumber;
+        title.textContent = label;
 
         const playerNameInput = document.createElement("input");
         playerNameInput.type = "text";
-        playerNameInput.placeholder = Lang.text("Player Name");
+        playerNameInput.placeholder = Lang.text(placeHolder);
         playerNameInput.setAttribute("maxlength", 16);
         playerNameInput.setAttribute("spellcheck", false);
         playerNameInput.addEventListener("input", () => {
