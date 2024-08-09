@@ -49,7 +49,30 @@ export default class PongTournamentSetupView extends View {
         startTournamentButton.addClass("mt-5");
 
         startTournamentButton.action(() => {
-            Router.navegateTo("/pong-tournament-match-list");
+
+            const players = [{
+                name: playerSetup1.getPlayerName(),
+                color: playerSetup1.getCurrentColor(),
+            },
+            {
+                name: playerSetup2.getPlayerName(),
+                color: playerSetup2.getCurrentColor(),
+            }];
+
+            this.#extraPlayers.forEach(component => {
+                players.push({
+                    name: component.getPlayerName(),
+                    color: component.getCurrentColor(),
+                })
+            })
+
+            const tournamentConfig = {
+                maxScore: scoreLimite.getValue(),
+                players: players
+            }
+
+            console.log(tournamentConfig);
+            // Router.navegateTo("/pong-tournament-match-list");
         });
 
         const gameSetup = document.createElement("div");
@@ -68,7 +91,6 @@ export default class PongTournamentSetupView extends View {
 
         addPlayerButton.action(() => {
             this.#addPlayer();
-
         });
 
         main.append(title);
