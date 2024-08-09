@@ -9,7 +9,7 @@ else
 	COMPOSE_FILE = tools/docker-compose.yml
 endif
 
-all: setup up
+all: up
 
 setup:
 	pip install poetry

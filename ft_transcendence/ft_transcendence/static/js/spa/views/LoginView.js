@@ -21,7 +21,7 @@ export default class HomeView extends View {
 
 		loginButton.action(() => {
 			fetch("/ping").then((response) => {
-				let href = "http://localhost:8000/intra";
+				let href = "/intra"
 				if (response.status !== 200) window.location.href = href
 				else Router.navegateTo("/pong-mode");
 			})

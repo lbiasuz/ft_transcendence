@@ -44,6 +44,7 @@ class AuthView(TemplateView):
     def get(self, request, *args, **kwargs):
         logger.info("iniciando autenticacion")
         request.COOKIES.get('sessionid', None)
+        logger.info(request.GET.get('code', None))
         if code := request.GET.get('code', None):
             token_resp = requests.post(
                 "https://api.intra.42.fr/oauth/token",
