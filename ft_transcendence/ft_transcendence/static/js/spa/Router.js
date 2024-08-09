@@ -10,7 +10,7 @@ export default class Router {
     static authView;
     static authMiddleware;
  
-    static #clearTarget() {
+    static clearTarget() {
         // document.querySelector(Config.viewsTarget).childNodes.forEach(e => e.remove());
         document.querySelector(Config.viewsTarget).innerHTML = "";
     }
@@ -56,11 +56,11 @@ export default class Router {
 
         if (this.authMiddleware && ! await this.authMiddleware()) {
             const view = new this.authView();
-            this.#clearTarget();
+            this.clearTarget();
             return view.render();
         }
 
-        this.#clearTarget();
+        this.clearTarget();
 
         const match = this.#routes.find(({ path }) => path == location.pathname);
 

@@ -22,7 +22,7 @@ export default class Match {
     static #tournamentRoute = "/tournament/"
 
     static list(params) {
-        return fetch (this.#matchRoute + params, this.#customRequest());
+        return fetch (this.#matchRoute + "?" + params, this.#customRequest());
     }
 
     static detail(pk) {
