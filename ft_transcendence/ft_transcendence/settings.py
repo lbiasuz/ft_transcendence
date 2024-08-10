@@ -108,7 +108,7 @@ if DEBUG != "True":
             "applogfile": {
                 "level": "DEBUG",
                 "class": "logging.handlers.RotatingFileHandler",
-                "filename": Path(BASE_DIR).resolve().joinpath("../logs", "app.log"),
+                "filename": Path(BASE_DIR).resolve().joinpath("logs", "app.log"),
                 "maxBytes": 1024 * 1024 * 15,  # 15MB
                 "backupCount": 10,
                 "formatter": "json",

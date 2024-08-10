@@ -15,4 +15,3 @@ htmlcov
 .DS_Store
 .idea
 ft_transcendence/static
-*.log
