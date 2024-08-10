@@ -16,3 +16,4 @@ htmlcov
 .idea
 ft_transcendence/static
 ft_transcendence/logs/app.log
+*.log
