@@ -3,7 +3,10 @@
     "list": [
       {
         "builtIn": 1,
-        "datasource": "-- Grafana --",
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
@@ -13,19 +16,25 @@
     ]
   },
   "editable": true,
-  "gnetId": null,
+  "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 2,
+  "id": 1,
   "links": [],
   "panels": [
     {
-      "datasource": null,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "bdrazo17dkr9ca"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -37,6 +46,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -81,14 +91,20 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "bdrazo17dkr9ca"
+          },
           "exemplar": true,
           "expr": "rate(process_cpu_seconds_total[5m]) * 100",
           "interval": "",
@@ -100,13 +116,19 @@
       "type": "timeseries"
     },
     {
-      "datasource": null,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "bdrazo17dkr9ca"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -118,6 +140,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -162,14 +185,20 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "bdrazo17dkr9ca"
+          },
           "exemplar": true,
           "expr": "process_virtual_memory_bytes/(1024*1024)",
           "interval": "",
@@ -181,11 +210,23 @@
       "type": "timeseries"
     },
     {
-      "datasource": null,
+      "datasource": {
+        "type": "elasticsearch",
+        "uid": "bdrazi5ne5ts0f"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "thresholds"
+          },
+          "custom": {
+            "align": "right",
+            "cellOptions": {
+              "type": "auto",
+              "wrapText": false
+            },
+            "filterable": false,
+            "inspect": false
           },
           "mappings": [],
           "thresholds": {
@@ -205,47 +246,68 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 5,
-        "w": 15,
+        "h": 10,
+        "w": 24,
         "x": 0,
         "y": 8
       },
-      "id": 6,
+      "id": 11,
       "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "enablePagination": true,
           "fields": "",
-          "values": false
+          "reducer": [
+            "sum"
+          ],
+          "show": false
         },
-        "text": {},
-        "textMode": "auto"
+        "showHeader": false,
+        "sortBy": []
       },
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "11.1.3",
       "targets": [
         {
-          "exemplar": true,
-          "expr": "sum(irate(django_http_requests_total_by_view_transport_method_total{view!=\"prometheus-django-metrics\"}[5m])) by (view)",
-          "interval": "",
-          "legendFormat": "{{view}}",
-          "queryType": "randomWalk",
-          "refId": "A"
+          "alias": "",
+          "bucketAggs": [],
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "bdrazi5ne5ts0f"
+          },
+          "metrics": [
+            {
+              "id": "1",
+              "settings": {
+                "size": "500"
+              },
+              "type": "raw_document"
+            }
+          ],
+          "query": "log.file.path:\"/usr/share/filebeat/app/app.log\" ",
+          "refId": "A",
+          "timeField": "@timestamp"
         }
       ],
-      "title": "By Endpoint",
-      "type": "stat"
+      "title": "Log do elastic",
+      "type": "table"
     },
     {
-      "datasource": null,
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "fducwl6j6edxca"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
           },
           "mappings": [],
           "thresholds": {
@@ -265,114 +327,87 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 5,
-        "w": 4,
+        "h": 8,
+        "w": 24,
         "x": 0,
-        "y": 13
+        "y": 18
       },
-      "id": 4,
+      "id": 12,
       "options": {
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
+        "cellHeight": "lg",
+        "footer": {
+          "countRows": false,
           "fields": "",
-          "values": false
+          "reducer": [
+            "sum"
+          ],
+          "show": false
         },
-        "showThresholdLabels": false,
-        "showThresholdMarkers": true,
-        "text": {}
+        "showHeader": true
       },
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "11.1.3",
       "targets": [
         {
-          "exemplar": true,
-          "expr": "sum(up{job=\"prometheus\"})",
-          "interval": "",
-          "legendFormat": "",
-          "refId": "A"
-        }
-      ],
-      "title": "Up  time",
-      "type": "gauge"
-    },
-    {
-      "datasource": null,
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "fducwl6j6edxca"
           },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
+          "editorMode": "builder",
+          "format": "table",
+          "rawSql": "SELECT username, date_joined FROM auth_user LIMIT 50 ",
+          "refId": "A",
+          "sql": {
+            "columns": [
               {
-                "color": "green",
-                "value": null
+                "parameters": [
+                  {
+                    "name": "username",
+                    "type": "functionParameter"
+                  }
+                ],
+                "type": "function"
               },
               {
-                "color": "red",
-                "value": 80
+                "parameters": [
+                  {
+                    "name": "date_joined",
+                    "type": "functionParameter"
+                  }
+                ],
+                "type": "function"
               }
-            ]
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
           },
-          "unit": "short"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 5,
-        "w": 11,
-        "x": 4,
-        "y": 13
-      },
-      "id": 2,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "text": {},
-        "textMode": "auto"
-      },
-      "pluginVersion": "8.0.6",
-      "targets": [
-        {
-          "exemplar": true,
-          "expr": "sum(irate(django_http_responses_total_by_status_total[5m])) by (status)",
-          "format": "time_series",
-          "interval": "",
-          "intervalFactor": 1,
-          "legendFormat": "{{status}}",
-          "refId": "A"
+          "table": "auth_user"
         }
       ],
-      "title": "Request Rate",
-      "type": "stat"
+      "title": "Usuarios cadastrados",
+      "type": "table"
     }
   ],
   "refresh": "",
-  "schemaVersion": 30,
-  "style": "dark",
+  "schemaVersion": 39,
   "tags": [],
   "templating": {
     "list": []
   },
   "time": {
-    "from": "now-30m",
+    "from": "now-5m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Dashboard com prometheus e grafana",
   "uid": "ft_trancendence",
-  "version": 9
+  "version": 1,
+  "weekStart": ""
 }

@@ -11,8 +11,9 @@ COPY ../.env .
 RUN poetry install
 
 ADD ../ft_transcendence/ /app/
+COPY ../conf/app.log /app/logs/app.log
 RUN poetry run python manage.py collectstatic --noinput
 
 EXPOSE 8000
 
-CMD ["poetry", "run", "gunicorn", "--log-level=DEBUG", "ft_transcendence.wsgi:application", "--bind", "0.0.0.0:8000"]
+CMD ["poetry", "run", "gunicorn", "ft_transcendence.wsgi:application", "--bind", "0.0.0.0:8000"]
