@@ -24,6 +24,43 @@ networks:
 
 services:
 
+  init-es:
+    image: curlimages/curl
+    container_name: init-es
+    environment:
+      - PASSWORD=${ELASTIC_PASSWORD}
+    volumes:
+      - "../conf/indexpattern.json:/tmp/indexpattern.json"
+      - "../conf/dashkibana.ndjson:/tmp/dashkibana.ndjson"
+    entrypoint:
+      - /bin/sh
+      - '-c'
+      - |
+        URL=http://elastic:$${PASSWORD}@kibana:5601
+        status_code=$$(curl --write-out %{http_code} --silent --output /dev/null $$URL/app/home)
+        echo $$status_code
+        sleep 4
+        while [ $$status_code -ne 200 ]
+        do
+          status_code=$$(curl --write-out %{http_code} --silent --output /dev/null $$URL/app/home)
+          echo $$status_code
+          sleep 4
+        done
+        curl -H "osd-xsrf: true" \
+          -H "Content-Type: application/json" \
+          -H "securitytenant: Global" \
+          -H "kbn-xsrf: reporting" \
+          -d "@/tmp/indexpattern.json" \
+          "$$URL/api/saved_objects/index-pattern/filebeat-*"
+        echo 'index pattern imported'
+        curl -X POST "$$URL/api/saved_objects/_import" -H "kbn-xsrf: true" --form file=@/tmp/dashkibana.ndjson
+        echo 'dashboard imported'
+    networks:
+      - ft_transcendence
+    depends_on:
+      - es01
+      - kibana
+
   es01:
     image: docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION}
     labels:
@@ -41,6 +78,7 @@ services:
       - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
       - ELASTIC_USERNAME=elastic
       - xpack.license.self_generated.type=basic
+      - xpack.security.authc.api_key.enabled=true
       - xpack.security.enabled=true
     mem_limit: 3073741824
     ulimits:
@@ -221,7 +259,7 @@ services:
     ports:
       - 8000:8000
     volumes:
-      - logappdata:/app/ft_transcendence/logs
+      - logappdata:/app/logs/
       - static:/app/static
     networks:
       - ft_transcendence
@@ -277,8 +315,9 @@ services:
     environment:
       - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-simple-json-datasource
       - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
-      - ELASTIC_USER=elastic
       - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
     restart: on-failure
     volumes:
       - ../conf/grafana/dashboard.yaml:/etc/grafana/provisioning/dashboards/main.yaml

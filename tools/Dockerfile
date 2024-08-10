@@ -11,6 +11,7 @@ COPY ../.env .
 RUN poetry install
 
 ADD ../ft_transcendence/ /app/
+COPY ../conf/app.log /app/logs/app.log
 RUN poetry run python manage.py collectstatic --noinput
 
 EXPOSE 8000

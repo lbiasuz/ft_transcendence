@@ -16,8 +16,6 @@ from decouple import config, Csv
 
 from ft_transcendence.logger import CustomisedJSONFormatter
 
-ENV = config("ENV", default="dev")
-
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config("SECRET_KEY", default="")
 
@@ -68,7 +66,7 @@ INSTALLED_APPS = [
 ELASTIC_APM = {
     "SERVICE_NAME": "transcendence",
     "SERVER_URL": "http://apm-server:8200",
-    "ENVIRONMENT": config("ENVIRONMENT", default="development"),
+    "ENVIRONMENT": "container",
     "DEBUG": False,
 }
 
@@ -104,13 +102,13 @@ LOGGING = {
     },
 }
 
-if ENV != "dev":
+if DEBUG != "True":
     LOGGING["handlers"].update(
         {
             "applogfile": {
                 "level": "DEBUG",
                 "class": "logging.handlers.RotatingFileHandler",
-                "filename": Path(BASE_DIR).resolve().joinpath("logs", "app.log"),
+                "filename": Path(BASE_DIR).resolve().joinpath("../logs", "app.log"),
                 "maxBytes": 1024 * 1024 * 15,  # 15MB
                 "backupCount": 10,
                 "formatter": "json",
