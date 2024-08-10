@@ -62,7 +62,7 @@ services:
       - kibana
 
   es01:
-    image: docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION}
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.0
     labels:
       co.elastic.logs/module: elasticsearch
     networks:
@@ -70,7 +70,7 @@ services:
     volumes:
       - esdata01:/usr/share/elasticsearch/data
     ports:
-      - ${ES_PORT}:9200
+      - 9200:9200
     environment:
       - node.name=es01
       - cluster.name=es-docker-cluster
@@ -92,7 +92,7 @@ services:
     depends_on:
       es01:
         condition: service_started
-    image: docker.elastic.co/kibana/kibana:${STACK_VERSION}
+    image: docker.elastic.co/kibana/kibana:7.17.0
     labels:
       co.elastic.logs/module: kibana
     networks:
@@ -101,7 +101,7 @@ services:
       - kibanadata:/usr/share/kibana/data
       - ./../conf/kibana.yml:/usr/share/kibana/config/kibana.yml:ro
     ports:
-      - ${KIBANA_PORT}:5601
+      - 5601:5601
     environment:
       - SERVERNAME=kibana
       - ELASTICSEARCH_HOSTS=http://es01:9200
@@ -111,7 +111,7 @@ services:
       - XPACK_ENCRYPTEDSAVEDOBJECTS_ENCRYPTIONKEY=${SECRET_KEY}
       - XPACK_REPORTING_ENCRYPTIONKEY=${SECRET_KEY}
       - XPACK_REPORTING_KIBANASERVER_HOSTNAME=localhost
-      - ELASTIC_APM_SECRET_TOKEN=${ELASTIC_APM_SECRET_TOKEN}
+      - ELASTIC_APM_SECRET_TOKEN=${SECRET_KEY}
     mem_limit: 1073741824
 
   metricbeat01:
@@ -120,7 +120,7 @@ services:
         condition: service_started
       kibana:
         condition: service_started
-    image: docker.elastic.co/beats/metricbeat:${STACK_VERSION}
+    image: docker.elastic.co/beats/metricbeat:7.17.0
     user: root
     networks:
       - ft_transcendence
@@ -144,7 +144,7 @@ services:
     depends_on:
       es01:
         condition: service_started
-    image: docker.elastic.co/beats/filebeat:${STACK_VERSION}
+    image: docker.elastic.co/beats/filebeat:7.17.0
     user: root
     networks:
       - ft_transcendence
@@ -170,7 +170,7 @@ services:
         condition: service_started
       kibana:
         condition: service_started
-    image: docker.elastic.co/logstash/logstash:${STACK_VERSION}
+    image: docker.elastic.co/logstash/logstash:7.17.0
     labels:
       co.elastic.logs/module: logstash
     user: root
@@ -192,7 +192,7 @@ services:
         condition: service_started
       es01:
         condition: service_started
-    image: docker.elastic.co/apm/apm-server:${STACK_VERSION}
+    image: docker.elastic.co/apm/apm-server:7.17.0
     ports:
       - 8200:8200
     networks:
@@ -221,7 +221,7 @@ services:
         condition: service_started
       es01:
         condition: service_started
-    image: docker.elastic.co/beats/heartbeat:${STACK_VERSION}
+    image: docker.elastic.co/beats/heartbeat:7.17.0
     user: root
     volumes:
       - ../conf/heartbeat.yml:/usr/share/heartbeat/heartbeat.yml:ro
