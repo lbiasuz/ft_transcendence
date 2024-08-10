@@ -102,7 +102,7 @@ LOGGING = {
     },
 }
 
-if DEBUG != "True":
+if not DEBUG == True:
     LOGGING["handlers"].update(
         {
             "applogfile": {
