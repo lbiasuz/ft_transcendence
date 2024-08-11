@@ -2,7 +2,7 @@ import View from "./View.js";
 import NavbarMenuComponent from "../components/NavbarMenuComponent.js";
 import NavbarLanguageComponent from "../components/NavbarLanguageComponent.js";
 import FooterComponent from "../components/FooterComponent.js";
-import ScoreLimitComponent from "../components/ScoreLimitComponent.js";
+import OptionGroupComponent from "../components/OptionGroupComponent.js";
 import PlayerSetupComponent from "../components/PlayerSetupComponent.js";
 import ButtonActionComponent from "../components/ButtonActionComponent.js";
 import Router from "../Router.js";
@@ -38,12 +38,12 @@ export default class PongSingleSetupView extends View {
 
         const footer = new FooterComponent();
 
-        const scoreLimite = new ScoreLimitComponent(Config.matchsScore);
+        const scoreLimit = new OptionGroupComponent(Config.matchsScore, Lang.text("Score Limit"));
         const playerSetup1 = new PlayerSetupComponent(Lang.text("Player") + " 1");
         const playerSetup2 = new PlayerSetupComponent(Lang.text("Player") + " 2");
         const playButton = new ButtonActionComponent(Lang.text("play"));
 
-        scoreLimite.addClass("mb-4");
+        scoreLimit.addClass("mb-4");
         playButton.addClass("mt-4");
 
         const gameSetup = document.createElement("div");
@@ -53,7 +53,7 @@ export default class PongSingleSetupView extends View {
         playButton.action(async () => {
 
             const gameConfig = {
-                maxScore: scoreLimite.getValue(),
+                maxScore: scoreLimit.getValue(),
                 playerOne: {
                     name: playerSetup1.getPlayerName() || "Player 1",
                     color: playerSetup1.getCurrentColor()
@@ -84,7 +84,7 @@ export default class PongSingleSetupView extends View {
 
         });
 
-        gameSetup.append(scoreLimite.DOM());
+        gameSetup.append(scoreLimit.DOM());
         gameSetup.append(playerSetup1.DOM());
         gameSetup.append(playerSetup2.DOM());
         gameSetup.append(playButton.DOM());

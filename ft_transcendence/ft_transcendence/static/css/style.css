@@ -136,7 +136,7 @@ h2 {
 }
 
 .btn-group-options .btn-option {
-    width: 5rem;
+    max-width: 6rem;
 }
 .btn-group-options .btn-option:hover,
 .btn-group-options .btn-option:active {
@@ -169,7 +169,7 @@ h2 {
     height: 100%;
 }
 
-.score-limit > span {
+.option-group > span {
     display: block;
     margin-bottom: 1em;
 }

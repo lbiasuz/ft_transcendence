@@ -5,7 +5,7 @@ import NavbarAvatarComponent from "../components/NavbarAvatarComponent.js";
 import NavbarLanguageComponent from "../components/NavbarLanguageComponent.js";
 import NavbarMenuComponent from "../components/NavbarMenuComponent.js";
 import PlayerSetupComponent from "../components/PlayerSetupComponent.js";
-import ScoreLimitComponent from "../components/ScoreLimitComponent.js";
+import OptionGroupComponent from "../components/OptionGroupComponent.js";
 import Context from "../Context.js";
 import Lang from "../lang/Lang.js";
 import Router from "../Router.js";
@@ -40,13 +40,13 @@ export default class PongTournamentSetupView extends View {
         title.classList.add("mb-5");
         title.textContent = Lang.text("Tournament");
 
-        const scoreLimite = new ScoreLimitComponent(Config.matchsScore);
+        const scoreLimit = new OptionGroupComponent(Config.matchsScore, Lang.text("Score Limit"));
         const playerSetup1 = new PlayerSetupComponent(Lang.text("Player") + " 1");
         const playerSetup2 = new PlayerSetupComponent(Lang.text("Player") + " 2");
         const addPlayerButton = new ButtonActionComponent(Lang.text("Add Player"));
         const startTournamentButton = new ButtonActionComponent(Lang.text("Begin Tournament"));
 
-        scoreLimite.addClass("mb-4");
+        scoreLimit.addClass("mb-4");
         addPlayerButton.addClass("mt-4", "d-block");
         startTournamentButton.addClass("mt-5");
 
@@ -71,7 +71,7 @@ export default class PongTournamentSetupView extends View {
             const tournamentConfig = {
                 game: 'pong',
                 modifiers : {
-                    maxScore: scoreLimite.getValue(),
+                    maxScore: scoreLimit.getValue(),
                 }, 
                 scoreboard: players
             }
@@ -101,7 +101,7 @@ export default class PongTournamentSetupView extends View {
         const gameSetup = document.createElement("div");
         gameSetup.classList.add("game-setup");
 
-        gameSetup.append(scoreLimite.DOM());
+        gameSetup.append(scoreLimit.DOM());
         gameSetup.append(playerSetup1.DOM());
         gameSetup.append(playerSetup2.DOM());
         gameSetup.append(addPlayerButton.DOM());

@@ -2,7 +2,7 @@ import View from "./View.js";
 import NavbarMenuComponent from "../components/NavbarMenuComponent.js";
 import NavbarLanguageComponent from "../components/NavbarLanguageComponent.js";
 import FooterComponent from "../components/FooterComponent.js";
-import ScoreLimitComponent from "../components/ScoreLimitComponent.js";
+import OptionGroupComponent from "../components/OptionGroupComponent.js";
 import PlayerSetupComponent from "../components/PlayerSetupComponent.js";
 import ButtonActionComponent from "../components/ButtonActionComponent.js";
 import Router from "../Router.js";
@@ -38,12 +38,12 @@ export default class PongTeamSetupView extends View {
 
         const footer = new FooterComponent();
 
-        const scoreLimite = new ScoreLimitComponent(Config.matchsScore);
+        const scoreLimit = new OptionGroupComponent(Config.matchsScore, Lang.text("Score Limit"));
         const teamSetup1 = new PlayerSetupComponent(Lang.text("Team") + " 1", Lang.text("Team Name"));
         const teamSetup2 = new PlayerSetupComponent(Lang.text("Team") + " 2", Lang.text("Team Name"));
         const playButton = new ButtonActionComponent(Lang.text("play"));
 
-        scoreLimite.addClass("mb-4");
+        scoreLimit.addClass("mb-4");
         playButton.addClass("mt-4");
 
         const gameSetup = document.createElement("div");
@@ -52,7 +52,7 @@ export default class PongTeamSetupView extends View {
         playButton.action(async () => {
 
             const gameConfig = {
-                maxScore: scoreLimite.getValue(),
+                maxScore: scoreLimit.getValue(),
                 playerOne: {
                     name: teamSetup1.getPlayerName() || "Team 1",
                     color: teamSetup1.getCurrentColor()
@@ -83,7 +83,7 @@ export default class PongTeamSetupView extends View {
 
         });
 
-        gameSetup.append(scoreLimite.DOM());
+        gameSetup.append(scoreLimit.DOM());
         gameSetup.append(teamSetup1.DOM());
         gameSetup.append(teamSetup2.DOM());
         gameSetup.append(playButton.DOM());
