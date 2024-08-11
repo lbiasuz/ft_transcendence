@@ -11,14 +11,19 @@ filebeat.inputs:
 processors:
 - add_docker_metadata: ~
 
-setup.kibana:
-  host: ${KIBANA_HOSTS}
-  username: ${ELASTIC_USER}
-  password: ${ELASTIC_PASSWORD} 
+setup:
+  kibana:
+    host: ${KIBANA_HOSTS}
+    username: ${ELASTIC_USER}
+    password: ${ELASTIC_PASSWORD}
+  template:
+    name: filebeat-*
+    pattern: filebeat-*
 
 output.elasticsearch:
   hosts: ${ELASTIC_HOSTS}
   username: ${ELASTIC_USER}
   password: ${ELASTIC_PASSWORD}
+  index: filebeat-*
   ssl:
     enabled: false

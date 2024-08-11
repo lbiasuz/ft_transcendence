@@ -9,11 +9,10 @@ datasources:
     typeLogoUrl: public/app/plugins/datasource/elasticsearch/img/elasticsearch.svg
     access: proxy
     url: http://es01:9200
-    user: ''
-    database: ''
     basicAuth: true
     basicAuthUser: elastic
-    basicAuthPassword: $ELASTIC_PASSWORD
+    secureJsonData:
+      basicAuthPassword: $ELASTIC_PASSWORD
     isDefault: false
     jsonData:
       includeFrozen: false
@@ -39,24 +38,24 @@ datasources:
     jsonData:
       httpMethod: POST
     readOnly: false
-  - uid: bdrb10rlelerkd
+  - uid: fducwl6j6edxca
     orgId: 1
-    name: postgresql
+    name: postgresql-datasource
     type: grafana-postgresql-datasource
-    typeName: PostgreSQL
+    typeName: "PostgreSQL"
     typeLogoUrl: public/app/plugins/datasource/grafana-postgresql-datasource/img/postgresql_logo.svg
-    access: proxy
+    access: "proxy"
     url: db:5432
     user: $POSTGRES_USER
-    database: ''
     basicAuth: false
-    isDefault: false
+    database: ""
+    secureJsonData:
+      password: $POSTGRES_PASSWORD
     jsonData:
-      connMaxLifetime: 14400
-      database: transcendence
-      maxIdleConns: 100
+      sslmode: "disable"
+      maxOpenConns: 0
+      database: $POSTGRES_DB
       maxIdleConnsAuto: true
-      maxOpenConns: 100
-      postgresVersion: 1500
-      sslmode: disable
-    readOnly: false
+      connMaxLifetime: 14400
+      postgresVersion: 1000
+      timescaledb: false
