@@ -13,6 +13,7 @@ import Context from "../Context.js";
 import Match from "../Match.js"
 import ConfirmCancelModalComponen from "../components/ConfirmCancelModalComponent.js";
 import PongGameView from "./PongGameView.js";
+import ToastComponent from "../components/ToastComponent.js";
 
 export default class PongSingleSetupView extends View {
 
@@ -49,39 +50,6 @@ export default class PongSingleSetupView extends View {
         gameSetup.classList.add("game-setup");
 
 
-
-        const toastSuccess = document.createElement("div");
-        toastSuccess.classList.add("toast", "align-items-center", "border-0", "position-fixed", "bottom-0", "end-0", "success");
-        toastSuccess.role = "alert";
-        toastSuccess.innerHTML = `
-            <div class="d-flex">
-                <div class="toast-body">
-                Partida criada com sucesso em seu histórico.
-                </div>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
-        `;
-
-        const toastError = document.createElement("div");
-        toastError.classList.add("toast", "align-items-center", "border-0", "position-fixed", "bottom-0", "end-0", "success");
-        toastError.role = "alert";
-        toastError.innerHTML = `
-            <div class="d-flex">
-                <div class="toast-body">
-                Error ao criar partida em seu histórico.
-                </div>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
-        `;
-
-
-        document.querySelector("body")?.append(toastSuccess);
-        document.querySelector("body")?.append(toastError);
-
-        // const toast = new bootstrap.Toast(toastSuccess);
-        // toast.show();
-
-
         playButton.action(async () => {
 
             const gameConfig = {
@@ -96,22 +64,23 @@ export default class PongSingleSetupView extends View {
                 }
             }
 
-            await Match.create({
+            const response = await Match.create({
                 game: 'pong',
                 state: 'created',
                 kind: 'single',
                 modifiers: { 'maxScore': gameConfig.maxScore },
                 scoreboard: [{ ...gameConfig.playerOne }, { ...gameConfig.playerTwo }],
             })
-            .then(response => response.json())
-            .then(match => {
-                gameConfig.match = match;
-                Router.clearTarget();
-                (new PongGameView(gameConfig)).render();
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
+
+            if (response.error) {
+                const toast = new ToastComponent(Lang.text("match-create-error"));
+                toast.show();
+                return;
+            }
+
+            gameConfig.match = response;
+            Router.clearTarget();
+            (new PongGameView(gameConfig)).render();
 
         });
 
@@ -129,19 +98,19 @@ export default class PongSingleSetupView extends View {
 
     }
 
-    render() {
-        super.render();
-        this.#viewCondition();
-    }
-
-    async #viewCondition() {
+    async _viewCondition() {
         
-        const pendentMatchs = await Match.list("game=pong&state=created&king=single")
-            .then(response => response.json())
-            .catch(() => { console.log("erro listagem") })
+        const pendentMatchs = await Match.list("game=pong&state=created&king=single");
+
+        if (pendentMatchs.error) {
+            const toast = new ToastComponent(Lang.text("page-load-content-error"), "error");
+            toast.show();
+            Router.navegateTo("/");
+            return false;
+        }
 
         if (pendentMatchs.length == 0 ) {
-            return;
+            return true;
         }
 
         const match = pendentMatchs[0];
@@ -159,15 +128,22 @@ export default class PongSingleSetupView extends View {
 
         const modal = new ConfirmCancelModalComponen(modalText, cancelText, confirmText);
 
+        const toastUpdate = new ToastComponent(Lang.text("match-update-success"));
+        const toastUpdateError = new ToastComponent(Lang.text("match-update-error"), "error");
+
         modal.onCancel(async () => {
 
-            await Match.update(match.pk, {
+            const response = await Match.update(match.pk, {
                 state: "canceled"
             })
-            .then(() => {
-                modal.hide();
-            })
 
+            if (response.error) {
+                toastUpdateError.show();
+                return;
+            }
+
+            toastUpdate.show();
+            modal.hide();
         });
 
         modal.onConfirm(() => {
@@ -186,13 +162,14 @@ export default class PongSingleSetupView extends View {
             }
 
             modal.hide();
-
             Router.clearTarget();
             (new PongGameView(gameConfig)).render();
 
         });
 
         modal.show();
+
+        return true;
 
     }
 

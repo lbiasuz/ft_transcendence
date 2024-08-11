@@ -12,7 +12,8 @@ import NavbarAvatarComponent from "../components/NavbarAvatarComponent.js";
 import Context from "../Context.js";
 import Match from "../Match.js"
 import ConfirmCancelModalComponen from "../components/ConfirmCancelModalComponent.js";
-import PongGameView from "./PongGameView.js";
+import PongTeamGameView from "./PongTeamGameView.js";
+import ToastComponent from "../components/ToastComponent.js";
 
 export default class PongTeamSetupView extends View {
 
@@ -48,7 +49,6 @@ export default class PongTeamSetupView extends View {
         const gameSetup = document.createElement("div");
         gameSetup.classList.add("game-setup");
 
-
         playButton.action(async () => {
 
             const gameConfig = {
@@ -63,22 +63,23 @@ export default class PongTeamSetupView extends View {
                 }
             }
 
-            await Match.create({
+            const response = await Match.create({
                 game: 'pongx',
                 state: 'created',
                 kind: 'single',
                 modifiers: { 'maxScore': gameConfig.maxScore },
                 scoreboard: [{ ...gameConfig.playerOne }, { ...gameConfig.playerTwo }],
             })
-            .then(response => response.json())
-            .then(match => {
-                gameConfig.match = match;
-                Router.clearTarget();
-                (new PongGameView(gameConfig)).render();
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
+
+            if (response.error) {
+                const toast = new ToastComponent(Lang.text("match-create-error"));
+                toast.show();
+                return;
+            }
+
+            gameConfig.match = response;
+            Router.clearTarget();
+            (new PongTeamGameView(gameConfig)).render();
 
         });
 
@@ -96,19 +97,19 @@ export default class PongTeamSetupView extends View {
 
     }
 
-    render() {
-        super.render();
-        this.#viewCondition();
-    }
-
-    async #viewCondition() {
+    async _viewCondition() {
         
-        const pendentMatchs = await Match.list("game=pongx&state=created&king=single")
-            .then(response => response.json())
-            .catch(() => { console.log("erro listagem") })
+        const pendentMatchs = await Match.list("game=pongx&state=created&king=single");
+
+        if (pendentMatchs.error) {
+            const toast = new ToastComponent(Lang.text("page-load-content-error"), "error");
+            toast.show();
+            Router.navegateTo("/");
+            return false;
+        }
 
         if (pendentMatchs.length == 0 ) {
-            return;
+            return true;
         }
 
         const match = pendentMatchs[0];
@@ -126,15 +127,23 @@ export default class PongTeamSetupView extends View {
 
         const modal = new ConfirmCancelModalComponen(modalText, cancelText, confirmText);
 
+        const toastUpdate = new ToastComponent(Lang.text("match-update-success"));
+        const toastUpdateError = new ToastComponent(Lang.text("match-update-error"), "error");
+
         modal.onCancel(async () => {
 
-            await Match.update(match.pk, {
+            const response = await Match.update(match.pk, {
                 state: "canceled"
             })
-            .then(() => {
-                modal.hide();
-            })
 
+            if (response.error) {
+                toastUpdateError.show();
+                return;
+            }
+
+            toastUpdate.show();
+            modal.hide();
+            
         });
 
         modal.onConfirm(() => {
@@ -153,13 +162,14 @@ export default class PongTeamSetupView extends View {
             }
 
             modal.hide();
-
-            // Router.clearTarget();
-            // (new PongGameView(gameConfig)).render();
+            Router.clearTarget();
+            (new PongTeamGameView(gameConfig)).render();
 
         });
 
         modal.show();
+
+        return true;
 
     }
 

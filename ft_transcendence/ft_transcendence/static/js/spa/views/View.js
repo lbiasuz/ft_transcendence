@@ -13,11 +13,20 @@ export default class View {
 		this._elements.push(element);
 	}
 
-	render() {
+	async render() {
+
+		if (! await this._viewCondition()) {
+			return;
+		}
+
 		const targetDOM = document.querySelector(Config.viewsTarget);
 		for(const element of this._elements) {
 			targetDOM.append(element);
 		}
+	}
+
+	async _viewCondition() {
+		return true;
 	}
 
 	clear() {

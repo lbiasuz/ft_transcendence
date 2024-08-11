@@ -515,8 +515,8 @@ main {
 }
 
 .toast {
-    margin-right: 3em;
-    margin-bottom: 5em !important;
+    margin-right: 1em;
+    margin-bottom: 1em !important;
     padding: 1em;
     font-size: 1em;
     border-radius: 4px;
