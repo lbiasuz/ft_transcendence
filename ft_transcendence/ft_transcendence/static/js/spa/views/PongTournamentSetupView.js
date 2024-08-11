@@ -10,6 +10,8 @@ import Context from "../Context.js";
 import Lang from "../lang/Lang.js";
 import Router from "../Router.js";
 import View from "./View.js";
+import Match from "../Match.js";
+import PongTournamentMatchListView from "./PongTournamentMatchListView.js";
 
 export default class PongTournamentSetupView extends View {
 
@@ -48,31 +50,52 @@ export default class PongTournamentSetupView extends View {
         addPlayerButton.addClass("mt-4", "d-block");
         startTournamentButton.addClass("mt-5");
 
-        startTournamentButton.action(() => {
+        startTournamentButton.action(async () => {
 
             const players = [{
-                name: playerSetup1.getPlayerName(),
+                name: playerSetup1.getPlayerName() || "Player 1",
                 color: playerSetup1.getCurrentColor(),
             },
             {
-                name: playerSetup2.getPlayerName(),
+                name: playerSetup2.getPlayerName() || "Player 2",
                 color: playerSetup2.getCurrentColor(),
             }];
 
-            this.#extraPlayers.forEach(component => {
+            this.#extraPlayers.forEach((component, i) => {
                 players.push({
-                    name: component.getPlayerName(),
+                    name: component.getPlayerName() || "Player" + (i + 3),
                     color: component.getCurrentColor(),
                 })
             })
 
             const tournamentConfig = {
-                maxScore: scoreLimite.getValue(),
-                players: players
+                game: 'pong',
+                modifiers : {
+                    maxScore: scoreLimite.getValue(),
+                }, 
+                scoreboard: players
             }
 
-            console.log(tournamentConfig);
-            // Router.navegateTo("/pong-tournament-match-list");
+            const response = await Match.tournament_create(tournamentConfig)
+            
+            if (response.error) {
+                const toast = new ToastComponent(Lang.text("match-create-error"), "error");
+                toast.show();
+                return;
+            }
+            
+            const matches = await Match.list("tournament_uuid=".concat(response.tournament_uuid));
+        
+            if (matches.error) {
+                const toast = new ToastComponent(Lang.text("match-create-error"), "error");
+                toast.show();
+                return false;
+            }
+
+            tournamentConfig.matches = matches;
+            Router.clearTarget();
+            
+            (new PongTournamentMatchListView(tournamentConfig)).render();
         });
 
         const gameSetup = document.createElement("div");
