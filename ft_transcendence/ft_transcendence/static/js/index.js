@@ -14,7 +14,6 @@ import PongTournamentSetupView from "./spa/views/PongTournamentSetupView.js";
 Router.addRoute("/", PongGameModeView);
 Router.addRoute("/pong", PongSingleSetupView);
 Router.addRoute("/pongx", PongTeamSetupView);
-Router.addRoute("/pong-final-score", PongFinalScoreView);
 Router.addRoute("/pong-tournament", PongTournamentSetupView);
 Router.addRoute("/pong-tournament-match-list", PongTournamentMatchListView);
 

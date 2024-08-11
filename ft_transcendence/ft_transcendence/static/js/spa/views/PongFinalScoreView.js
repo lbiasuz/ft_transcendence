@@ -8,6 +8,8 @@ import Lang from "../lang/Lang.js";
 import Router from "../Router.js";
 import View from "./View.js";
 import Match from "../Match.js";
+import ToastComponent from "../components/ToastComponent.js";
+import PongGameView from "./PongGameView.js";
 
 export default class PongFinalScoreView extends View {
 
@@ -77,7 +79,7 @@ export default class PongFinalScoreView extends View {
         const playAgainButton = new ButtonActionComponent(Lang.text("Play Again"));
         playAgainButton.addClass("mt-5");
 
-        playAgainButton.action(() => {
+        playAgainButton.action(async () => {
 
             const gameConfig = {
                 maxScore: viewData.maxScore,
@@ -91,32 +93,34 @@ export default class PongFinalScoreView extends View {
                 }
             }
 
-            Match.create({
-                game: 'pong', // TODO: set game type from game choice pong/pongx
+            const createdMatch =  await Match.create({
+                game: 'pong',
                 state: 'created',
                 kind: 'rematch',
                 modifiers: { 'maxScore': gameConfig.maxScore },
                 scoreboard: [{ ...gameConfig.playerOne }, { ...gameConfig.playerTwo }],
-            }).then(response => response.json())
-            .then(data => {
-                console.log('Success:', data);
-                gameConfig.match = data;
-
-                //TODO: refactor this to not be nested
-                Match.update(viewData.match.pk, {
-                    next_match: gameConfig.match.pk,
-                }).then(response => response.json())
-                .then(data => {
-                    console.log('Success:', data);
-                    Router.navegateTo("/pong", gameConfig);
-                })
-                .catch((error) => {
-                    console.error('Error:', error);
-                });
             })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
+
+            const toastUpdateError = new ToastComponent(Lang.text("match-update-error"), "error");
+
+            if (createdMatch.error) {
+                toastUpdateError.show();
+                return;
+            }
+
+            gameConfig.match = createdMatch;
+
+            const updatedMatch = await Match.update(viewData.match.pk, {
+                next_match: gameConfig.match.pk,
+            })
+
+            if (updatedMatch.error) {
+                toastUpdateError.show();
+                return;
+            }
+
+            Router.clearTarget();
+            (new PongGameView(gameConfig)).render();
 
         })
 

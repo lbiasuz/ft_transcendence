@@ -11,18 +11,7 @@ export default class Router {
     static authMiddleware;
  
     static clearTarget() {
-        // document.querySelector(Config.viewsTarget).childNodes.forEach(e => e.remove());
         document.querySelector(Config.viewsTarget).innerHTML = "";
-    }
-
-
-    static #addSpinner() {
-        document.querySelector(Config.viewsTarget).innerHTML = `
-        <main>
-            <div class="spinner-grow mx-auto" role="status">
-            </div>
-        </main>
-    `;
     }
 
     static start() {
@@ -51,8 +40,6 @@ export default class Router {
     }
 
     static async #router(viewData) {
-
-        // this.#addSpinner();
 
         if (this.authMiddleware && ! await this.authMiddleware()) {
             const view = new this.authView();

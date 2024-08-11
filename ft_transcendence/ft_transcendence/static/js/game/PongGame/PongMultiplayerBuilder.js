@@ -2,7 +2,7 @@ import * as GameEngine from "../GameEngine/GameEngine.js"
 import CollisionEffectBounceWithSound from "./CollisionEffectBounce.js";
 import CollisionScoreEvent from "./CollisionScoreEvent.js";
 
-export default class PongBuilder {
+export default class PongMultiPlayersBuilder {
 
     static build(config, scoreCallBack)
     {
@@ -27,7 +27,7 @@ export default class PongBuilder {
         const canvasHeight = config.canvas.height;
         const background = () => {
 
-            const prefix = "./assets/background/background-";
+            const prefix = "static/static/assets/background/background-";
             const number = parseInt(Math.random() * 5);
 
             return prefix + number + ".png";

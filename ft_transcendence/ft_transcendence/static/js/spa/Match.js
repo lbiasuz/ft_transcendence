@@ -21,40 +21,69 @@ export default class Match {
 	static #matchRoute = "/match/";
     static #tournamentRoute = "/tournament/"
 
-    static list(params) {
-        return fetch (this.#matchRoute + "?" + params, this.#customRequest());
+    static async list(params) {
+        try {
+            const response = await fetch (this.#matchRoute + "?" + params, this.#customRequest());
+            return await response.json();
+        } catch(e) {
+            return {error: e};
+        }
     }
 
-    static detail(pk) {
-        return fetch (this.#matchRoute + pk, this.#baseRequest())
+    static async detail(pk) {
+        try {
+            const response = await fetch (this.#matchRoute + pk, this.#baseRequest())
+            return await response.json();
+        } catch(e) {
+            return {error: e};
+        }
     }
 
-    static create(body) {
-        return fetch (this.#matchRoute, this.#customRequest({
-            method: "POST",
-            body: JSON.stringify(body)
-        }))
+    static async create(body) {
+        try {
+            const response = await fetch (this.#matchRoute, this.#customRequest({
+                method: "POST",
+                body: JSON.stringify(body)
+            }))
+            return await response.json();
+        } catch(e) {
+            return {error: e};
+        }
     }
 
-    static update(pk, body) {
-        return fetch (this.#matchRoute + pk, this.#customRequest({
-            method: "PATCH",
-            body: JSON.stringify(body)
-        }))
+    static async update(pk, body) {
+        try {
+            const response = await fetch (this.#matchRoute + pk, this.#customRequest({
+                method: "PATCH",
+                body: JSON.stringify(body)
+            }))
+            return await response.json();
+        } catch(e) {
+            return {error: e};
+        }
     }
 
-    static delete(pk) {
-        console.log(this.#matchRoute + pk)
-        return fetch (this.#matchRoute + pk, this.#customRequest({
-            method: "DELETE"
-        }))
+    static async delete(pk) {
+        try {
+            const response = await fetch (this.#matchRoute + pk, this.#customRequest({
+                method: "DELETE"
+            }))
+            return await response.json();
+        } catch(e) {
+            return {error: e};
+        }
     }
 
-    static tournament_create(body) {
-        return fetch (this.#tournamentRoute, this.#customRequest({
-            method: "POST",
-            body: JSON.stringify(body)
-        }))
+    static async tournament_create(body) {
+        try {
+            const response = await fetch (this.#tournamentRoute, this.#customRequest({
+                method: "POST",
+                body: JSON.stringify(body)
+            }))
+            return await response.json();
+        } catch(e) {
+            return {error: e};
+        }
     }
 
     static #customRequest(requestConfig) {

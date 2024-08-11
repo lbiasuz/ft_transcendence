@@ -9,8 +9,12 @@ import Context from "../Context.js";
 import Router from "../Router.js";
 import View from "./View.js";
 import Match from "../Match.js";
+import PongMultiPlayersBuilder from "../../game/PongGame/PongMultiplayerBuilder.js";
+import ToastComponent from "../components/ToastComponent.js";
+import PongFinalScoreView from "./PongFinalScoreView.js";
+import Lang from "../lang/Lang.js";
 
-export default class PongGameView extends View {
+export default class PongTeamGameView extends View {
 
     #gameConfig
     #playerOneScore
@@ -142,7 +146,7 @@ export default class PongGameView extends View {
         return `${formater.format(minutes)}:${formater.format(seconds)}`;
     }
 
-    #endGameEvent(gameStatus) {
+    async #endGameEvent(gameStatus) {
         
         this.#ended = true;
         clearInterval(this.#timerIntervalId);
@@ -169,15 +173,25 @@ export default class PongGameView extends View {
             }
         }
 
-        Match.update(this.#match.pk, {
+        const response = await Match.update(this.#match.pk, {
             state: 'ended',
             started_at: gameStatus.startAt.toISOString(),
             ended_at: gameStatus.endAt.toISOString(),
             scoreboard: players
-        }).then(response => response.json()).then(data => {
-            finalScoreData.match = data;
-            Router.navegateTo("/pong-final-score", finalScoreData);
         })
+
+        const toastUpdateError = new ToastComponent(Lang.text("match-update-error"), "error");
+        const toastUpdate = new ToastComponent(Lang.text("match-update-success"));
+        
+        if (response.error) {
+            toastUpdateError.show();
+            return;
+        }
+
+        toastUpdate.show();
+        finalScoreData.match = response;
+        Router.clearTarget();
+        (new PongFinalScoreView(finalScoreData)).render();
     }
 
     #scoreEvent(score) {
@@ -187,9 +201,9 @@ export default class PongGameView extends View {
 
     }
 
-    render() {
+    async render() {
 
-        super.render();
+        await super.render();
 
         if (Context.getItem("game")) {
             Context.getItem("game")?.stop();
@@ -197,7 +211,7 @@ export default class PongGameView extends View {
             console.log("Game Clearned");
         }
 
-        this.#game = new PongGame(this.#gameConfig);
+        this.#game = new PongGame(this.#gameConfig, PongMultiPlayersBuilder);
         Context.setItem("game", this.#game);
 
         this.#game.onStart(this.#startGameEvent.bind(this));
