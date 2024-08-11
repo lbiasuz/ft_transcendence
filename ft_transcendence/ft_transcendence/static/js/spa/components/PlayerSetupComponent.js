@@ -102,7 +102,7 @@ export default class PlayerSetupComponent extends Component {
 
     #currentColor () {
 
-        const colors = this.#colorValue.classList.values().toArray();
+        const colors = [ ...this.#colorValue.classList.values() ];
 
         for (const color of colors) {
             if (this.#colorClasses.has(color)) {
@@ -116,7 +116,7 @@ export default class PlayerSetupComponent extends Component {
     #nextColor() {
     
         const currentColor = this.#currentColor();
-        const colors = this.#colorClasses.keys().toArray();
+        const colors = [ ...this.#colorClasses.keys() ];
         const colorIndex = colors.indexOf(currentColor);
 
         if (colorIndex < colors.length - 1) {
@@ -129,7 +129,7 @@ export default class PlayerSetupComponent extends Component {
     #previousColor() {
 
         const currentColor = this.#currentColor();
-        const colors = this.#colorClasses.keys().toArray();
+        const colors = [ ...this.#colorClasses.keys() ];
         const colorIndex = colors.indexOf(currentColor);
         
         if (colorIndex > 0) {
