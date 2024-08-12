@@ -1,11 +1,11 @@
 import Component from "./Component.js";
 import Lang from "../lang/Lang.js";
 
-export default class ScoreLimitComponent extends Component {
+export default class OptionGroupComponent extends Component {
 
     #optionsGroup
 
-    constructor(options) {
+    constructor(options, title) {
         super();
 
         const baseDiv = document.createElement("div");
@@ -17,8 +17,8 @@ export default class ScoreLimitComponent extends Component {
         this.#optionsGroup = optionsGroupDiv;
         this._component = baseDiv;
 
-        baseDiv.classList.add("score-limit");
-        titleSpan.textContent = Lang.text("Score Limit");
+        baseDiv.classList.add("option-group");
+        titleSpan.textContent = title;
         optionsGroupDiv.classList.add("btn-group", "btn-group-options");
 
         let isFirst = true;

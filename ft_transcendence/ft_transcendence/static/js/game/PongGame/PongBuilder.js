@@ -23,13 +23,7 @@ export default class PongBuilder {
         const canvasId = config.canvas.id
         const canvasWidth = config.canvas.width;
         const canvasHeight = config.canvas.height;
-        const background = () => {
-
-            const prefix = "static/static/assets/background/background-";
-            const number = parseInt(Math.random() * 5);
-
-            return prefix + number + ".png";
-        }
+        const backgroundImageBase = "static/static/assets/background/background-";
         
         // Input
         game.addGameModule(new GameEngine.Input());
@@ -39,14 +33,26 @@ export default class PongBuilder {
 
         // Canvas
         const canvas = new GameEngine.Canvas(canvasId, canvasWidth, canvasHeight);
-        canvas.getDocumentCanvas().style.backgroundImage = `url('${background()}')`;
-        // console.log(canvas.getDocumentCanvas());
+
+        let backgrounImage = "";
+
+        if (config.background && config.background !== "random") {
+            backgrounImage = backgroundImageBase + config.background + ".png";
+        }
+        else {
+            const number = parseInt(Math.random() * 5);
+            backgrounImage = backgroundImageBase + number + ".png";
+        }
+
+        canvas.getDocumentCanvas().style.backgroundImage = `url(${backgrounImage})`;
+
         game.addGameModule(canvas);
     }
 
     static #createControllers(config)
     {
-        const pawnSpeed = config.pawn.speed;
+        const pawnSpeed = config.pawn.speed * config.speedModifier;
+
         const playerOneKeyUp = config.playerOne.keyUp;
         const playerOneKeyDown = config.playerOne.keyDown;
         const playerTwoKeyUp = config.playerTwo.keyUp;
@@ -78,7 +84,7 @@ export default class PongBuilder {
         const ballWidth = config.ball.width;
         const ballHeight = config.ball.height;
         const ballSprite = config.ball.sprite;
-        const ballSpeed = config.ball.speed;
+        const ballSpeed = config.ball.speed * config.speedModifier;
         const initialDirection = config.ball.initialDirection || this.#randomDirection();
         const playSound = config.playSound;
         const increaseSpeed = true;

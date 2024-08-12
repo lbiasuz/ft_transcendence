@@ -2,7 +2,7 @@ import View from "./View.js";
 import NavbarMenuComponent from "../components/NavbarMenuComponent.js";
 import NavbarLanguageComponent from "../components/NavbarLanguageComponent.js";
 import FooterComponent from "../components/FooterComponent.js";
-import ScoreLimitComponent from "../components/ScoreLimitComponent.js";
+import OptionGroupComponent from "../components/OptionGroupComponent.js";
 import PlayerSetupComponent from "../components/PlayerSetupComponent.js";
 import ButtonActionComponent from "../components/ButtonActionComponent.js";
 import Router from "../Router.js";
@@ -14,6 +14,7 @@ import Match from "../Match.js"
 import ConfirmCancelModalComponen from "../components/ConfirmCancelModalComponent.js";
 import PongGameView from "./PongGameView.js";
 import ToastComponent from "../components/ToastComponent.js";
+import BackgroundOptionComponent from "../components/BackgrounOptionComponent.js";
 
 export default class PongSingleSetupView extends View {
 
@@ -38,22 +39,29 @@ export default class PongSingleSetupView extends View {
 
         const footer = new FooterComponent();
 
-        const scoreLimite = new ScoreLimitComponent(Config.matchsScore);
+        const speeds = ["1.0x",  "1.5x", "2.0x"];
+
+        const scoreLimit = new OptionGroupComponent(Config.matchsScore, Lang.text("Score Limit"));
+        const gameSpeed = new OptionGroupComponent(speeds, Lang.text("Game Speed"));
+        const background = new BackgroundOptionComponent();
         const playerSetup1 = new PlayerSetupComponent(Lang.text("Player") + " 1");
         const playerSetup2 = new PlayerSetupComponent(Lang.text("Player") + " 2");
         const playButton = new ButtonActionComponent(Lang.text("play"));
 
-        scoreLimite.addClass("mb-4");
-        playButton.addClass("mt-4");
+        scoreLimit.addClass("mb-4");
+        gameSpeed.addClass("mb-4");
+        background.addClass("mt-3");
+        playButton.addClass("mt-5");
 
         const gameSetup = document.createElement("div");
         gameSetup.classList.add("game-setup");
 
-
         playButton.action(async () => {
 
             const gameConfig = {
-                maxScore: scoreLimite.getValue(),
+                maxScore: scoreLimit.getValue(),
+                background: background.selectedBackground(),
+                speedModifier: parseFloat(gameSpeed.getValue()),
                 playerOne: {
                     name: playerSetup1.getPlayerName() || "Player 1",
                     color: playerSetup1.getCurrentColor()
@@ -61,14 +69,18 @@ export default class PongSingleSetupView extends View {
                 playerTwo: {
                     name: playerSetup2.getPlayerName() || "Player 2",
                     color: playerSetup2.getCurrentColor()
-                }
+                },
             }
 
             const response = await Match.create({
                 game: 'pong',
                 state: 'created',
                 kind: 'single',
-                modifiers: { 'maxScore': gameConfig.maxScore },
+                modifiers: {
+                    maxScore: gameConfig.maxScore, 
+                    background: gameConfig.background,
+                    speedModifier: gameConfig.speedModifier
+                },
                 scoreboard: [{ ...gameConfig.playerOne }, { ...gameConfig.playerTwo }],
             })
 
@@ -84,9 +96,11 @@ export default class PongSingleSetupView extends View {
 
         });
 
-        gameSetup.append(scoreLimite.DOM());
+        gameSetup.append(scoreLimit.DOM());
+        gameSetup.append(gameSpeed.DOM());
         gameSetup.append(playerSetup1.DOM());
         gameSetup.append(playerSetup2.DOM());
+        gameSetup.append(background.DOM());
         gameSetup.append(playButton.DOM());
 
         main.append(title);
@@ -151,6 +165,8 @@ export default class PongSingleSetupView extends View {
             const gameConfig = {
                 match: match,
                 maxScore: match.modifiers.maxScore,
+                background: match.modifiers.background || "random",
+                speedModifer: match.modifiers.speedModifer || 1,
                 playerOne: {
                     name: playerOne.name,
                     color: playerOne.color
