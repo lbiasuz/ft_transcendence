@@ -49,6 +49,15 @@ export default class PongTeamGameView extends View {
         gameConfig.playerOne.pawnSprite = sprites.get(viewData.playerOne.color);
         gameConfig.playerTwo.pawnSprite = sprites.get(viewData.playerTwo.color);
 
+        if (viewData.background) {
+            gameConfig.background = viewData.background;
+        }
+        
+        if (viewData.speedModifier) {
+            gameConfig.speedModifier = viewData.speedModifier;
+        }
+
+
         this.#gameConfig = gameConfig;
 
         const menu = new NavbarMenuComponent();

@@ -5,6 +5,8 @@ export const DEFAULT_PONG_CONFIG = {
         width: 1024,
         height: 720
     },
+    background: "random",
+    speedModifier: 1,
     pawn: {
         speed: 500,
         width: 20,

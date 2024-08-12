@@ -128,6 +128,7 @@ h2 {
     margin-right: 1rem;
 }
 
+.background-selection .btn-option,
 .btn-group-options .btn-option,
 .btn-color-selection .btn-option{
     color: var(--game-white-color-muted);
@@ -136,8 +137,11 @@ h2 {
 }
 
 .btn-group-options .btn-option {
-    max-width: 6rem;
+    max-width: 5.8rem;
 }
+
+.background-selection .btn-option:hover,
+.background-selection .btn-option:active,
 .btn-group-options .btn-option:hover,
 .btn-group-options .btn-option:active {
     background-color: var(--game-dark-color-hover);
@@ -153,6 +157,8 @@ h2 {
     border-radius: 4px !important;
     cursor: initial;
 }
+
+.background-selection .btn-arrow,
 .btn-color-selection .btn-arrow {
     width: 1.5rem;
     padding-left: .5rem;
@@ -170,8 +176,8 @@ h2 {
 }
 
 .option-group > span {
-    display: block;
-    margin-bottom: 1em;
+    /* display: block;
+    margin-bottom: 1em; */
 }
 
 .player-setup > span {
@@ -203,6 +209,72 @@ h2 {
     outline: none !important;
     border: none !important;
     background-color: #D15D38;
+}
+
+/* background selection */
+
+.background-selection {
+    font-size: 1rem;
+    max-width: 25em;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    text-transform: uppercase;
+    font-weight: 500;
+}
+
+.background-selection .title {
+    margin-bottom: 1em;
+}
+
+.background-selection .selection {
+    display: flex;
+    gap: .5em;
+}
+
+.background-selection button,
+.background-selection .background {
+    height: 8em !important;
+    display: inline-block;
+}
+
+.background-selection .background {
+    width: 20em;
+    background-color: var(--game-dark-color-action);
+    padding: 5px;
+}
+
+.background-selection .background span {
+    background-position: 25% 60%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+}
+
+.background-selection .background .bg-0 {
+    background-image: url("../assets/background/background-0.png");
+}
+
+.background-selection .background .bg-1 {
+    background-image: url("../assets/background/background-1.png");
+}
+
+.background-selection .background .bg-2 {
+    background-image: url("../assets/background/background-2.png");
+}
+
+.background-selection .background .bg-3 {
+    background-image: url("../assets/background/background-3.png");
+}
+
+.background-selection .background .bg-4 {
+    background-image: url("../assets/background/background-4.png");
+}
+
+.background-selection .background span.bg-5 {
+    background-image: url("../assets/background/background-5.png");
 }
 
 .color-blue {

@@ -14,6 +14,7 @@ import Match from "../Match.js"
 import ConfirmCancelModalComponen from "../components/ConfirmCancelModalComponent.js";
 import PongTeamGameView from "./PongTeamGameView.js";
 import ToastComponent from "../components/ToastComponent.js";
+import BackgroundOptionComponent from "../components/BackgrounOptionComponent.js";
 
 export default class PongTeamSetupView extends View {
 
@@ -38,12 +39,18 @@ export default class PongTeamSetupView extends View {
 
         const footer = new FooterComponent();
 
+        const speeds = ["1.0x",  "1.5x", "2.0x"];
+
         const scoreLimit = new OptionGroupComponent(Config.matchsScore, Lang.text("Score Limit"));
+        const gameSpeed = new OptionGroupComponent(speeds, Lang.text("Game Speed"));
+        const background = new BackgroundOptionComponent();
         const teamSetup1 = new PlayerSetupComponent(Lang.text("Team") + " 1", Lang.text("Team Name"));
         const teamSetup2 = new PlayerSetupComponent(Lang.text("Team") + " 2", Lang.text("Team Name"));
         const playButton = new ButtonActionComponent(Lang.text("play"));
 
         scoreLimit.addClass("mb-4");
+        gameSpeed.addClass("mb-4");
+        background.addClass("mt-3");
         playButton.addClass("mt-4");
 
         const gameSetup = document.createElement("div");
@@ -53,6 +60,8 @@ export default class PongTeamSetupView extends View {
 
             const gameConfig = {
                 maxScore: scoreLimit.getValue(),
+                background: background.selectedBackground(),
+                speedModifier: parseFloat(gameSpeed.getValue()),
                 playerOne: {
                     name: teamSetup1.getPlayerName() || "Team 1",
                     color: teamSetup1.getCurrentColor()
@@ -67,7 +76,11 @@ export default class PongTeamSetupView extends View {
                 game: 'pongx',
                 state: 'created',
                 kind: 'single',
-                modifiers: { 'maxScore': gameConfig.maxScore },
+                modifiers: {
+                    maxScore: gameConfig.maxScore, 
+                    background: gameConfig.background,
+                    speedModifier: gameConfig.speedModifier
+                },
                 scoreboard: [{ ...gameConfig.playerOne }, { ...gameConfig.playerTwo }],
             })
 
@@ -84,8 +97,10 @@ export default class PongTeamSetupView extends View {
         });
 
         gameSetup.append(scoreLimit.DOM());
+        gameSetup.append(gameSpeed.DOM());
         gameSetup.append(teamSetup1.DOM());
         gameSetup.append(teamSetup2.DOM());
+        gameSetup.append(background.DOM());
         gameSetup.append(playButton.DOM());
 
         main.append(title);
@@ -151,6 +166,8 @@ export default class PongTeamSetupView extends View {
             const gameConfig = {
                 match: match,
                 maxScore: match.modifiers.maxScore,
+                background: match.modifiers.background || "random",
+                speedModifer: match.modifiers.speedModifer || 1,
                 playerOne: {
                     name: teamOne.name,
                     color: teamOne.color
