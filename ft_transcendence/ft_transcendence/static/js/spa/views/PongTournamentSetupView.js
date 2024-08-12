@@ -43,6 +43,7 @@ export default class PongTournamentSetupView extends View {
         const scoreLimit = new OptionGroupComponent(Config.matchsScore, Lang.text("Score Limit"));
         const playerSetup1 = new PlayerSetupComponent(Lang.text("Player") + " 1");
         const playerSetup2 = new PlayerSetupComponent(Lang.text("Player") + " 2");
+        const playerSetup3 = new PlayerSetupComponent(Lang.text("Player") + " 3");
         const addPlayerButton = new ButtonActionComponent(Lang.text("Add Player"));
         const startTournamentButton = new ButtonActionComponent(Lang.text("Begin Tournament"));
 
@@ -52,18 +53,24 @@ export default class PongTournamentSetupView extends View {
 
         startTournamentButton.action(async () => {
 
-            const players = [{
-                name: playerSetup1.getPlayerName() || "Player 1",
-                color: playerSetup1.getCurrentColor(),
-            },
-            {
-                name: playerSetup2.getPlayerName() || "Player 2",
-                color: playerSetup2.getCurrentColor(),
-            }];
+            const players = [
+                {
+                    name: playerSetup1.getPlayerName() || "Player 1",
+                    color: playerSetup1.getCurrentColor(),
+                },
+                {
+                    name: playerSetup2.getPlayerName() || "Player 2",
+                    color: playerSetup2.getCurrentColor(),
+                },
+                {
+                    name: playerSetup3.getPlayerName() || "Player 3",
+                    color: playerSetup3.getCurrentColor(),
+                }
+            ];
 
             this.#extraPlayers.forEach((component, i) => {
                 players.push({
-                    name: component.getPlayerName() || "Player" + (i + 3),
+                    name: component.getPlayerName() || "Player" + (i + 4),
                     color: component.getCurrentColor(),
                 })
             })
@@ -104,12 +111,13 @@ export default class PongTournamentSetupView extends View {
         gameSetup.append(scoreLimit.DOM());
         gameSetup.append(playerSetup1.DOM());
         gameSetup.append(playerSetup2.DOM());
+        gameSetup.append(playerSetup3.DOM());
         gameSetup.append(addPlayerButton.DOM());
         gameSetup.append(startTournamentButton.DOM());
 
         addPlayerButton.DOM().classList.add("with-spacer-top", "center", "muted")
 
-        this.#lastFixedPlayer = playerSetup2;
+        this.#lastFixedPlayer = playerSetup3;
         this.#addPlayerButton = addPlayerButton.DOM();
 
         addPlayerButton.action(() => {
@@ -144,7 +152,7 @@ export default class PongTournamentSetupView extends View {
 
         this.#extraPlayers.push(player);
 
-        if (this.#extraPlayers.length >= 3) {
+        if (this.#extraPlayers.length >= 2) {
             this.#addPlayerButton.classList.add("d-none");
         }
 
@@ -153,7 +161,7 @@ export default class PongTournamentSetupView extends View {
 
     #updateExtraPlayersIndexes() {
         this.#extraPlayers.forEach((player, index) => {
-            player.DOM().querySelector("span").textContent = `${Lang.text("Player")} ${index + 3}`;
+            player.DOM().querySelector("span").textContent = `${Lang.text("Player")} ${index + 4}`;
         });
     }
 
