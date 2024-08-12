@@ -8,7 +8,7 @@ from ft_transcendence.account.serializers import UserSerializer
 class UserViewTestCase(TestCase):
     def setUp(self):
         self.factory = APIRequestFactory()
-        self.user = User.objects.create_user(username='testuser', password='testpassword')
+        self.user = User.objects.create_user(username='testuser', password='testpassword') #nosec
 
     def test_user_view(self):
         request = self.factory.get(reverse('user'))

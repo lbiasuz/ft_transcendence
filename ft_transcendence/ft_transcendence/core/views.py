@@ -55,12 +55,14 @@ class AuthView(TemplateView):
                     "code": code,
                     "redirect_uri": 'http://localhost:8000/sso',
                 },
+                timeout=1000
             )
             if token_resp.ok:
                 token = token_resp.json().get('access_token', '')
                 user_resp = requests.get(
                     "https://api.intra.42.fr/v2/me",
                     headers={"Authorization": f"Bearer {token}"},
+                    timeout=1000
                 )
                 if user_resp.ok:
                     user_data = user_resp.json()
@@ -71,7 +73,7 @@ class AuthView(TemplateView):
                         user.save()
 
                         if user_data["image"]["link"]:
-                            photo_resp = requests.get(user_data["image"]["link"])
+                            photo_resp = requests.get(user_data["image"]["link"], timeout=1000)
                             if photo_resp.ok:
                                 user.profile.avatar.save(f"{user_data['login']}.jpg", photo_resp.content)
 
