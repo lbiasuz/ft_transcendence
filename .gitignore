@@ -14,5 +14,6 @@ htmlcov
 .vscode/
 .DS_Store
 .idea
+ft_transcendence/static
 ft_transcendence/logs/*
 *.log
