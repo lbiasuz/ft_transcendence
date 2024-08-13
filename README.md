@@ -36,5 +36,5 @@ poetry run coverage report
 
 Rodar o certificado
 ```sh
-openssl req -x509 -nodes -days 365 -newkey rsa:2048 -out cert.crt  -keyout cert.key -subj "/C=BR/ST=São Paulo/L=São Paulo/O=42SP/OU=transcender/CN=transcender/"
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -out cert.crt  -keyout cert.key -subj "/C=BR/ST=São Paulo/L=São Paulo/O=42SP/OU=transcender/CN=localhost/"
 ```
