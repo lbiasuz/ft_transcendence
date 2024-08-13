@@ -3,5 +3,8 @@ elastic:
   apm:
     active: true
     serverUrl: "http://apm-server:8200"
-server.host: "0.0.0.0"
+server:
+  basePath: /kibana
+  rewriteBasePath: true
+  host: "0.0.0.0"
 telemetry.enabled: "true"
