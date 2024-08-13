@@ -20,9 +20,6 @@ class Manager(models.Manager):
     def get_queryset(self):
         return QuerySet(self.model, using=self._db).filter(deleted_at__isnull=True)
 
-    def random(self):
-        count = self.count() - 1
-        return self.all()[random.randint(0, count)]
 
 class AbstractBaseModel(ExportModelOperationsMixin("dataset"), models.Model):
     uuid = models.UUIDField(

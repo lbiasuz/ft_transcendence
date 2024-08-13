@@ -320,6 +320,7 @@ services:
       - POSTGRES_DB=${POSTGRES_DB}
     restart: on-failure
     volumes:
+      - ../conf/grafana/alert.yaml:/etc/grafana/provisioning/alerting/alert.yaml
       - ../conf/grafana/dashboard.yaml:/etc/grafana/provisioning/dashboards/main.yaml
       - ../conf/grafana/dashboards:/var/lib/grafana/dashboards
       - ../conf/grafana/automatic.yaml:/etc/grafana/provisioning/datasources/automatic.yaml
