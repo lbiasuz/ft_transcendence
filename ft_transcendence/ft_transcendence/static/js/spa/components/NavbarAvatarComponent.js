@@ -17,12 +17,16 @@ export default class NavbarAvatarComponent extends Component {
             <ul class="dropdown-menu text-center">
                 <li><a href="" data-link id="logout" class="dropdown-item"></a></li>
             </ul>
-        
+
         `;
 
         base.querySelector("#user-name").textContent = userName;
         base.querySelector("#logout").textContent = Lang.text("Logout");
-
+        base.querySelector("#logout").addEventListener("click", (event) => {
+            event.preventDefault();
+            window.location.href = "/logout";
+            return;
+        });
         this._component = base;
 
     }

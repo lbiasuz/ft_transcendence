@@ -1,10 +1,11 @@
 import logging
 import requests
 
+
 from django.urls import reverse
 from django.http import HttpResponseRedirect, HttpResponseForbidden, HttpResponse
 from django.views.generic import TemplateView, RedirectView
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 from django.contrib.auth.models import User
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -121,6 +122,5 @@ class LogoutView(APIView):
     """
 
     def get(self, request, *args, **kwargs):
-        request.COOKIES.get('sessionid', None)
-        request.user.auth_token.delete()
+        logout(request)
         return HttpResponseRedirect(reverse('home'))

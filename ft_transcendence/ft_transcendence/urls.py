@@ -3,7 +3,7 @@ from django.urls import include, path
 from django.conf.urls.static import static
 
 from ft_transcendence.account.views import UserView
-from ft_transcendence.core.views import AuthView, HomeView, IntraRedirectView, PingView
+from ft_transcendence.core.views import AuthView, HomeView, IntraRedirectView, LogoutView, PingView
 from ft_transcendence.game.views import MatchViewSet, TournamentView
 
 urlpatterns = [
@@ -31,5 +31,6 @@ urlpatterns = [
         name="match",
     ),
 	path('tournament/', TournamentView.as_view(), name='tournament'),
+	path('logout/', LogoutView.as_view(), name='logout'),
     path("", HomeView.as_view(), name="home"),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
