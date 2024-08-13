@@ -22,16 +22,7 @@ export default class HomeView extends View {
 		loginButton.action(() => {
 			
 			loginButton.showSpinner();
-
-			fetch("/ping").then((response) => {
-
-				const href = "/intra";
-				if (!response.ok) { 
-					window.location.href = href;
-					return;
-				}
-				Router.navegateTo("/pong-mode");
-			})
+			window.location.href = "/intra";
 			
 		});
 

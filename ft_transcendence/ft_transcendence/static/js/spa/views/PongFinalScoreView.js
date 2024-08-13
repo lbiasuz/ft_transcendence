@@ -119,9 +119,7 @@ export default class PongFinalScoreView extends View {
                 return;
             }
 
-            Router.clearTarget();
-            (new PongGameView(gameConfig)).render();
-
+            Router.viewTo("/pong-game", gameConfig);
         })
 
         const main = document.createElement("main");

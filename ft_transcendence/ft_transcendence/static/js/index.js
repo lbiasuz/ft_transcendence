@@ -10,12 +10,16 @@ import PongTeamSetupView from "./spa/views/PongTeamSetupView.js";
 import PongSingleSetupView from "./spa/views/PongSingleSetupView.js";
 import PongTournamentMatchListView from "./spa/views/PongTournamentMatchListView.js";
 import PongTournamentSetupView from "./spa/views/PongTournamentSetupView.js";
+import PongTeamGameView from "./spa/views/PongTeamGameView.js";
 
-Router.addRoute("/", PongGameModeView);
-Router.addRoute("/pong", PongSingleSetupView);
-Router.addRoute("/pongx", PongTeamSetupView);
-Router.addRoute("/pong-tournament", PongTournamentSetupView);
-Router.addRoute("/pong-tournament-match-list", PongTournamentMatchListView);
+Router.addRoute({ path: "/", view: PongGameModeView });
+Router.addRoute({ path: "/pong", view: PongSingleSetupView });
+Router.addRoute({ path: "/pong-game", view: PongGameView, internal: true });
+Router.addRoute({ path: "/pong-final-score", view: PongFinalScoreView, internal: true });
+Router.addRoute({ path: "/pongx",  view: PongTeamSetupView });
+Router.addRoute({ path: "/pongx-game",  view: PongTeamGameView, internal: true });
+Router.addRoute({ path: "/pong-tournament", view: PongTournamentSetupView });
+Router.addRoute({ path: "/pong-tournament-match-list", view:  PongTournamentMatchListView });
 
 Router.notFoundView = NotFoundView;
 Router.authView = LoginView;

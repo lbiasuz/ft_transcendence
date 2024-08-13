@@ -199,8 +199,7 @@ export default class PongTeamGameView extends View {
 
         toastUpdate.show();
         finalScoreData.match = response;
-        Router.clearTarget();
-        (new PongFinalScoreView(finalScoreData)).render();
+        Router.viewTo("/pong-final-score", finalScoreData);
     }
 
     #scoreEvent(score) {

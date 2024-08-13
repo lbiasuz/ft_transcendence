@@ -91,8 +91,7 @@ export default class PongSingleSetupView extends View {
             }
 
             gameConfig.match = response;
-            Router.clearTarget();
-            (new PongGameView(gameConfig)).render();
+            Router.viewTo("/pong-game", gameConfig);
 
         });
 
@@ -178,8 +177,7 @@ export default class PongSingleSetupView extends View {
             }
 
             modal.hide();
-            Router.clearTarget();
-            (new PongGameView(gameConfig)).render();
+            Router.viewTo("/pong-game", gameConfig);
 
         });
 

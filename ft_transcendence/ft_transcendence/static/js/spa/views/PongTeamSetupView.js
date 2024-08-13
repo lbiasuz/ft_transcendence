@@ -91,8 +91,7 @@ export default class PongTeamSetupView extends View {
             }
 
             gameConfig.match = response;
-            Router.clearTarget();
-            (new PongTeamGameView(gameConfig)).render();
+            Router.viewTo("/pongx-game", gameConfig);
 
         });
 
@@ -179,8 +178,7 @@ export default class PongTeamSetupView extends View {
             }
 
             modal.hide();
-            Router.clearTarget();
-            (new PongTeamGameView(gameConfig)).render();
+            Router.viewTo("/pongx-game", gameConfig);
 
         });
 

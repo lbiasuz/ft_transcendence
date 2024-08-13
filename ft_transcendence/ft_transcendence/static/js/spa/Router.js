@@ -27,16 +27,42 @@ export default class Router {
         this.#router();
     }
 
-    static addRoute(path, view) {
+    static addRoute(route) {
         this.#routes.push({
-            path: path,
-            view: view
+            path: route.path,
+            view: route.view,
+            internal: route.internal || false
         })
     }
 
     static navegateTo(route, viewData) {
         history.pushState(null, null, route);
         this.#router(viewData);
+    }
+
+    static async viewTo(route, viewData) {
+
+        if (this.authMiddleware && ! await this.authMiddleware()) {
+            const view = new this.authView();
+            this.clearTarget();
+            return view.render();
+        }
+
+        this.clearTarget();
+
+        const match = this.#routes.find(({ path }) => path == route);
+
+        if (this.#currentView) {
+            this.#currentView.clear();
+        }
+
+        if (!match) {
+            const view = new this.notFoundView();
+            return view.render();
+        }
+
+        this.#currentView = new match.view(viewData);
+        this.#currentView.render();
     }
 
     static async #router(viewData) {
@@ -49,7 +75,7 @@ export default class Router {
 
         this.clearTarget();
 
-        const match = this.#routes.find(({ path }) => path == location.pathname);
+        const match = this.#routes.find(({ path, internal }) => path == location.pathname && !internal);
 
         if (this.#currentView) {
             this.#currentView.clear();

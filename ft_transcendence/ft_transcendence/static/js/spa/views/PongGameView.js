@@ -197,8 +197,7 @@ export default class PongGameView extends View {
 
         toastUpdate.show();
         finalScoreData.match = response;
-        Router.clearTarget();
-        (new PongFinalScoreView(finalScoreData)).render();
+        Router.viewTo("/pong-final-score", finalScoreData);
     }
 
     #scoreEvent(score) {
@@ -213,9 +212,8 @@ export default class PongGameView extends View {
         await super.render();
 
         if (Context.getItem("game")) {
-            Context.getItem("game")?.stop();
+            Context.getItem("game").stop();
             Context.deleteItem("game");
-            console.log("Game Clearned");
         }
 
         this.#game = new PongGame(this.#gameConfig);
@@ -233,9 +231,8 @@ export default class PongGameView extends View {
         super.clear();
 
         if (Context.getItem("game")) {
-            Context.getItem("game")?.stop();
+            Context.getItem("game").stop();
             Context.deleteItem("game");
-            console.log("Game Clearned");
         }
     }
 
