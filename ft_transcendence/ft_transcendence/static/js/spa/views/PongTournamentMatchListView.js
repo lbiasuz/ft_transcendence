@@ -3,6 +3,7 @@ import FooterComponent from "../components/FooterComponent.js";
 import NavbarAvatarComponent from "../components/NavbarAvatarComponent.js";
 import NavbarLanguageComponent from "../components/NavbarLanguageComponent.js";
 import NavbarMenuComponent from "../components/NavbarMenuComponent.js";
+import PongGameView from "./PongGameView.js";
 import Context from "../Context.js";
 import Lang from "../lang/Lang.js";
 import View from "./View.js";
@@ -42,6 +43,29 @@ export default class PongTournamentMatchListView extends View {
         `;
 
         const nextMatchButton = new ButtonActionComponent(Lang.text("Play Next Match"));
+        nextMatchButton.action((viewData) => {
+            
+            console.log(viewData);
+            const match = viewData.matches.find((match) => match.started_at == null);
+
+            const gameConfig = {
+                maxScore: match.modifiers.maxScore,
+                background: match.modifiers.background,
+                speedModifier: match.modifiers.speedModifier,
+                playerOne: {
+                    name: match.scoreboard[0].name,
+                    color: match.scoreboard[0].color
+                },
+                playerTwo: {
+                    name: match.scoreboard[1].name,
+                    color: match.scoreboard[0].color
+                },
+                match: match
+            }
+
+            Router.clearTarget();
+            (new PongGameView(gameConfig)).render();
+        });
 
         console.log(viewData.matches);
         let nextMatchDefined = false;
