@@ -3,10 +3,10 @@ import FooterComponent from "../components/FooterComponent.js";
 import NavbarAvatarComponent from "../components/NavbarAvatarComponent.js";
 import NavbarLanguageComponent from "../components/NavbarLanguageComponent.js";
 import NavbarMenuComponent from "../components/NavbarMenuComponent.js";
-import PongGameView from "./PongGameView.js";
 import Context from "../Context.js";
 import Lang from "../lang/Lang.js";
 import View from "./View.js";
+import Router from "../Router.js";
 
 export default class PongTournamentMatchListView extends View {
 
@@ -43,9 +43,8 @@ export default class PongTournamentMatchListView extends View {
         `;
 
         const nextMatchButton = new ButtonActionComponent(Lang.text("Play Next Match"));
-        nextMatchButton.action((viewData) => {
+        nextMatchButton.action(() => {
             
-            console.log(viewData);
             const match = viewData.matches.find((match) => match.started_at == null);
 
             const gameConfig = {
@@ -63,8 +62,7 @@ export default class PongTournamentMatchListView extends View {
                 match: match
             }
 
-            Router.clearTarget();
-            (new PongGameView(gameConfig)).render();
+            Router.viewTo("/pong-game", gameConfig);
         });
 
         console.log(viewData.matches);

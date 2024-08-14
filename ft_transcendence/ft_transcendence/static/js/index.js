@@ -19,7 +19,7 @@ Router.addRoute({ path: "/pong-final-score", view: PongFinalScoreView, internal:
 Router.addRoute({ path: "/pongx",  view: PongTeamSetupView });
 Router.addRoute({ path: "/pongx-game",  view: PongTeamGameView, internal: true });
 Router.addRoute({ path: "/pong-tournament", view: PongTournamentSetupView });
-Router.addRoute({ path: "/pong-tournament-match-list", view:  PongTournamentMatchListView });
+Router.addRoute({ path: "/pong-tournament-match-list", view:  PongTournamentMatchListView, internal: true });
 
 Router.notFoundView = NotFoundView;
 Router.authView = LoginView;

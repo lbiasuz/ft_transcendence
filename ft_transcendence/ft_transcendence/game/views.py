@@ -6,7 +6,7 @@ from ft_transcendence.game.models import Match
 
 class MatchViewSet(ModelViewSet):
   serializer_class = MatchSerializer
-  queryset = Match.objects.all()
+  queryset = Match.objects.all().order_by('id')
   filterset_fields = ['game', 'state', 'kind', 'tournament_uuid']
   search_fields = ['uuid', 'session', 'tournament_uuid', 'next_match']
 

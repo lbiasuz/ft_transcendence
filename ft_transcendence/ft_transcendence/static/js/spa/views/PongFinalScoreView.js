@@ -79,7 +79,7 @@ export default class PongFinalScoreView extends View {
         const playAgainButton = new ButtonActionComponent(viewData.match.tournament_uuid == "" ? Lang.text("Play Again") : Lang.text("Next Match"));
         playAgainButton.addClass("mt-5");
 
-        playAgainButton.action(async (viewData) => { 
+        playAgainButton.action(async () => { 
             viewData.match.tournament_uuid == "" ? await this.nextMatch(viewData) : await this.nextMatchTournament(viewData) 
         });
 
@@ -105,10 +105,7 @@ export default class PongFinalScoreView extends View {
             return false;
         }
 
-        tournamentConfig.matches = matches;
-        Router.clearTarget();
-        
-        (new PongTournamentMatchListView(tournamentConfig)).render();
+        Router.viewTo("/pong-tournament-match-list", { matches: matches });
     }
 
     async nextMatch(viewData) {

@@ -70,7 +70,7 @@ export default class PongTournamentSetupView extends View {
 
             this.#extraPlayers.forEach((component, i) => {
                 players.push({
-                    name: component.getPlayerName() || "Player" + (i + 4),
+                    name: component.getPlayerName() || "Player " + (i + 4),
                     color: component.getCurrentColor(),
                 })
             })
@@ -100,9 +100,7 @@ export default class PongTournamentSetupView extends View {
             }
 
             tournamentConfig.matches = matches;
-            Router.clearTarget();
-            
-            (new PongTournamentMatchListView(tournamentConfig)).render();
+            Router.viewTo("/pong-tournament-match-list", tournamentConfig);
         });
 
         const gameSetup = document.createElement("div");
