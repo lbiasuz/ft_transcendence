@@ -20,5 +20,9 @@ export const pt = {
     "Add Player": "Adicionar Jogador",
     "Begin Tournament": "Iniciar Torneio",
     "Tournament Match List": "Lista de Partidas do Torneio",
-    "Play Next Match": "Jogar Próxima Partida"
+    "Play Next Match": "Jogar Próxima Partida",
+    "page-load-content-error": "Erro ao tentar carregar os dados da página, tente novamente por gentileza.",
+    "match-create-error": "Falha ao criar partida em seu histórico.",
+	"match-update-success": "Partida atualizada em seu histórico.   ",
+	"match-update-error": "Falha ao atualizar partida em seu histórico."
 };

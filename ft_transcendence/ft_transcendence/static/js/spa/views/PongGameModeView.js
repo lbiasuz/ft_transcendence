@@ -32,12 +32,18 @@ export default class PongGameModeView extends View {
         const footer = new FooterComponent();
 
         const button1vs1 = new ButtonActionComponent("1 vs 1");
+        const button2vs2 = new ButtonActionComponent(Lang.text("Team vs Team"));
         const buttonTournament = new ButtonActionComponent(Lang.text("tournament"));
 
         button1vs1.addClass("mx-auto", "mb-2");
+        button2vs2.addClass("mx-auto", "mb-2");
 
         button1vs1.action(() => {
-            Router.navegateTo("/pong-single");
+            Router.navegateTo("/pong");
+        });
+
+        button2vs2.action(() => {
+            Router.navegateTo("/pongx");
         });
 
         buttonTournament.action(() => {
@@ -46,6 +52,7 @@ export default class PongGameModeView extends View {
 
         main.append(title);
         main.append(button1vs1.DOM());
+        main.append(button2vs2.DOM());
         main.append(buttonTournament.DOM());
 
         this._addElement(menu.DOM());

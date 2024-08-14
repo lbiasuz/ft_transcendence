@@ -25,11 +25,6 @@ export default class CollisionEffectBounce extends CollisionEffect
 
 	#effectAtCircle(object, borderPoint, overlap)
 	{	
-		if (object.collider.overlapDuplicity())
-		{
-			return;
-		}
-
 		let direction = object.velocity.getDirection();
 
 		const deltaX =  Math.abs(borderPoint.x - object.position.x);
@@ -57,11 +52,6 @@ export default class CollisionEffectBounce extends CollisionEffect
 
 	#effectAtRectangle(object, borderPoint, overlap)
 	{
-		if (object.collider.overlapDuplicity())
-		{
-			return;
-		}
-
 		let direction = object.velocity.getDirection();
 
 		const xLeft = Math.floor(object.position.x - 

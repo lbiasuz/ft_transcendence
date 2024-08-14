@@ -21,4 +21,9 @@ export const en = {
 	"Begin Tournament": "Begin Tournament",
 	"Tournament Match List": "Tournament Match List",
 	"Play Next Match": "Play Next Match",
+	"page-load-content-error": "Error trying to load page data, please try again.",
+	"match-create-error": "Failed to create match in your history.",
+	"match-update-success": "Match updated in your history.",
+	"match-update-error": "Failed to update match in your history."
+
 };

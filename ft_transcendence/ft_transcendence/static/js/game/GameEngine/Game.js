@@ -28,7 +28,7 @@ export default class Game
 
 			if (deltaCount > deltaTarget ) {
 
-				deltaCount = deltaCount - deltaTarget;
+				deltaCount = 0;
 
 				for (const module of this.#gameModuleList) 
 				{

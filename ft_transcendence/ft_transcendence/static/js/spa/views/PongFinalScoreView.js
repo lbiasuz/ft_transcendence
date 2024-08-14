@@ -7,6 +7,9 @@ import Context from "../Context.js";
 import Lang from "../lang/Lang.js";
 import Router from "../Router.js";
 import View from "./View.js";
+import Match from "../Match.js";
+import ToastComponent from "../components/ToastComponent.js";
+import PongGameView from "./PongGameView.js";
 
 export default class PongFinalScoreView extends View {
 
@@ -73,25 +76,12 @@ export default class PongFinalScoreView extends View {
         base.querySelector("#secondPlaceName").classList.add("color-" + viewData.secondPlace.color);
         base.querySelector("#secondPlaceScore").textContent = viewData.secondPlace.score;
 
-        const playAgainButton = new ButtonActionComponent(Lang.text("Play Again"));
+        const playAgainButton = new ButtonActionComponent(viewData.match.tournament_uuid == "" ? Lang.text("Play Again") : Lang.text("Next Match"));
         playAgainButton.addClass("mt-5");
 
-        playAgainButton.action(() => {
-
-            const gameConfig = {
-                maxScore: viewData.maxScore,
-                playerOne: {
-                    name: viewData.firstPlace.name,
-                    color: viewData.firstPlace.color,
-                },
-                playerTwo: {
-                    name: viewData.secondPlace.name,
-                    color: viewData.secondPlace.color,
-                }
-            }
-
-            Router.navegateTo("/pong", gameConfig);
-        })
+        playAgainButton.action(async () => { 
+            viewData.match.tournament_uuid == "" ? await this.nextMatch(viewData) : await this.nextMatchTournament(viewData) 
+        });
 
         const main = document.createElement("main");
 
@@ -106,4 +96,59 @@ export default class PongFinalScoreView extends View {
         this._addElement(footer.DOM());
     }
 
+    async nextMatchTournament(viewData) {
+        const matches = await Match.list("tournament_uuid=".concat(viewData.match.tournament_uuid));
+        
+        if (matches.error) {
+            const toast = new ToastComponent(Lang.text("match-create-error"), "error");
+            toast.show();
+            return false;
+        }
+
+        Router.viewTo("/pong-tournament-match-list", { matches: matches });
+    }
+
+    async nextMatch(viewData) {
+        const gameConfig = {
+            maxScore: viewData.maxScore,
+            playerOne: {
+                name: viewData.firstPlace.name,
+                color: viewData.firstPlace.color,
+            },
+            playerTwo: {
+                name: viewData.secondPlace.name,
+                color: viewData.secondPlace.color,
+            }
+        }
+
+        const createdMatch =  await Match.create({
+            game: 'pong',
+            state: 'created',
+            kind: 'rematch',
+            modifiers: { 'maxScore': gameConfig.maxScore, 'background': gameConfig.background, 'speedModifier': gameConfig.speedModifier },
+            scoreboard: [{ ...gameConfig.playerOne }, { ...gameConfig.playerTwo }],
+        })
+
+        const toastUpdateError = new ToastComponent(Lang.text("match-update-error"), "error");
+
+        if (createdMatch.error) {
+            toastUpdateError.show();
+            return;
+        }
+
+        gameConfig.match = createdMatch;
+
+        const updatedMatch = await Match.update(viewData.match.pk, {
+            next_match: gameConfig.match.pk,
+        })
+
+        if (updatedMatch.error) {
+            toastUpdateError.show();
+            return;
+        }
+
+        Router.clearTarget();
+        (new PongGameView(gameConfig)).render();
+
+    }
 }

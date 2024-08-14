@@ -16,7 +16,7 @@ export default class PlayerSetupComponent extends Component {
         return str;
     }
 
-    constructor(playerNumber) {
+    constructor(label, placeHolder = "Player Name") {
 
         super();
         this.#colorClasses = new Map();
@@ -30,11 +30,11 @@ export default class PlayerSetupComponent extends Component {
         baseDiv.classList.add("player-setup");
 
         const title = document.createElement("span");
-        title.textContent = playerNumber;
+        title.textContent = label;
 
         const playerNameInput = document.createElement("input");
         playerNameInput.type = "text";
-        playerNameInput.placeholder = Lang.text("Player Name");
+        playerNameInput.placeholder = Lang.text(placeHolder);
         playerNameInput.setAttribute("maxlength", 16);
         playerNameInput.setAttribute("spellcheck", false);
         playerNameInput.addEventListener("input", () => {
@@ -102,7 +102,7 @@ export default class PlayerSetupComponent extends Component {
 
     #currentColor () {
 
-        const colors = this.#colorValue.classList.values().toArray();
+        const colors = [ ...this.#colorValue.classList.values() ];
 
         for (const color of colors) {
             if (this.#colorClasses.has(color)) {
@@ -116,7 +116,7 @@ export default class PlayerSetupComponent extends Component {
     #nextColor() {
     
         const currentColor = this.#currentColor();
-        const colors = this.#colorClasses.keys().toArray();
+        const colors = [ ...this.#colorClasses.keys() ];
         const colorIndex = colors.indexOf(currentColor);
 
         if (colorIndex < colors.length - 1) {
@@ -129,7 +129,7 @@ export default class PlayerSetupComponent extends Component {
     #previousColor() {
 
         const currentColor = this.#currentColor();
-        const colors = this.#colorClasses.keys().toArray();
+        const colors = [ ...this.#colorClasses.keys() ];
         const colorIndex = colors.indexOf(currentColor);
         
         if (colorIndex > 0) {

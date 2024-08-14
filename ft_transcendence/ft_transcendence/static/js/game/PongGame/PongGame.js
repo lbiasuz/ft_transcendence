@@ -17,7 +17,7 @@ export default class PongGame {
     #endAt
     #stopped
 
-    constructor(config) {
+    constructor(config, pongBuilder = PongBuilder) {
 
         if (!config?.playerOne?.name) {throw new Error("must inform player one name")};
         if (!config?.playerOne?.pawnSprite) {throw new Error("must inform player one sprite")};
@@ -25,9 +25,7 @@ export default class PongGame {
         if (!config?.playerTwo?.pawnSprite) {throw new Error("must inform player two sprite")};
         if (!config?.maxScore) {throw new Error("must inform max score")};
         
-        config = { ...DEFAULT_PONG_CONFIG, ...config };
-
-        const { game, objects } = PongBuilder.build(config, this.#scoreEvent.bind(this));
+        const { game, objects } = pongBuilder.build(config, this.#scoreEvent.bind(this));
 
         this.#gameInstance = game;
         this.#gameObjects = objects;
@@ -36,7 +34,6 @@ export default class PongGame {
         this.#playerTwoScore = 0;
         this.#rounds = 0;
         this.#config = config;
-        this.#stopped = false;
     }
 
     onStart(callback) {
@@ -84,8 +81,11 @@ export default class PongGame {
             endAt: this.#endAt
         }
 
-        setTimeout(() => {
+        let intervalId = setInterval(() => {
+
             this.#onEndGameCallBack(gameStatus);
+            clearInterval(intervalId);
+
         }, intervalDelay);
     }
 
@@ -97,6 +97,10 @@ export default class PongGame {
         this.#rounds++;
         this.#gameObjects.ball.resetPosition();
         this.#gameObjects.ball.resetSpeed();
+        this.#gameObjects.pawnOne.resetSpeed();
+        this.#gameObjects.pawnTwo.resetSpeed();
+	    this.#gameObjects?.PawnThree?.resetSpeed();
+        this.#gameObjects?.PawnFour?.resetSpeed();
 
         this.#gameInstance.pause();
 
@@ -115,13 +119,15 @@ export default class PongGame {
                 return;
             }
 
+            console.log("scoreEvent");
+
             if (this.#config.playSound) {
                 (new Audio("/static/static/assets/sounds/next-round.mp3")).play();
             }
 
             this.#gameInstance.resume();
 
-        }, 1000);
+        }, 500);
 
     }
 
@@ -139,6 +145,8 @@ export default class PongGame {
                 if (this.#stopped) { 
                     return;
                 }
+
+                console.log("start");
 
                 this.#gameInstance.resume();
                 this.#startAt = new Date();
@@ -160,6 +168,7 @@ export default class PongGame {
 
     stop() {
         this.#stopped = true;
+        console.log("Game Stopped");
         this.#gameInstance.stop();
     }
 

@@ -7,19 +7,17 @@ export default class ColliderRect extends Collider
 	#height;
 	#halfWidth;
 	#halfHeight;
-	#previousOverlap;
-	#currentOverlap;
+	#collisionAngle;
 
-	constructor(width, height) 
+	constructor(width, height, debugMode = false) 
 	{	
-		super();
+		super(debugMode);
 
 		this.#width = width;	
 		this.#height = height;	
 		this.#halfWidth = width / 2;	
 		this.#halfHeight = height / 2;
-		this.#previousOverlap = undefined;
-		this.#currentOverlap = undefined;	
+		this.#collisionAngle = 89;	
 	}
 
 	getWidth()
@@ -40,6 +38,11 @@ export default class ColliderRect extends Collider
 	getHalfHeight()
 	{
 		return this.#halfHeight;
+	}
+
+	getCollisionAngle() 
+	{
+		return this.#collisionAngle;
 	}
 
 	setWidth(width)
@@ -125,21 +128,6 @@ export default class ColliderRect extends Collider
 			   				point.y >= position.y - this.#halfHeight &&
 			   				point.y <= position.y + this.#halfHeight;
 
-		if (isOverlaped)
-		{
-			if (this.#currentOverlap)
-			{
-				this.#previousOverlap = this.#currentOverlap;
-			}
-	
-			this.#currentOverlap = target;
-		}
-
 		return isOverlaped;
-	}
-
-	overlapDuplicity()
-	{
-		return this.#previousOverlap === this.#currentOverlap;
 	}
 }	

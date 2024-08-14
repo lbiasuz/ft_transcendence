@@ -1,34 +1,32 @@
-export const DEFAULT_PONG_CONFIG = {
+export const DEFAULT_PONG_MULTIPLAYER_CONFIG = {
     playSound: false,
     canvas: {
         id: "canvas",
-        width: 1024,
+        width: 720,
         height: 720
     },
-    background: "random",
-    speedModifier: 1,
     pawn: {
-        speed: 700,
+        speed: 750,
         width: 20,
         height: 160,
     },
     wall: {
         verticalSprite: "",
-        horizontalSprite: "/static/static/assets/sprites/border.png"
+        horizontalSprite: "./assets/sprites/border.png"
     },
     ball: {
         speed: 400,
-        sprite: "/static/static/assets/sprites/ball.png",
+        sprite: "./assets/sprites/ball.png",
         width: 40,
         height: 40,
     },
     playerOne: {
-        pawnSprite: "/static/static/assets/sprites/pawn-green.png",
+        pawnSprite: "./assets/sprites/pawn-green.png",
         keyUp: "w",
         keyDown: "s",
     },
     playerTwo: {
-        pawnSprite: "/static/static/assets/sprites/pawn-blue.png",
+        pawnSprite: "./assets/sprites/pawn-blue.png",
         keyUp: "ArrowUp",
         keyDown: "ArrowDown",
     },
