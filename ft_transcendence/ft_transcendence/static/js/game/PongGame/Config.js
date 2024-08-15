@@ -29,7 +29,7 @@ export const DEFAULT_PONG_CONFIG = {
     },
     playerTwo: {
         pawnSprite: "/static/static/assets/sprites/pawn-blue.png",
-        keyUp: "ArrowUp",
-        keyDown: "ArrowDown",
+        keyUp: "[",
+        keyDown: "]",
     },
 }

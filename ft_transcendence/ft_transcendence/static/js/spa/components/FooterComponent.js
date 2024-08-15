@@ -8,7 +8,7 @@ export default class FooterComponent extends Component {
         super();
 
         const base = document.createElement("footer");
-        base.classList.add("text-center");
+        base.classList.add("text-center", "mt-auto");
 
         base.innerHTML = `
             <div class="authors">

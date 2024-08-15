@@ -83,13 +83,13 @@ export default class PongMultiPlayersBuilder {
 
         //Controller Player Three
         const playerThreeController = new GameEngine.Controller();
-        playerThreeController.addAction("a", moveLeftAction);
-        playerThreeController.addAction("d", moveRightAction);
+        playerThreeController.addAction("z", moveLeftAction);
+        playerThreeController.addAction("x", moveRightAction);
 
         //Controller Player Four
         const playerFourController = new GameEngine.Controller();
-        playerFourController.addAction("ArrowLeft", moveLeftAction);
-        playerFourController.addAction("ArrowRight", moveRightAction);
+        playerFourController.addAction("n", moveLeftAction);
+        playerFourController.addAction("m", moveRightAction);
 
 
         return { playerOneController, playerTwoController, playerThreeController, playerFourController }
