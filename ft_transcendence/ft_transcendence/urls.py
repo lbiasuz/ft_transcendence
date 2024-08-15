@@ -19,7 +19,7 @@ urlpatterns = [
         "match/", MatchViewSet.as_view({"get": "list", "post": "create"}), name="match"
     ),
     path(
-        "match/<int:pk>",
+        "match/<int:pk>/",
         MatchViewSet.as_view(
             {
                 "get": "retrieve",

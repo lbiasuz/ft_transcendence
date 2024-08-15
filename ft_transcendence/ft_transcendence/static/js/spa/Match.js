@@ -32,7 +32,7 @@ export default class Match {
 
     static async detail(pk) {
         try {
-            const response = await fetch (this.#matchRoute + pk, this.#baseRequest())
+            const response = await fetch (this.#matchRoute + pk + "/", this.#baseRequest())
             return await response.json();
         } catch(e) {
             return {error: e};
@@ -53,7 +53,7 @@ export default class Match {
 
     static async update(pk, body) {
         try {
-            const response = await fetch (this.#matchRoute + pk, this.#customRequest({
+            const response = await fetch (this.#matchRoute + pk + "/", this.#customRequest({
                 method: "PATCH",
                 body: JSON.stringify(body)
             }))
@@ -65,7 +65,7 @@ export default class Match {
 
     static async delete(pk) {
         try {
-            const response = await fetch (this.#matchRoute + pk, this.#customRequest({
+            const response = await fetch (this.#matchRoute + pk + "/", this.#customRequest({
                 method: "DELETE"
             }))
             return {status: response.status};
@@ -87,28 +87,33 @@ export default class Match {
     }
 
     static #customRequest(requestConfig) {
-        const request = { ...this.#baseRequest(), ...requestConfig };
-        return request;
+        return {...this.#baseRequest(), ...requestConfig};
     }
 
     static #baseRequest() {
-        const baseRequest = {
+        return {
             method: "GET",
             headers: this.#defaultHeaders(),
             credentials: "same-origin"
-        }
-        return baseRequest;
+        };
     }
 
     static #defaultHeaders() {
-        const headers = {
+        return {
             "Content-Type": "application/json",
             "X-CSRFToken": this.#getCsrfToken()
-        }
-        return headers;
+        };
     }
 
     static #getCsrfToken() {
-        return document.cookie.split('=')[1];
+        const cookies = document.cookie.split(';');
+        for( const cookie of cookies ) {
+            console.log(cookie)
+            const [name, value] = cookie.split("=");
+            if (name.trim() === "csrftoken") {
+                console.log(value)
+                return value;
+            }
+        }
     }
 }
