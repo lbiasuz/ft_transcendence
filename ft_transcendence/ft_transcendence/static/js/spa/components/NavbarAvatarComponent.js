@@ -24,7 +24,7 @@ export default class NavbarAvatarComponent extends Component {
         base.querySelector("#logout").textContent = Lang.text("Logout");
         base.querySelector("#logout").addEventListener("click", (event) => {
             event.preventDefault();
-            window.location.href = "/logout";
+            window.location.href = "/logout/";
             return;
         });
         this._component = base;

@@ -22,7 +22,7 @@ export default class HomeView extends View {
 		loginButton.action(() => {
 			
 			loginButton.showSpinner();
-			window.location.href = "/intra";
+			window.location.href = "/intra/";
 			
 		});
 

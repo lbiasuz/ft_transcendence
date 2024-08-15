@@ -2,7 +2,7 @@ import logging
 import requests
 
 
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.http import HttpResponseRedirect, HttpResponseForbidden, HttpResponse
 from django.views.generic import TemplateView, RedirectView
 from django.contrib.auth import login, logout
@@ -48,7 +48,7 @@ class AuthView(TemplateView):
         request.COOKIES.get('sessionid', None)
         logger.info(request.GET.get('code', None))
         if code := request.GET.get('code', None):
-            redirect_url: str = request.build_absolute_uri(reverse('sso'))[:-1]
+            redirect_url: str = request.build_absolute_uri(reverse('sso'))
             if DEBUG is False:
                 redirect_url = redirect_url.replace("http://", "https://")
             token_resp = requests.post(
@@ -91,13 +91,13 @@ class AuthView(TemplateView):
 
                     login(request, user)
 
-                    return HttpResponseRedirect(reverse('home'))
+                    return HttpResponseRedirect("/")
                 else:
                     logger.error(f"Failed to get user data: {user_resp.content}")
             else:
                 logger.error(f"Failed to get token: {token_resp.content}")
 
-        return HttpResponseRedirect(reverse('home'))
+        return HttpResponseRedirect("/")
 
 
 class IntraRedirectView(RedirectView):
@@ -110,7 +110,7 @@ class IntraRedirectView(RedirectView):
     """
 
     def get(self, request, *args, **kwargs):
-        redirect_url: str = request.build_absolute_uri(reverse('sso'))[:-1]
+        redirect_url: str = request.build_absolute_uri(reverse('sso'))
         if DEBUG is False:
             redirect_url = redirect_url.replace("http://", "https://")
         logger.info(f"redirect is {redirect_url}")
@@ -129,4 +129,4 @@ class LogoutView(APIView):
 
     def get(self, request, *args, **kwargs):
         logout(request)
-        return HttpResponseRedirect(reverse('home'))
+        return HttpResponseRedirect("/")

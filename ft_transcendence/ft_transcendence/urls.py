@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.urls import include, path
+from django.urls import include, path, re_path
 from django.conf.urls.static import static
 
 from ft_transcendence.account.views import UserView
@@ -32,5 +32,5 @@ urlpatterns = [
     ),
 	path('tournament/', TournamentView.as_view(), name='tournament'),
 	path('logout/', LogoutView.as_view(), name='logout'),
-    path("", HomeView.as_view(), name="home"),
+    re_path(r'(.*)', HomeView.as_view(), name='home'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
