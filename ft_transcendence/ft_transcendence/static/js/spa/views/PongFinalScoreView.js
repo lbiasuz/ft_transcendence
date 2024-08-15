@@ -76,11 +76,11 @@ export default class PongFinalScoreView extends View {
         base.querySelector("#secondPlaceName").classList.add("color-" + viewData.secondPlace.color);
         base.querySelector("#secondPlaceScore").textContent = viewData.secondPlace.score;
 
-        const playAgainButton = new ButtonActionComponent(viewData.match.tournament_uuid == "" ? Lang.text("Play Again") : Lang.text("Next Match"));
+        const playAgainButton = new ButtonActionComponent(viewData.match.tournament_uuid == null ? Lang.text("Play Again") : Lang.text("Next Match"));
         playAgainButton.addClass("mt-5");
 
-        playAgainButton.action(async () => { 
-            viewData.match.tournament_uuid == "" ? await this.nextMatch(viewData) : await this.nextMatchTournament(viewData) 
+        playAgainButton.action(async () => {
+            viewData.match.tournament_uuid == null ? await this.nextMatch(viewData) : await this.nextMatchTournament(viewData)
         });
 
         const main = document.createElement("main");
@@ -98,7 +98,7 @@ export default class PongFinalScoreView extends View {
 
     async nextMatchTournament(viewData) {
         const matches = await Match.list("tournament_uuid=".concat(viewData.match.tournament_uuid));
-        
+
         if (matches.error) {
             const toast = new ToastComponent(Lang.text("match-create-error"), "error");
             toast.show();
