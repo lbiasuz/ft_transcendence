@@ -44,7 +44,7 @@ export default class PongTournamentMatchListView extends View {
 
         const nextMatchButton = new ButtonActionComponent(Lang.text("Play Next Match"));
         nextMatchButton.action(() => {
-            
+
             const match = viewData.matches.find((match) => match.started_at == null);
 
             const gameConfig = {
@@ -57,7 +57,7 @@ export default class PongTournamentMatchListView extends View {
                 },
                 playerTwo: {
                     name: match.scoreboard[1].name,
-                    color: match.scoreboard[0].color
+                    color: match.scoreboard[1].color
                 },
                 match: match
             }
@@ -65,7 +65,6 @@ export default class PongTournamentMatchListView extends View {
             Router.viewTo("/pong-game", gameConfig);
         });
 
-        console.log(viewData.matches);
         let nextMatchDefined = false;
         for (const match of viewData.matches) {
             const listItem = document.createElement("div");
@@ -87,7 +86,37 @@ export default class PongTournamentMatchListView extends View {
 
         main.append(title);
         main.append(base);
-        main.append(nextMatchButton.DOM());
+
+        let podium = {};
+
+        if (nextMatchDefined = true) {
+            main.append(nextMatchButton.DOM());
+        } else {
+            viewData.matches.forEach(element => {
+                if (element.scoreboard[0].name in podium) {
+                    podium[element.scoreboard[0].name] += +element.scoreboard[0].score;
+                } else {
+                    podium[element.scoreboard[0].name] = +element.scoreboard[0].score;
+                }
+                if (element.scoreboard[1].name in podium) {
+                    podium[element.scoreboard[1].name] += +element.scoreboard[1].score;
+                } else {
+                    podium[element.scoreboard[1].name] = +element.scoreboard[1].score;
+                }
+            });
+            let sortable = [];
+            for (var player in podium) {
+                sortable.push([player, podium[player]]);
+            }
+            sortable.sort(function(a, b) {
+                return a[1] - b[1];
+            });
+            
+            const backButton = new ButtonActionComponent(sortable[0][0]);
+            backButton.action(() => { Router.navegateTo("/")})
+
+            main.append(backButton.DOM());
+        }
 
         this._addElement(menu.DOM());
 		this._addElement(main);

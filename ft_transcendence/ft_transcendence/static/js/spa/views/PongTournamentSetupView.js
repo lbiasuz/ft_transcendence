@@ -11,7 +11,6 @@ import Lang from "../lang/Lang.js";
 import Router from "../Router.js";
 import View from "./View.js";
 import Match from "../Match.js";
-import PongTournamentMatchListView from "./PongTournamentMatchListView.js";
 
 export default class PongTournamentSetupView extends View {
 
