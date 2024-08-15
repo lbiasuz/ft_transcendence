@@ -120,8 +120,23 @@ export default class PongGameView extends View {
 
         this.#match = viewData.match;
 
+        const gameContainer = document.createElement("div");
+        gameContainer.classList.add("game-container");
+
+        const playerOneKeys = document.createElement("div");
+        playerOneKeys.classList.add("player-keys", "left");
+        playerOneKeys.innerHTML = "<span>w</span><span>s</span>";
+
+        const playerTwoKeys = document.createElement("div");
+        playerTwoKeys.classList.add("player-keys", "right");
+        playerTwoKeys.innerHTML = "<span>[</span><span>]</span>";
+
+        gameContainer.append(playerOneKeys);
+        gameContainer.append(canvas);
+        gameContainer.append(playerTwoKeys);
+
         main.append(playerScore);
-        main.append(canvas);
+        main.append(gameContainer);
 
         this._addElement(menu.DOM());
         this._addElement(main);
