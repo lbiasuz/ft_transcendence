@@ -30,6 +30,7 @@ export const pt = {
     "Game Speed": "Velocidade do Jogo",
     "Map": "Mapa",
     "Team": "Equipe",
+    "Team Name": "Nome da equipe",
     "Team name": "Nome da equipe",
     "Add Player": "Adicionar Jogador",
     "Begin Tournament": "Iniciar Torneio",
@@ -38,5 +39,6 @@ export const pt = {
     "page-load-content-error": "Erro ao tentar carregar os dados da página, tente novamente por gentileza.",
     "match-create-error": "Falha ao criar partida em seu histórico.",
 	"match-update-success": "Partida atualizada em seu histórico.   ",
-	"match-update-error": "Falha ao atualizar partida em seu histórico."
+	"match-update-error": "Falha ao atualizar partida em seu histórico.",
+    "1 vs 1": "1 contra 1",
 };

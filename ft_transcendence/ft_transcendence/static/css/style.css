@@ -462,7 +462,7 @@ h2 {
 .nav-user .dropdown-menu .dropdown-item:hover,
 .nav-user .dropdown-menu .dropdown-item:active {
     background-color: var(--game-dark-color-hover);
-} 
+}
 
 /* Inputs */
 input[type=text] {
@@ -534,7 +534,7 @@ input[type=text]::placeholder {
     content: "";
 }
 
-canvas 
+canvas
 {
 	-webkit-box-shadow: inset 0px 0px 600px 150px rgba(32, 30, 28,.8);
 	-moz-box-shadow: inset 0px 0px 600px 150px rgba(32, 30, 28,.8);

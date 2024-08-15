@@ -30,5 +30,7 @@ export const en = {
 	"Game Speed": "Game Speed",
 	"Map": "Map",
 	"Team": "Team",
+	"Team Name": "Team name",
 	"Team name": "Team name",
+	"1 vs 1": "1 vs 1",
 };

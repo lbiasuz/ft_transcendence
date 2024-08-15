@@ -30,5 +30,7 @@ export const es = {
     "Game Speed": "Velocidad del juego",
     "Map": "Mapa",
     "Team": "Equipo",
+    "Team Name": "Nombre del equipo",
     "Team name": "Nombre del equipo",
+    "1 vs 1": "1 contra 1",
 };
