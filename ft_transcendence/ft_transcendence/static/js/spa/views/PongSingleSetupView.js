@@ -12,7 +12,6 @@ import NavbarAvatarComponent from "../components/NavbarAvatarComponent.js";
 import Context from "../Context.js";
 import Match from "../Match.js"
 import ConfirmCancelModalComponen from "../components/ConfirmCancelModalComponent.js";
-import PongGameView from "./PongGameView.js";
 import ToastComponent from "../components/ToastComponent.js";
 import BackgroundOptionComponent from "../components/BackgrounOptionComponent.js";
 
