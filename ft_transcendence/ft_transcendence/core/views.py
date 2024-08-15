@@ -10,6 +10,7 @@ from django.contrib.auth.models import User
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
+from ft_transcendence.settings import DEBUG
 
 from ft_transcendence.settings import CLIENT_ID, CLIENT_SECRET
 
@@ -47,6 +48,9 @@ class AuthView(TemplateView):
         request.COOKIES.get('sessionid', None)
         logger.info(request.GET.get('code', None))
         if code := request.GET.get('code', None):
+            redirect_url: str = request.build_absolute_uri(reverse('sso'))[:-1]
+            if DEBUG is False:
+                redirect_url = redirect_url.replace("http://", "https://")
             token_resp = requests.post(
                 "https://api.intra.42.fr/oauth/token",
                 data={
@@ -54,7 +58,7 @@ class AuthView(TemplateView):
                     "client_id": CLIENT_ID,
                     "client_secret": CLIENT_SECRET,
                     "code": code,
-                    "redirect_uri": 'http://localhost:8000/sso',
+                    "redirect_uri": redirect_url,
                 },
                 timeout=1000
             )
@@ -106,11 +110,13 @@ class IntraRedirectView(RedirectView):
     """
 
     def get(self, request, *args, **kwargs):
-        redirect_url = request.build_absolute_uri(reverse('sso'))[:-1]
+        redirect_url: str = request.build_absolute_uri(reverse('sso'))[:-1]
+        if DEBUG is False:
+            redirect_url = redirect_url.replace("http://", "https://")
+        logger.info(f"redirect is {redirect_url}")
         return HttpResponseRedirect(
             f"https://api.intra.42.fr/oauth/authorize?client_id={CLIENT_ID}&redirect_uri={redirect_url}&response_type=code"
         )
-
 
 class LogoutView(APIView):
     """
