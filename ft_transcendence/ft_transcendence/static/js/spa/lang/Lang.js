@@ -19,7 +19,7 @@ export default class Lang {
 	static #loadDictionary() {
 
 		const langFromStorage = window.localStorage.getItem("lang");
-		
+
 		if (langFromStorage && this.#langExistis(langFromStorage)) {
 			this.#currentLang = langFromStorage;
 		}
@@ -41,6 +41,8 @@ export default class Lang {
 			this.#loadDictionary();
 		}
 
+		if (!this.#dictionary[key])
+			console.log("Missing language dictionary entry: " + key + " Target: " + this.#currentLang);
 		return this.#dictionary[key] || key;
 	}
 

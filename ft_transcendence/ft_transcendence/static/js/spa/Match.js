@@ -68,7 +68,7 @@ export default class Match {
             const response = await fetch (this.#matchRoute + pk, this.#customRequest({
                 method: "DELETE"
             }))
-            return await response.json();
+            return {status: response.status};
         } catch(e) {
             return {error: e};
         }

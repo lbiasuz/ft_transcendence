@@ -176,8 +176,8 @@ h2 {
 }
 
 .option-group > span {
-    /* display: block;
-    margin-bottom: 1em; */
+    display: block;
+    margin-bottom: .5em;
 }
 
 .player-setup > span {
@@ -462,7 +462,7 @@ h2 {
 .nav-user .dropdown-menu .dropdown-item:hover,
 .nav-user .dropdown-menu .dropdown-item:active {
     background-color: var(--game-dark-color-hover);
-} 
+}
 
 /* Inputs */
 input[type=text] {
@@ -534,7 +534,7 @@ input[type=text]::placeholder {
     content: "";
 }
 
-canvas 
+canvas
 {
 	-webkit-box-shadow: inset 0px 0px 600px 150px rgba(32, 30, 28,.8);
 	-moz-box-shadow: inset 0px 0px 600px 150px rgba(32, 30, 28,.8);
@@ -542,13 +542,13 @@ canvas
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: cover;
-    height: 90%;
     margin-left: auto;
     margin-right: auto;
+    margin-top: 1em;
+    margin-bottom: 1em;
 }
 
 #app {
-    height: 100vh;
     flex-direction: column;
     display: flex;
 }
@@ -627,4 +627,44 @@ main {
 .btn-confirm:hover,
 .btn-confirm:active {
     background: var(--game-green-color-hover);
+}
+
+.game-container {
+    margin-left: auto;
+    margin-right: auto;
+    /* max-width: 1050px; */
+    display: flex;
+    align-items: center;
+    gap: 1em;
+}
+
+.player-keys span {
+    display: block;
+    padding: 1em;
+    background: var(--game-dark-color-action);
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.player-keys.left span,
+.player-keys.right span{
+    margin-top: .5em;
+}
+
+.player-keys.top span,
+.player-keys.bottom span {
+    display: inline-block;
+    width: 3em;
+    margin-left: 1em;
+}
+
+.player-keys.top span:last-child,
+.player-keys.bottom span:last-child {
+    margin-left: .5em;
+}
+.player-keys.top {
+    margin-top: 1em;
+}
+.player-keys.bottom {
+    margin-bottom: 1em;
 }

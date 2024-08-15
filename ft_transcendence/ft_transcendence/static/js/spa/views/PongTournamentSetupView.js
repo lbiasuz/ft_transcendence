@@ -11,7 +11,8 @@ import Lang from "../lang/Lang.js";
 import Router from "../Router.js";
 import View from "./View.js";
 import Match from "../Match.js";
-import PongTournamentMatchListView from "./PongTournamentMatchListView.js";
+import ConfirmCancelModalComponen from "../components/ConfirmCancelModalComponent.js";
+import ToastComponent from "../components/ToastComponent.js";
 
 export default class PongTournamentSetupView extends View {
 
@@ -41,6 +42,7 @@ export default class PongTournamentSetupView extends View {
         title.textContent = Lang.text("Tournament");
 
         const scoreLimit = new OptionGroupComponent(Config.matchsScore, Lang.text("Score Limit"));
+        const gameSpeed = new OptionGroupComponent(Config.speeds, Lang.text("Game Speed"));
         const playerSetup1 = new PlayerSetupComponent(Lang.text("Player") + " 1");
         const playerSetup2 = new PlayerSetupComponent(Lang.text("Player") + " 2");
         const playerSetup3 = new PlayerSetupComponent(Lang.text("Player") + " 3");
@@ -48,6 +50,7 @@ export default class PongTournamentSetupView extends View {
         const startTournamentButton = new ButtonActionComponent(Lang.text("Begin Tournament"));
 
         scoreLimit.addClass("mb-4");
+        gameSpeed.addClass("mb-4");
         addPlayerButton.addClass("mt-4", "d-block");
         startTournamentButton.addClass("mt-5");
 
@@ -79,6 +82,7 @@ export default class PongTournamentSetupView extends View {
                 game: 'pong',
                 modifiers : {
                     maxScore: scoreLimit.getValue(),
+                    speedModifier: parseFloat(gameSpeed.getValue()),
                 }, 
                 scoreboard: players
             }
@@ -107,6 +111,7 @@ export default class PongTournamentSetupView extends View {
         gameSetup.classList.add("game-setup");
 
         gameSetup.append(scoreLimit.DOM());
+        gameSetup.append(gameSpeed.DOM());
         gameSetup.append(playerSetup1.DOM());
         gameSetup.append(playerSetup2.DOM());
         gameSetup.append(playerSetup3.DOM());
@@ -172,6 +177,79 @@ export default class PongTournamentSetupView extends View {
         this.#addPlayerButton.classList.remove("d-none");
 
         this.#updateExtraPlayersIndexes();
+    }
+
+    async _viewCondition() {
+        
+        const pendentMatchs = await Match.list("game=pong&state=created&king=tournament");
+
+        if (pendentMatchs.error) {
+            const toast = new ToastComponent(Lang.text("page-load-content-error"), "error");
+            toast.show();
+            Router.navegateTo("/");
+            return false;
+        }
+
+        if (pendentMatchs.length == 0 ) {
+            return true;
+        }
+
+        const match = pendentMatchs[0];
+        const playerOne = match.scoreboard[0];
+        const playerTwo = match.scoreboard[1];
+
+        const modalMessage = Lang.text("There is a tournament that has started but not finished.<br>Do you want to continue this match or start a new one?");
+        const confirmText = Lang.text("Continue Match");
+        const cancelText = Lang.text("Cancel Match");
+        
+        const playerOneText = `<span class="color-${playerOne.color} me-2">${playerOne.name}</span>`;
+        const playerTwoText = `<span class="color-${playerTwo.color} ms-2">${playerTwo.name}</span>`;
+
+        const modalText = modalMessage + `<br><br>${playerOneText} vs ${playerTwoText}<br>`;
+
+        const modal = new ConfirmCancelModalComponen(modalText, cancelText, confirmText);
+
+        const toastUpdate = new ToastComponent(Lang.text("match-update-success"));
+        const toastUpdateError = new ToastComponent(Lang.text("match-update-error"), "error");
+
+        modal.onCancel(async () => {
+
+            const response = await Match.delete(match.pk);
+
+            if (response.error) {
+                toastUpdateError.show();
+                return;
+            }
+
+            toastUpdate.show();
+            modal.hide();
+        });
+
+        modal.onConfirm(() => {
+            
+            const gameConfig = {
+                match: match,
+                maxScore: match.modifiers.maxScore,
+                background: match.modifiers.background || "random",
+                speedModifer: match.modifiers.speedModifer || 1,
+                playerOne: {
+                    name: playerOne.name,
+                    color: playerOne.color
+                },
+                playerTwo: {
+                    name: playerTwo.name,
+                    color: playerTwo.color
+                }
+            }
+
+            modal.hide();
+            Router.viewTo("/pong-game", gameConfig);
+
+        });
+
+        modal.show();
+
+        return true;
     }
 
 }

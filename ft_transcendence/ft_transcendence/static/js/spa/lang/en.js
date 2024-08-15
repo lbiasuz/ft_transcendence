@@ -24,6 +24,13 @@ export const en = {
 	"page-load-content-error": "Error trying to load page data, please try again.",
 	"match-create-error": "Failed to create match in your history.",
 	"match-update-success": "Match updated in your history.",
-	"match-update-error": "Failed to update match in your history."
-
+	"match-update-error": "Failed to update match in your history.",
+	"Logout": "Logout",
+	"Team vs Team": "Team vs Team",
+	"Game Speed": "Game Speed",
+	"Map": "Map",
+	"Team": "Team",
+	"Team Name": "Team name",
+	"Team name": "Team name",
+	"1 vs 1": "1 vs 1",
 };
