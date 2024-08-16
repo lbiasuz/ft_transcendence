@@ -33,4 +33,13 @@ export const es = {
     "Team Name": "Nombre del equipo",
     "Team name": "Nombre del equipo",
     "1 vs 1": "1 contra 1",
+    "existing-match-msg": "Un partido ya ha comenzado.<br>¿Deseas continuar o comenzar uno nuevo?",
+    "Continue Match": "Continuar partido",
+    "Cancel Match": "Cancelar partido",
+    "Page not found": "Página no encontrada",
+    "Next Target": "Próximo objetivo",
+    "existing-tournament-msg": "Un torneo ya ha comenzado.<br>¿Deseas continuar o comenzar uno nuevo?",
+    "Continue Tournament": "Continuar torneo",
+    "Cancel Tournament": "Cancelar torneo",
+    "Continue": "Continuar",
 };
