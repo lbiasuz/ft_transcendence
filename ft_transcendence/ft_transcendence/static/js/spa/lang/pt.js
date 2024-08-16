@@ -41,4 +41,13 @@ export const pt = {
 	"match-update-success": "Partida atualizada em seu histórico.   ",
 	"match-update-error": "Falha ao atualizar partida em seu histórico.",
     "1 vs 1": "1 contra 1",
+    "existing-match-msg": "Uma partida já foi iniciada.<br>Você quer continuar ou começar uma nova?",
+    "Continue Match": "Continuar partida",
+    "Cancel Match": "Cancelar partida",
+    "Page not found": "Página não encontrada",
+    "Next Target": "Próximo alvo",
+    "existing-tournament-msg": "Um torneio já foi iniciado.<br>Você quer continuar ou começar um novo?",
+    "Continue Tournament": "Continuar torneio",
+    "Cancel Tournament": "Cancelar torneio",
+    "Continue": "Continuar",
 };

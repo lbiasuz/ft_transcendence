@@ -63,11 +63,11 @@ export default class PongTeamSetupView extends View {
                 background: background.selectedBackground(),
                 speedModifier: parseFloat(gameSpeed.getValue()),
                 playerOne: {
-                    name: teamSetup1.getPlayerName() || "Team 1",
+                    name: teamSetup1.getPlayerName() || (Lang.text("Team") + " 1"),
                     color: teamSetup1.getCurrentColor()
                 },
                 playerTwo: {
-                    name: teamSetup2.getPlayerName() || "Team 2",
+                    name: teamSetup2.getPlayerName() || (Lang.text("Team") + " 2"),
                     color: teamSetup2.getCurrentColor()
                 }
             }
@@ -77,7 +77,7 @@ export default class PongTeamSetupView extends View {
                 state: 'created',
                 kind: 'single',
                 modifiers: {
-                    maxScore: gameConfig.maxScore, 
+                    maxScore: gameConfig.maxScore,
                     background: gameConfig.background,
                     speedModifier: gameConfig.speedModifier
                 },
@@ -112,7 +112,7 @@ export default class PongTeamSetupView extends View {
     }
 
     async _viewCondition() {
-        
+
         const pendentMatchs = await Match.list("game=pongx&state=created&king=single");
 
         if (pendentMatchs.error) {
@@ -130,10 +130,10 @@ export default class PongTeamSetupView extends View {
         const teamOne = match.scoreboard[0];
         const teamTwo = match.scoreboard[1];
 
-        const modalMessage = Lang.text("There is a match that has started but not finished.<br>Do you want to continue this match or start a new one?");
+        const modalMessage = Lang.text("existing-match-msg");
         const confirmText = Lang.text("Continue Match");
         const cancelText = Lang.text("Cancel Match");
-        
+
         const teamOneText = `<span class="color-${teamOne.color} me-2">${teamOne.name}</span>`;
         const teamTwoText = `<span class="color-${teamTwo.color} ms-2">${teamTwo.name}</span>`;
 
@@ -157,11 +157,11 @@ export default class PongTeamSetupView extends View {
 
             toastUpdate.show();
             modal.hide();
-            
+
         });
 
         modal.onConfirm(() => {
-            
+
             const gameConfig = {
                 match: match,
                 maxScore: match.modifiers.maxScore,

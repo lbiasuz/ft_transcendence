@@ -76,7 +76,7 @@ export default class PongFinalScoreView extends View {
         base.querySelector("#secondPlaceName").classList.add("color-" + viewData.secondPlace.color);
         base.querySelector("#secondPlaceScore").textContent = viewData.secondPlace.score;
 
-        const playAgainButton = new ButtonActionComponent(viewData.match.tournament_uuid == null ? Lang.text("Play Again") : Lang.text("Next Match"));
+        const playAgainButton = new ButtonActionComponent(viewData.match.tournament_uuid == null ? Lang.text("Play Again") : Lang.text("Continue"));
         playAgainButton.addClass("mt-5");
 
         playAgainButton.action(async () => {

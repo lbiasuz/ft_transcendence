@@ -31,7 +31,7 @@ export default class PongGameModeView extends View {
 
         const footer = new FooterComponent();
 
-        const button1vs1 = new ButtonActionComponent("1 vs 1");
+        const button1vs1 = new ButtonActionComponent(Lang.text("1 vs 1"));
         const button2vs2 = new ButtonActionComponent(Lang.text("Team vs Team"));
         const buttonTournament = new ButtonActionComponent(Lang.text("tournament"));
 

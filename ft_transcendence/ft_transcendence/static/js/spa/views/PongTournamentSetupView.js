@@ -58,22 +58,22 @@ export default class PongTournamentSetupView extends View {
 
             const players = [
                 {
-                    name: playerSetup1.getPlayerName() || "Player 1",
+                    name: playerSetup1.getPlayerName() || (Lang.text("Player") + " 1"),
                     color: playerSetup1.getCurrentColor(),
                 },
                 {
-                    name: playerSetup2.getPlayerName() || "Player 2",
+                    name: playerSetup2.getPlayerName() || (Lang.text("Player") + " 2"),
                     color: playerSetup2.getCurrentColor(),
                 },
                 {
-                    name: playerSetup3.getPlayerName() || "Player 3",
+                    name: playerSetup3.getPlayerName() || (Lang.text("Player") + " 3"),
                     color: playerSetup3.getCurrentColor(),
                 }
             ];
 
             this.#extraPlayers.forEach((component, i) => {
                 players.push({
-                    name: component.getPlayerName() || "Player " + (i + 4),
+                    name: component.getPlayerName() || (Lang.text("Player") + " " + (i + 4)),
                     color: component.getCurrentColor(),
                 })
             })
@@ -83,20 +83,20 @@ export default class PongTournamentSetupView extends View {
                 modifiers : {
                     maxScore: scoreLimit.getValue(),
                     speedModifier: parseFloat(gameSpeed.getValue()),
-                }, 
+                },
                 scoreboard: players
             }
 
             const response = await Match.tournament_create(tournamentConfig)
-            
+
             if (response.error) {
                 const toast = new ToastComponent(Lang.text("match-create-error"), "error");
                 toast.show();
                 return;
             }
-            
+
             const matches = await Match.list("tournament_uuid=".concat(response.tournament_uuid));
-        
+
             if (matches.error) {
                 const toast = new ToastComponent(Lang.text("match-create-error"), "error");
                 toast.show();
@@ -180,7 +180,7 @@ export default class PongTournamentSetupView extends View {
     }
 
     async _viewCondition() {
-        
+
         const pendentMatchs = await Match.list("game=pong&state=created&king=tournament");
 
         if (pendentMatchs.error) {
@@ -198,10 +198,10 @@ export default class PongTournamentSetupView extends View {
         const playerOne = match.scoreboard[0];
         const playerTwo = match.scoreboard[1];
 
-        const modalMessage = Lang.text("There is a tournament that has started but not finished.<br>Do you want to continue this match or start a new one?");
-        const confirmText = Lang.text("Continue Match");
-        const cancelText = Lang.text("Cancel Match");
-        
+        const modalMessage = Lang.text("existing-tournament-msg");
+        const confirmText = Lang.text("Continue Tournament");
+        const cancelText = Lang.text("Cancel Tournament");
+
         const playerOneText = `<span class="color-${playerOne.color} me-2">${playerOne.name}</span>`;
         const playerTwoText = `<span class="color-${playerTwo.color} ms-2">${playerTwo.name}</span>`;
 
@@ -226,7 +226,7 @@ export default class PongTournamentSetupView extends View {
         });
 
         modal.onConfirm(() => {
-            
+
             const gameConfig = {
                 match: match,
                 maxScore: match.modifiers.maxScore,
