@@ -109,7 +109,7 @@ if not DEBUG == True:
     LOGGING["handlers"].update(
         {
             "applogfile": {
-                "level": "ERROR",
+                "level": "DEBUG",
                 "class": "logging.handlers.RotatingFileHandler",
                 "filename": Path(BASE_DIR).resolve().joinpath("logs", "app.log"),
                 "maxBytes": 1024 * 1024 * 15,  # 15MB
