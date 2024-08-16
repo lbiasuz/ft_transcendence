@@ -4,9 +4,9 @@ include .env
 DOCKER_CMD = docker-compose
 
 ifeq ($(DEBUG), True)
-	COMPOSE_FILE = tools/docker-compose-dev.yml
+	COMPOSE_FILE = ./docker-compose-dev.yml
 else
-	COMPOSE_FILE = tools/docker-compose.yml
+	COMPOSE_FILE = ./docker-compose.yml
 endif
 
 all: up
