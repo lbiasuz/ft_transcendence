@@ -122,7 +122,7 @@ export default class PongFinalScoreView extends View {
         }
 
         const createdMatch =  await Match.create({
-            game: 'pong',
+            game: viewData.game,
             state: 'created',
             kind: 'rematch',
             modifiers: { 'maxScore': gameConfig.maxScore, 'background': gameConfig.background, 'speedModifier': gameConfig.speedModifier },
@@ -147,8 +147,10 @@ export default class PongFinalScoreView extends View {
             return;
         }
 
-        Router.clearTarget();
-        (new PongGameView(gameConfig)).render();
+        if (viewData.game == "pongx") {
+            return Router.viewTo("/pongx-game", gameConfig);
+        }
 
+        Router.viewTo("/pong-game", gameConfig);
     }
 }

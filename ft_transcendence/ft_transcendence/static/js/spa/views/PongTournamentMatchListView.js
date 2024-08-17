@@ -89,7 +89,7 @@ export default class PongTournamentMatchListView extends View {
 
         let podium = {};
 
-        if (nextMatchDefined = true) {
+        if (nextMatchDefined == true) {
             main.append(nextMatchButton.DOM());
         } else {
             viewData.matches.forEach(element => {
