@@ -7,12 +7,16 @@ import Context from "../Context.js";
 import Lang from "../lang/Lang.js";
 import View from "./View.js";
 import Router from "../Router.js";
+import Match from "../Match.js";
 
 export default class PongTournamentMatchListView extends View {
 
-    constructor(viewData) {
+
+    constructor(matches) {
 
         super("Tournament Match List");
+
+        matches.sort((a, b) => a.pk - b.pk)
 
         const main = document.createElement("main");
 
@@ -43,42 +47,93 @@ export default class PongTournamentMatchListView extends View {
         `;
 
         const nextMatchButton = new ButtonActionComponent(Lang.text("Play Next Match"));
+        const nextMatch = matches.find((match) => match.started_at == null);
+
         nextMatchButton.action(() => {
-
-            const match = viewData.matches.find((match) => match.started_at == null);
-
             const gameConfig = {
-                maxScore: match.modifiers.maxScore,
-                background: match.modifiers.background,
-                speedModifier: match.modifiers.speedModifier,
+                maxScore: nextMatch?.modifiers.maxScore,
+                background: nextMatch?.modifiers.background,
+                speedModifier: nextMatch?.modifiers.speedModifier,
                 playerOne: {
-                    name: match.scoreboard[0].name,
-                    color: match.scoreboard[0].color
+                    name: nextMatch?.scoreboard[0].name,
+                    color: nextMatch?.scoreboard[0].color
                 },
                 playerTwo: {
-                    name: match.scoreboard[1].name,
-                    color: match.scoreboard[1].color
+                    name: nextMatch?.scoreboard[1].name,
+                    color: nextMatch?.scoreboard[1].color
                 },
-                match: match
+                match: nextMatch
             }
-
             Router.viewTo("/pong-game", gameConfig);
         });
 
-        let nextMatchDefined = false;
-        for (const match of viewData.matches) {
+        const podium = new Map()
+
+        //fill podium
+        for (const match of matches) {
+            const playerOne = match.scoreboard[0];
+            const playerTwo = match.scoreboard[1];
+            podium.set(playerOne.name, {name: playerOne.name, color: playerOne.color, wins: 0});
+            podium.set(playerTwo.name, {name: playerTwo.name, color: playerTwo.color, wins: 0});
+        }
+
+        //add players to podium
+        for (const match of matches) {
+
+            const playerOne = match.scoreboard[0];
+            const playerTwo = match.scoreboard[1];
+
+            if (playerOne.score === undefined || playerTwo.score === undefined) {
+                continue;
+            }
+
+            if (playerOne.score > playerTwo.score) {
+                const oldPlayerOne = podium.get(playerOne.name);
+                podium.set(playerOne.name, {
+                    name: playerOne.name,
+                    color: playerOne.color,
+                    wins:  oldPlayerOne.wins + 1
+                });
+            }
+
+            if (playerOne.score < playerTwo.score) {
+                const oldPlayerTwo = podium.get(playerTwo.name);
+                podium.set(playerTwo.name, {
+                    name: playerTwo.name,
+                    color: playerTwo.color,
+                    wins:  oldPlayerTwo.wins + 1
+                });
+            }
+        }
+
+        const viewPodiumButton = new ButtonActionComponent(Lang.text("View Final Score"))
+        viewPodiumButton.action(() => {
+
+            const podiumSorted = [ ...podium.values() ]
+            podiumSorted.sort((a, b) => b.wins - a.wins)
+
+            Router.viewTo("/pong-tournament-final-score", podiumSorted);
+            
+        });
+
+        for (const match of matches) {
             const listItem = document.createElement("div");
             listItem.classList.add("list-item");
 
-            if (match.started_at == null && nextMatchDefined == false) {
+            if (nextMatch && match.pk == nextMatch.pk) {
                 listItem.classList.add("next");
-                nextMatchDefined = true;
             }
+
+            const playerOneWin = match.scoreboard[0].score > match.scoreboard[1].score;
+            const playerTwoWin = match.scoreboard[1].score > match.scoreboard[0].score;
+
+            const playerOneLossClass = (playerTwoWin)? "text-decoration-line-through" : "";
+            const playerTwoLossClass = (playerOneWin)? "text-decoration-line-through" : "";
            
             listItem.innerHTML = `
-                <span class="color-${match.scoreboard[0].color}">${match.scoreboard[0].name}</span>
+                <span class="color-${match.scoreboard[0].color} ${playerOneLossClass}">${match.scoreboard[0].name}</span>
                 <span class="sep">${(listItem.classList.contains("next"))? Lang.text("Next") : ""}</span>
-                <span class="color-${match.scoreboard[1].color}">${match.scoreboard[1].name}</span>
+                <span class="color-${match.scoreboard[1].color} ${playerTwoLossClass}">${match.scoreboard[1].name}</span>
             `;
 
             base.append(listItem);
@@ -87,35 +142,12 @@ export default class PongTournamentMatchListView extends View {
         main.append(title);
         main.append(base);
 
-        let podium = {};
-
-        if (nextMatchDefined == true) {
+        if (nextMatch) {
             main.append(nextMatchButton.DOM());
-        } else {
-            viewData.matches.forEach(element => {
-                if (element.scoreboard[0].name in podium) {
-                    podium[element.scoreboard[0].name] += +element.scoreboard[0].score;
-                } else {
-                    podium[element.scoreboard[0].name] = +element.scoreboard[0].score;
-                }
-                if (element.scoreboard[1].name in podium) {
-                    podium[element.scoreboard[1].name] += +element.scoreboard[1].score;
-                } else {
-                    podium[element.scoreboard[1].name] = +element.scoreboard[1].score;
-                }
-            });
-            let sortable = [];
-            for (var player in podium) {
-                sortable.push([player, podium[player]]);
-            }
-            sortable.sort(function(a, b) {
-                return a[1] - b[1];
-            });
-            
-            const backButton = new ButtonActionComponent(sortable[0][0]);
-            backButton.action(() => { Router.navegateTo("/")})
+        }
 
-            main.append(backButton.DOM());
+        if (!nextMatch) {
+            main.append(viewPodiumButton.DOM());
         }
 
         this._addElement(menu.DOM());
@@ -123,5 +155,4 @@ export default class PongTournamentMatchListView extends View {
         this._addElement(footer.DOM())
 
     }
-
 }

@@ -173,26 +173,27 @@ export default class PongGameView extends View {
         this.#ended = true;
         clearInterval(this.#timerIntervalId);
 
-        let players = [
+        const players = [
             {name: this.#gameConfig.playerOne.name, score: this.#playerOneScore.textContent, color: this.#gameConfig.playerOne.color},
             {name: this.#gameConfig.playerTwo.name, score: this.#playerTwoScore.textContent, color: this.#gameConfig.playerTwo.color}
         ]
 
-        players.sort((a, b) => b.score - a.score);
+        const places = [...players]
+        places.sort((a, b) => b.score - a.score);
 
         const finalScoreData = {
             game: "pong",
             maxScore: this.#gameConfig.maxScore,
             duration: this.#formatDuration(),
             firstPlace: {
-                name: players[0].name,
-                score: players[0].score,
-                color: players[0].color
+                name: places[0].name,
+                score: places[0].score,
+                color: places[0].color
             },
             secondPlace: {
-                name: players[1].name,
-                score: players[1].score,
-                color: players[1].color
+                name: places[1].name,
+                score: places[1].score,
+                color: places[1].color
             }
         }
 
@@ -213,6 +214,7 @@ export default class PongGameView extends View {
 
         toastUpdate.show();
         finalScoreData.match = response;
+
         Router.viewTo("/pong-final-score", finalScoreData);
     }
 

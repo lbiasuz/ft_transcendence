@@ -103,8 +103,7 @@ export default class PongTournamentSetupView extends View {
                 return false;
             }
 
-            tournamentConfig.matches = matches;
-            Router.viewTo("/pong-tournament-match-list", tournamentConfig);
+            Router.viewTo("/pong-tournament-match-list", matches);
         });
 
         const gameSetup = document.createElement("div");
@@ -194,27 +193,28 @@ export default class PongTournamentSetupView extends View {
             return true;
         }
 
-        const match = pendentMatchs[0];
-        const playerOne = match.scoreboard[0];
-        const playerTwo = match.scoreboard[1];
+        const tournament_uuid = pendentMatchs[0].tournament_uuid;
+
+        const matches = await Match.list("tournament_uuid=".concat(tournament_uuid));
+
+        if (matches.error) {
+            const toast = new ToastComponent(Lang.text("match-create-error"), "error");
+            toast.show();
+            return false;
+        }
 
         const modalMessage = Lang.text("existing-tournament-msg");
         const confirmText = Lang.text("Continue Tournament");
         const cancelText = Lang.text("Cancel Tournament");
 
-        const playerOneText = `<span class="color-${playerOne.color} me-2">${playerOne.name}</span>`;
-        const playerTwoText = `<span class="color-${playerTwo.color} ms-2">${playerTwo.name}</span>`;
-
-        const modalText = modalMessage + `<br><br>${playerOneText} vs ${playerTwoText}<br>`;
-
-        const modal = new ConfirmCancelModalComponen(modalText, cancelText, confirmText);
+        const modal = new ConfirmCancelModalComponen(modalMessage, cancelText, confirmText);
 
         const toastUpdate = new ToastComponent(Lang.text("match-update-success"));
         const toastUpdateError = new ToastComponent(Lang.text("match-update-error"), "error");
 
         modal.onCancel(async () => {
 
-            const response = await Match.delete(match.pk);
+            const response = await Match.delete(matches[0].pk);
 
             if (response.error) {
                 toastUpdateError.show();
@@ -225,25 +225,10 @@ export default class PongTournamentSetupView extends View {
             modal.hide();
         });
 
-        modal.onConfirm(() => {
-
-            const gameConfig = {
-                match: match,
-                maxScore: match.modifiers.maxScore,
-                background: match.modifiers.background || "random",
-                speedModifer: match.modifiers.speedModifer || 1,
-                playerOne: {
-                    name: playerOne.name,
-                    color: playerOne.color
-                },
-                playerTwo: {
-                    name: playerTwo.name,
-                    color: playerTwo.color
-                }
-            }
+        modal.onConfirm(async () => {
 
             modal.hide();
-            Router.viewTo("/pong-game", gameConfig);
+            Router.viewTo("/pong-tournament-match-list", matches);
 
         });
 
