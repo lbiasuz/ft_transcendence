@@ -119,8 +119,6 @@ export default class PongGame {
                 return;
             }
 
-            console.log("scoreEvent");
-
             if (this.#config.playSound) {
                 (new Audio("/static/static/assets/sounds/next-round.mp3")).play();
             }
@@ -146,8 +144,6 @@ export default class PongGame {
                     return;
                 }
 
-                console.log("start");
-
                 this.#gameInstance.resume();
                 this.#startAt = new Date();
 
@@ -168,7 +164,6 @@ export default class PongGame {
 
     stop() {
         this.#stopped = true;
-        console.log("Game Stopped");
         this.#gameInstance.stop();
     }
 

@@ -108,10 +108,8 @@ export default class Match {
     static #getCsrfToken() {
         const cookies = document.cookie.split(';');
         for( const cookie of cookies ) {
-            console.log(cookie)
             const [name, value] = cookie.split("=");
             if (name.trim() === "csrftoken") {
-                console.log(value)
                 return value;
             }
         }

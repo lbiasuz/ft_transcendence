@@ -241,7 +241,6 @@ export default class PongTeamGameView extends View {
         if (Context.getItem("game")) {
             Context.getItem("game")?.stop();
             Context.deleteItem("game");
-            console.log("Game Clearned");
         }
 
         this.#game = new PongGame(this.#gameConfig, PongMultiPlayersBuilder);
@@ -261,7 +260,6 @@ export default class PongTeamGameView extends View {
         if (Context.getItem("game")) {
             Context.getItem("game")?.stop();
             Context.deleteItem("game");
-            console.log("Game Clearned");
         }
     }
 

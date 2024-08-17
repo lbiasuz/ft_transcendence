@@ -41,8 +41,6 @@ export default class Lang {
 			this.#loadDictionary();
 		}
 
-		if (!this.#dictionary[key])
-			console.log("Missing language dictionary entry: " + key + " Target: " + this.#currentLang);
 		return this.#dictionary[key] || key;
 	}
 
