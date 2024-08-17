@@ -181,6 +181,7 @@ export default class PongGameView extends View {
         players.sort((a, b) => b.score - a.score);
 
         const finalScoreData = {
+            game: "pong",
             maxScore: this.#gameConfig.maxScore,
             duration: this.#formatDuration(),
             firstPlace: {

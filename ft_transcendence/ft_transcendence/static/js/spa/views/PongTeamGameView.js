@@ -193,6 +193,7 @@ export default class PongTeamGameView extends View {
         players.sort((a, b) => b.score - a.score);
 
         const finalScoreData = {
+            game: "pongx",
             maxScore: this.#gameConfig.maxScore,
             duration: this.#formatDuration(),
             firstPlace: {
@@ -241,7 +242,6 @@ export default class PongTeamGameView extends View {
         if (Context.getItem("game")) {
             Context.getItem("game")?.stop();
             Context.deleteItem("game");
-            console.log("Game Clearned");
         }
 
         this.#game = new PongGame(this.#gameConfig, PongMultiPlayersBuilder);
@@ -261,7 +261,6 @@ export default class PongTeamGameView extends View {
         if (Context.getItem("game")) {
             Context.getItem("game")?.stop();
             Context.deleteItem("game");
-            console.log("Game Clearned");
         }
     }
 

@@ -11,13 +11,15 @@ class MatchViewSet(ModelViewSet):
   search_fields = ['uuid', 'session', 'tournament_uuid', 'next_match']
 
   def get_queryset(self):
-    return super().get_queryset().filter(session=self.request.user).order_by('id')
+    return super().get_queryset().filter(session=self.request.user)
   
   def perform_destroy(self, instance: Match):
-    instance.state='canceled'
-    instance.save()
-    if instance.next_match is not None:
-      self.perform_destroy(instance.next_match)
+    if instance.tournament_uuid is not None:
+      Match.objects.filter(tournament_uuid = instance.tournament_uuid).update(state='canceled')
+    else:
+      instance.state = "canceled"
+      instance.save()
+
 
 class TournamentView(CreateAPIView):
   serializer_class = TournamentSerializer

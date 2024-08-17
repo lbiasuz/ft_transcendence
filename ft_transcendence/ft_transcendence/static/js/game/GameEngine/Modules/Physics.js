@@ -138,8 +138,6 @@ export default class Physics extends GameModule
 	#testCollision(object1, borderPoint1, object2, borderPoint2)
 	{
 		const bordersDistance = vecDistance(borderPoint1, borderPoint2)
-		
-		// console.log(bordersDistance);
 
 		if (bordersDistance > this.#precisionDistance)
 		{
