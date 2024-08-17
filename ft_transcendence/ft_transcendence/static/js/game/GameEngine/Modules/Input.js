@@ -21,9 +21,7 @@ export default class Input extends GameModule
 			{
 				const bind = this.#controlBindList.get(e.key);
 				
-				if (bind)
-				{
-					e.preventDefault();
+				if (bind) {
 					bind.active = true;
 				}
 			}
@@ -39,9 +37,7 @@ export default class Input extends GameModule
 			{
 				const bind = this.#controlBindList.get(e.key);
 				
-				if (bind)
-				{
-					e.preventDefault();
+				if (bind) {
 					bind.active = false;
 				}
 			}
