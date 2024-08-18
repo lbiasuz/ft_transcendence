@@ -112,7 +112,7 @@ export default class PongSingleSetupView extends View {
 
     async _viewCondition() {
 
-        const pendentMatchs = await Match.list("game=pong&state=created&king=single");
+        const pendentMatchs = await Match.list("game=pong&state=created&kind=single");
 
         if (pendentMatchs.error) {
             const toast = new ToastComponent(Lang.text("page-load-content-error"), "error");
