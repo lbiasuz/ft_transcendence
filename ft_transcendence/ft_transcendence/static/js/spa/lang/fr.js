@@ -45,5 +45,6 @@ export const fr = {
     "Tournament Final Score": "Score final du tournoi",
     "Wins": "victories",
 	"View Final Score": "Voir le score final",
-    "Play new tournament": "Jouer un nouveau tournoi"
+    "Play new tournament": "Jouer un nouveau tournoi",
+    "Next": "Prochain"
 };

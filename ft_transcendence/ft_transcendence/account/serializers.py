@@ -6,7 +6,7 @@ from ft_transcendence.account.models import Profile
 class ProfileSerializer(ModelSerializer):
 	class Meta:
 		model = Profile
-		fields = ['url', 'avatar']
+		fields = ['url']
 
 class UserSerializer(ModelSerializer):
 	class Meta:

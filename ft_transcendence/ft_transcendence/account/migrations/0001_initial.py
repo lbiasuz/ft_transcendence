@@ -24,7 +24,6 @@ class Migration(migrations.Migration):
                 ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='created at')),
                 ('updated_at', models.DateTimeField(auto_now=True, verbose_name='updated at')),
                 ('deleted_at', models.DateTimeField(blank=True, null=True, verbose_name='deleted at')),
-                ('avatar', models.ImageField(blank=True, null=True, upload_to='avatars/', verbose_name='Avatar')),
                 ('matches', models.IntegerField(default=0)),
                 ('matches_won', models.IntegerField(default=0)),
                 ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='profile', to=settings.AUTH_USER_MODEL)),

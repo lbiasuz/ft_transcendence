@@ -53,5 +53,6 @@ export const pt = {
     "Tournament Final Score": "Pontuação Final do Torneio",
     "Wins": "vitórias",
 	"View Final Score": "Ver pontuação final",
-    "Play new tournament": "Jogar novo torneio"
+    "Play new tournament": "Jogar novo torneio",
+    "Next": "Próximo"
 };

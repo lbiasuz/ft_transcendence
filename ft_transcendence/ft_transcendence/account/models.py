@@ -12,8 +12,9 @@ class Profile(AbstractBaseModel):
     )
 
     url = models.URLField(verbose_name=_("Intra url"), null=True, blank=True)
-    avatar = models.ImageField(verbose_name=_("Avatar"), upload_to="avatars/", null=True, blank=True)
 
+    # avatar = models.ImageField(verbose_name=_("Avatar"), upload_to="avatars/", null=True, blank=True)
+    
     # LGPD options
     # full_name = models.CharField(verbose_name=_("Nome completo"), max_lenght=100, null=True, blank=True)
     # phone = models.CharField(verbose_name=_("Telefone:"), max_lenght=15, null=True, blank=True)
