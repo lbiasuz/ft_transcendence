@@ -9,28 +9,27 @@ readme = "README.md"
 python = "^3.10"
 Django = "^4.2.0"
 Gunicorn = "^22.0.0"
-coverage = "^7.5.0"
-ipython = "^8.24.0"
 python-decouple = "^3.8"
 psycopg2-binary = "^2.9.9"
-django-jazzmin = "^3.0.0"
 loguru = "^0.7.2"
 django-prometheus = "^2.3.1"
 dj-database-url = "^2.1.0"
-pillow = "^10.3.0"
 django-elasticsearch-dsl = "^8.0"
 django-elasticsearch-dsl-drf = "^0.22.5"
 python-logstash = "^0.4.8"
 elastic-apm = "^6.22.3"
 json-log-formatter = "^1.0"
 djangorestframework = "^3.15.2"
-markdown = "^3.6"
 django-filter = "^24.2"
 requests = "^2.32.3"
-bandit = "^1.7.9"
+pillow = "^10.4.0"
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.4.2"
+coverage = "^7.6.1"
+ipython = "^8.26.0"
+bandit = "^1.7.9"
+
 
 [build-system]
 requires = ["poetry-core"]

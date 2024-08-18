@@ -45,5 +45,6 @@ export const en = {
 	"Tournament Final Score": "Tournament Final Score",
 	"Wins": "Wins",
 	"View Final Score": "View Final Score",
-	"Play new tournament": "Play new tournament"
+	"Play new tournament": "Play new tournament",
+	"Next": "Next"
 };
