@@ -82,7 +82,7 @@ class AuthView(TemplateView):
                         #     if photo_resp.ok:
                         #         user.profile.avatar.save(f"{user_data['login']}.jpg", photo_resp.content)
 
-                        # user.profile.url = user_data["url"]
+                        user.profile.url = user_data["url"]
 
                         # user.profile.full_name = user_data["usual_full_name"]
                         # user.profile.phone = user_data["phone"]
