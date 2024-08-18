@@ -164,7 +164,7 @@ export default class PongSingleSetupView extends View {
                 match: match,
                 maxScore: match.modifiers.maxScore,
                 background: match.modifiers.background || "random",
-                speedModifer: match.modifiers.speedModifer || 1,
+                speedModifier: match.modifiers.speedModifier || 1,
                 playerOne: {
                     name: playerOne.name,
                     color: playerOne.color

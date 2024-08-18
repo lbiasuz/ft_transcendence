@@ -166,7 +166,7 @@ export default class PongTeamSetupView extends View {
                 match: match,
                 maxScore: match.modifiers.maxScore,
                 background: match.modifiers.background || "random",
-                speedModifer: match.modifiers.speedModifer || 1,
+                speedModifier: match.modifiers.speedModifier || 1,
                 playerOne: {
                     name: teamOne.name,
                     color: teamOne.color
