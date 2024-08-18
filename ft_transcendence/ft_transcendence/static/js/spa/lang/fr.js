@@ -42,4 +42,8 @@ export const fr = {
     "Continue Tournament": "Continuer le tournoi",
     "Cancel Tournament": "Annuler le tournoi",
     "Continue": "Continuer",
+    "Tournament Final Score": "Score final du tournoi",
+    "Wins": "victories",
+	"View Final Score": "Voir le score final",
+    "Play new tournament": "Jouer un nouveau tournoi"
 };

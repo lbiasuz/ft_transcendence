@@ -50,4 +50,8 @@ export const pt = {
     "Continue Tournament": "Continuar torneio",
     "Cancel Tournament": "Cancelar torneio",
     "Continue": "Continuar",
+    "Tournament Final Score": "Pontuação Final do Torneio",
+    "Wins": "vitórias",
+	"View Final Score": "Ver pontuação final",
+    "Play new tournament": "Jogar novo torneio"
 };

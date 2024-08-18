@@ -9,7 +9,6 @@ import Router from "../Router.js";
 import View from "./View.js";
 import Match from "../Match.js";
 import ToastComponent from "../components/ToastComponent.js";
-import PongGameView from "./PongGameView.js";
 
 export default class PongFinalScoreView extends View {
 
@@ -36,21 +35,22 @@ export default class PongFinalScoreView extends View {
             </div>
 
             <div class="players-score">
-            <div class="score-title">
-                <span></span>
-                <span id="playerTitle"></span>
-                <span id="scoreTitle"></span>
-            </div>
-            <div class="player player-winner">
-                <span>#1</span>
-                <span id="firstPlaceName"></span>
-                <span id="firstPlaceScore"></span>
-                <i class="winner-flag"></i>
-            </div>
-            <div class="player">
-                <span>#2</span>
-                <span id="secondPlaceName"></span>
-                <span id="secondPlaceScore"></span>
+                <div class="score-title">
+                    <span></span>
+                    <span id="playerTitle"></span>
+                    <span id="scoreTitle"></span>
+                </div>
+                <div class="player player-winner">
+                    <span>#1</span>
+                    <span id="firstPlaceName"></span>
+                    <span id="firstPlaceScore"></span>
+                    <i class="winner-flag"></i>
+                </div>
+                <div class="player">
+                    <span>#2</span>
+                    <span id="secondPlaceName"></span>
+                    <span id="secondPlaceScore"></span>
+                </div>
             </div>
         `;
 
@@ -76,81 +76,91 @@ export default class PongFinalScoreView extends View {
         base.querySelector("#secondPlaceName").classList.add("color-" + viewData.secondPlace.color);
         base.querySelector("#secondPlaceScore").textContent = viewData.secondPlace.score;
 
-        const playAgainButton = new ButtonActionComponent(viewData.match.tournament_uuid == null ? Lang.text("Play Again") : Lang.text("Continue"));
+        const playAgainButton = new ButtonActionComponent(Lang.text("Play Again"));
         playAgainButton.addClass("mt-5");
 
+        const continueTournamentButton = new ButtonActionComponent(Lang.text("Continue"));
+        continueTournamentButton.addClass("mt-5");
+
+
+        continueTournamentButton.action(async () =>{
+
+            const matches = await Match.list("tournament_uuid=".concat(viewData.match.tournament_uuid));
+
+            if (matches.error) {
+                const toast = new ToastComponent(Lang.text("match-create-error"), "error");
+                toast.show();
+                return false;
+            }
+
+            Router.viewTo("/pong-tournament-match-list", matches);
+
+        })
+
         playAgainButton.action(async () => {
-            viewData.match.tournament_uuid == null ? await this.nextMatch(viewData) : await this.nextMatchTournament(viewData)
+
+            const gameConfig = {
+                maxScore: viewData.maxScore,
+                playerOne: {
+                    name: viewData.firstPlace.name,
+                    color: viewData.firstPlace.color,
+                },
+                playerTwo: {
+                    name: viewData.secondPlace.name,
+                    color: viewData.secondPlace.color,
+                }
+            }
+    
+            const createdMatch =  await Match.create({
+                game: viewData.game,
+                state: 'created',
+                kind: 'rematch',
+                modifiers: { 'maxScore': gameConfig.maxScore, 'background': gameConfig.background, 'speedModifier': gameConfig.speedModifier },
+                scoreboard: [{ ...gameConfig.playerOne }, { ...gameConfig.playerTwo }],
+            })
+    
+            const toastUpdateError = new ToastComponent(Lang.text("match-update-error"), "error");
+    
+            if (createdMatch.error) {
+                toastUpdateError.show();
+                return;
+            }
+    
+            gameConfig.match = createdMatch;
+    
+            const updatedMatch = await Match.update(viewData.match.pk, {
+                next_match: gameConfig.match.pk,
+            })
+    
+            if (updatedMatch.error) {
+                toastUpdateError.show();
+                return;
+            }
+    
+            if (viewData.game == "pongx") {
+                return Router.viewTo("/pongx-game", gameConfig);
+            }
+    
+            Router.viewTo("/pong-game", gameConfig);
         });
 
         const main = document.createElement("main");
 
         main.append(title);
         main.append(base);
-        main.append(playAgainButton.DOM());
+
+        if (!viewData.match.tournament_uuid) {
+            main.append(playAgainButton.DOM());
+        }
+
+        if (viewData.match.tournament_uuid) {
+            main.append(continueTournamentButton.DOM());
+        }
 
         const footer = new FooterComponent();
 
         this._addElement(menu.DOM());
         this._addElement(main);
         this._addElement(footer.DOM());
-    }
-
-    async nextMatchTournament(viewData) {
-        const matches = await Match.list("tournament_uuid=".concat(viewData.match.tournament_uuid));
-
-        if (matches.error) {
-            const toast = new ToastComponent(Lang.text("match-create-error"), "error");
-            toast.show();
-            return false;
-        }
-
-        Router.viewTo("/pong-tournament-match-list", { matches: matches });
-    }
-
-    async nextMatch(viewData) {
-        const gameConfig = {
-            maxScore: viewData.maxScore,
-            playerOne: {
-                name: viewData.firstPlace.name,
-                color: viewData.firstPlace.color,
-            },
-            playerTwo: {
-                name: viewData.secondPlace.name,
-                color: viewData.secondPlace.color,
-            }
-        }
-
-        const createdMatch =  await Match.create({
-            game: viewData.game,
-            state: 'created',
-            kind: 'rematch',
-            modifiers: { 'maxScore': gameConfig.maxScore, 'background': gameConfig.background, 'speedModifier': gameConfig.speedModifier },
-            scoreboard: [{ ...gameConfig.playerOne }, { ...gameConfig.playerTwo }],
-        })
-
-        const toastUpdateError = new ToastComponent(Lang.text("match-update-error"), "error");
-
-        if (createdMatch.error) {
-            toastUpdateError.show();
-            return;
-        }
-
-        gameConfig.match = createdMatch;
-
-        const updatedMatch = await Match.update(viewData.match.pk, {
-            next_match: gameConfig.match.pk,
-        })
-
-        if (updatedMatch.error) {
-            toastUpdateError.show();
-            return;
-        }
-
-        if (viewData.game == "pongx") {
-            return Router.viewTo("/pongx-game", gameConfig);
-        }
-
-        Router.viewTo("/pong-game", gameConfig);
     }
 }
